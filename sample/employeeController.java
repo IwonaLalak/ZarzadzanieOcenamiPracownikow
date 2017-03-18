@@ -22,4 +22,14 @@ public class employeeController {
         appStage.show();
     }
 
+    @FXML
+    private void changePassword(ActionEvent event) throws IOException {
+        Parent loginParent = FXMLLoader.load(getClass().getResource("password_change.fxml"));
+        Scene loginScene = new Scene(loginParent);
+        Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        appStage.hide();
+        appStage.setScene(loginScene);
+        appStage.show();
+    }
+
 }
