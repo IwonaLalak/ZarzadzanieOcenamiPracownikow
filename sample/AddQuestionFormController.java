@@ -12,12 +12,12 @@ public class AddQuestionFormController implements Initializable, ControlledScree
 
     @FXML
     private void cancel() throws IOException {
-        myController.setScreen(Main.create_new_vote);
+        myController.setScreen(Main.main);
     }
 
     @FXML
     private void addVote() throws IOException {
-        myController.setScreen(Main.add_question_form);
+        myController.setScreen(Main.main);
     }
 
     @Override
