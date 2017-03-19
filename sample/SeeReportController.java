@@ -5,18 +5,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class PasswordChangeController implements Initializable, ControlledScreen {
+public class SeeReportController implements Initializable, ControlledScreen {
 
-    ScreensController myController;
+    private ScreensController myController;
 
     @FXML
-    private void goBackToMainPage(ActionEvent event) throws IOException {
+    private void goBackToReports(ActionEvent event) throws IOException {
         myController.setScreen(Main.main);
     }
 

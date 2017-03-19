@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:controller="sample.CreateNewVoteController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Pane prefHeight="112.0" prefWidth="800.0">
          <children>
@@ -56,8 +56,8 @@
       </Pane>
       <Pane prefHeight="91.0" prefWidth="800.0">
          <children>
-            <Button layoutX="614.0" layoutY="17.0" mnemonicParsing="false" text="Rozpocznij głosowanie" />
-            <Button layoutX="541.0" layoutY="17.0" mnemonicParsing="false" text="Anuluj" />
+            <Button onAction="#startNewVote" layoutX="614.0" layoutY="17.0" mnemonicParsing="false" text="Rozpocznij głosowanie" />
+            <Button onAction="#cancel" layoutX="541.0" layoutY="17.0" mnemonicParsing="false" text="Anuluj" />
          </children>
       </Pane>
    </children>

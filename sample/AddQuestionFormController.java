@@ -1,23 +1,23 @@
 package sample;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class PasswordChangeController implements Initializable, ControlledScreen {
-
-    ScreensController myController;
+public class AddQuestionFormController implements Initializable, ControlledScreen {
+    private ScreensController myController;
 
     @FXML
-    private void goBackToMainPage(ActionEvent event) throws IOException {
-        myController.setScreen(Main.main);
+    private void cancel() throws IOException {
+        myController.setScreen(Main.create_new_vote);
+    }
+
+    @FXML
+    private void addVote() throws IOException {
+        myController.setScreen(Main.add_question_form);
     }
 
     @Override
