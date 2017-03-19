@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<TabPane fx:controller="sample.MainPanelController" fx:id="tabs" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1">
+<TabPane fx:id="tabs" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainPanelController">
   <tabs>
     <Tab text="Profil">
       <content>
@@ -183,7 +183,8 @@
                            <children>
                               <Pane layoutX="176.0" layoutY="-70.0" prefHeight="82.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <Button onAction="#createNewVote" layoutX="627.0" layoutY="28.0" mnemonicParsing="false" text="Dodaj nową ankietę" />
+                                    <Button layoutX="627.0" layoutY="28.0" mnemonicParsing="false" onAction="#createNewQuestionForm" text="Dodaj nową ankietę" />
+                                    <Button layoutX="495.0" layoutY="28.0" mnemonicParsing="false" onAction="#showQuestionForm" text="Zobacz ankietę" />
                                  </children>
                               </Pane>
                            </children>
@@ -214,20 +215,25 @@
                               <TableView layoutX="7.0" layoutY="7.0" prefHeight="379.0" prefWidth="783.0">
                                 <columns>
                                   <TableColumn prefWidth="44.0" text="Nr." />
-                                  <TableColumn prefWidth="205.0" text="Nazwa" />
-                                    <TableColumn prefWidth="82.0" text="Data od" />
-                                    <TableColumn text="Data do" />
-                                    <TableColumn prefWidth="108.0" text="Dział" />
-                                    <TableColumn prefWidth="125.0" text="Kto głosuje" />
-                                    <TableColumn prefWidth="136.0" text="Zakończ szybciej" />
+                                  <TableColumn prefWidth="120.0" text="Nazwa" />
+                                    <TableColumn prefWidth="87.0" text="Data od" />
+                                    <TableColumn prefWidth="86.0" text="Data do" />
+                                    <TableColumn prefWidth="55.0" text="Dział" />
+                                    <TableColumn prefWidth="103.0" text="Kto głosuje" />
+                                    <TableColumn prefWidth="138.0" text="Zakończ szybciej" />
+                                    <TableColumn maxWidth="190.0" minWidth="-1.0" prefWidth="134.0" text="Zobacz przebieg" />
                                 </columns>
                               </TableView>
                            </children>
                         </Pane>
                         <Pane prefHeight="83.0" prefWidth="800.0">
                            <children>
-                              <Button onAction="#newVote" layoutX="643.0" layoutY="26.0" mnemonicParsing="false" text="Nowe głosowanie" />
-                              <Button onAction="#fillVote" layoutX="372.0" layoutY="25.0" mnemonicParsing="false" text="Wypełnij" />
+                              <Button layoutX="643.0" layoutY="26.0" mnemonicParsing="false" onAction="#newVote" text="Nowe głosowanie" />
+<!--
+nie ta zakladka - ma byc ten button w zakladce glosuj
+                              <Button layoutX="372.0" layoutY="25.0" mnemonicParsing="false" onAction="#fillVote" text="Wypełnij" />
+-->
+                              <Button layoutX="501.0" layoutY="26.0" mnemonicParsing="false" onAction="#showVote" text="Zobacz przebieg" />
                            </children>
                         </Pane>
                      </children>
@@ -267,6 +273,41 @@
                </children>
             </AnchorPane>
          </content>
+      </Tab>
+      <Tab text="Głosuj">
+          <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <children>
+                      <VBox prefHeight="567.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <children>
+                              <Pane prefHeight="101.0" prefWidth="800.0">
+                                  <children>
+                                      <Label layoutX="33.0" layoutY="43.0" text="Obecne głosowania:">
+                                          <font>
+                                              <Font size="25.0" />
+                                          </font>
+                                      </Label>
+                                  </children>
+                              </Pane>
+                              <Pane prefHeight="463.0" prefWidth="800.0">
+                                  <children>
+                                      <TableView layoutX="7.0" layoutY="7.0" prefHeight="400.0" prefWidth="783.0">
+                                          <columns>
+                                              <TableColumn prefWidth="44.0" text="Nr." />
+                                              <TableColumn prefWidth="258.0" text="Nazwa" />
+                                              <TableColumn prefWidth="158.0" text="Data zakończenia" />
+                                              <TableColumn prefWidth="160.0" text="Status" />
+                                              <TableColumn prefWidth="145.0" text="Wypełnij" />
+                                          </columns>
+                                      </TableView>
+                              <Button layoutX="696.0" layoutY="427.0" mnemonicParsing="false" onAction="#fillVote" text="Wypełnij" />
+                                  </children>
+                              </Pane>
+                          </children>
+                      </VBox>
+                  </children>
+              </AnchorPane>
+          </content>
       </Tab>
   </tabs>
 </TabPane>

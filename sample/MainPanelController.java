@@ -16,6 +16,14 @@ public class MainPanelController implements ControlledScreen, Initializable {
     private void showRaport() throws IOException {
         myController.setScreen(Main.see_report);
     }
+    @FXML
+    private void showQuestionForm() throws IOException {
+        myController.setScreen(Main.see_question_form);
+    }
+    @FXML
+    private void showVote() throws IOException {
+        myController.setScreen(Main.see_vote);
+    }
 
     @FXML
     private void logout() throws IOException {
@@ -32,10 +40,17 @@ public class MainPanelController implements ControlledScreen, Initializable {
         myController.setScreen(Main.fill_vote);
     }
 
-    @FXML
+    /*@FXML
     private void createNewVote() throws IOException {
         myController.setScreen(Main.create_new_vote);
+    }*/
+
+    @FXML
+    private void createNewQuestionForm() throws IOException {
+        myController.setScreen(Main.add_question_form);
     }
+
+
 
     @FXML
     private void newVote() throws IOException {

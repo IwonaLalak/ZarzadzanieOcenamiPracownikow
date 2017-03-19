@@ -23,6 +23,8 @@ public class Main extends Application {
     public static String create_new_vote_view = "create_new_vote.fxml";
     public static String see_question_form = "see_question_form";
     public static String see_question_form_view = "see_question_form.fxml";
+    public static String see_vote = "see_vote";
+    public static String see_vote_view = "see_vote.fxml";
 
 
 
@@ -37,6 +39,7 @@ public class Main extends Application {
         mainContainer.loadScreen(Main.add_question_form, Main.add_question_form_view);
         mainContainer.loadScreen(Main.create_new_vote, Main.create_new_vote_view);
         mainContainer.loadScreen(Main.see_question_form, Main.see_question_form_view);
+        mainContainer.loadScreen(Main.see_vote, Main.see_vote_view);
 
         mainContainer.setScreen(Main.login);
 

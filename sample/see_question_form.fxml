@@ -38,7 +38,7 @@
       </Pane>
       <Pane prefHeight="144.0" prefWidth="800.0">
          <children>
-            <Button onAction="#cancel" layoutX="700.0" layoutY="35.0" mnemonicParsing="false" text="Powrót" />
+            <Button onAction="#goBackToQuestionForms" layoutX="700.0" layoutY="35.0" mnemonicParsing="false" text="Powrót" />
          </children>
       </Pane>
    </children>
