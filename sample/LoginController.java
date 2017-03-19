@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import sample.configuration.Logged;
 
 public class LoginController implements Initializable, ControlledScreen {
 
@@ -23,7 +24,12 @@ public class LoginController implements Initializable, ControlledScreen {
 
     @FXML
     private void login() throws IOException {
+        //w zaleznosci kto sie zalogowal, ustawiamy pracodawca/kierownik/pracownik
+        Logged.setWho("kierownik");
+
+        myController.loadScreen( Main.main,Main.mainView);
         myController.setScreen(Main.main);
+
     }
 
     @Override
