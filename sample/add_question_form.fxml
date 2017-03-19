@@ -24,7 +24,7 @@
          <children>
             <Pane prefHeight="298.0" prefWidth="800.0">
                <children>
-                  <Button layoutX="666.0" layoutY="21.0" mnemonicParsing="false" text="Dodaj pytanie" />
+                  <Button layoutX="666.0" layoutY="21.0" mnemonicParsing="false" text="Dodaj pytanie" onAction="#addField"/>
                   <Label layoutX="28.0" layoutY="14.0" text="Pytania:">
                      <font>
                         <Font size="25.0" />
@@ -32,15 +32,15 @@
                   </Label>
                </children>
             </Pane>
-            <Pane prefHeight="602.0" prefWidth="800.0">
+            <Pane prefHeight="602.0" prefWidth="800.0" fx:id="container_for_questons">
                <children>
                   <ScrollPane prefHeight="329.0" prefWidth="800.0">
                      <content>
                         <Pane prefHeight="499.0" prefWidth="782.0">
                            <children>
-                              <Button layoutX="708.0" layoutY="26.0" mnemonicParsing="false" text="Usuń" />
-                              <TextField layoutX="23.0" layoutY="26.0" prefHeight="26.0" prefWidth="647.0" />
-                              <TextField layoutX="23.0" layoutY="69.0" prefHeight="26.0" prefWidth="647.0" />
+                              <Button layoutX="708.0" layoutY="30.0" mnemonicParsing="false" text="Usuń" />
+                              <TextField layoutX="23.0" layoutY="30.0" prefHeight="26.0" prefWidth="647.0" />
+<!--                              <TextField layoutX="23.0" layoutY="69.0" prefHeight="26.0" prefWidth="647.0" />
                               <TextField layoutX="23.0" layoutY="112.0" prefHeight="26.0" prefWidth="647.0" />
                               <TextField layoutX="23.0" layoutY="155.0" prefHeight="26.0" prefWidth="647.0" />
                               <TextField layoutX="23.0" layoutY="198.0" prefHeight="26.0" prefWidth="647.0" />
@@ -51,7 +51,7 @@
                               <TextField layoutX="23.0" layoutY="450.0" prefHeight="26.0" prefWidth="647.0" />
                               <TextField layoutX="23.0" layoutY="500.0" prefHeight="26.0" prefWidth="647.0" />
                               <TextField layoutX="23.0" layoutY="550.0" prefHeight="26.0" prefWidth="647.0" />
-                              <Button layoutX="708.0" layoutY="69.0" mnemonicParsing="false" text="Usuń" />
+                              <Button layoutX="708.0" layoutY="69.0" mnemonicParsing="false" text="Usuń" />-->
                            </children>
                         </Pane>
                      </content>
