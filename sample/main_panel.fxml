@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<TabPane fx:controller="sample.MainPanelController" fx:id="tabs" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1">
   <tabs>
     <Tab text="Profil">
       <content>
@@ -52,8 +52,8 @@
                               </Pane>
                               <Pane prefHeight="250.0" prefWidth="324.0" GridPane.columnIndex="1">
                                  <children>
-                                    <Button layoutX="94.0" layoutY="61.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="108.0" text="Wyloguj" />
-                                    <Button layoutX="94.0" layoutY="100.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="107.0" text="Zmien hasło" />
+                                    <Button layoutX="94.0" layoutY="61.0" mnemonicParsing="false" onAction="#logout" prefHeight="26.0" prefWidth="108.0" text="Wyloguj" />
+                                    <Button layoutX="94.0" layoutY="100.0" mnemonicParsing="false" onAction="#changePassword" prefHeight="26.0" prefWidth="107.0" text="Zmien hasło" />
                                  </children>
                               </Pane>
                            </children>
@@ -183,7 +183,7 @@
                            <children>
                               <Pane layoutX="176.0" layoutY="-70.0" prefHeight="82.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <Button layoutX="627.0" layoutY="28.0" mnemonicParsing="false" text="Dodaj nową ankietę" />
+                                    <Button onAction="#createNewVote" layoutX="627.0" layoutY="28.0" mnemonicParsing="false" text="Dodaj nową ankietę" />
                                  </children>
                               </Pane>
                            </children>
@@ -226,7 +226,8 @@
                         </Pane>
                         <Pane prefHeight="83.0" prefWidth="800.0">
                            <children>
-                              <Button layoutX="643.0" layoutY="26.0" mnemonicParsing="false" text="Nowe głosowanie" />
+                              <Button onAction="#newVote" layoutX="643.0" layoutY="26.0" mnemonicParsing="false" text="Nowe głosowanie" />
+                              <Button onAction="#fillVote" layoutX="372.0" layoutY="25.0" mnemonicParsing="false" text="Wypełnij" />
                            </children>
                         </Pane>
                      </children>
@@ -251,14 +252,14 @@
                         </Pane>
                         <Pane prefHeight="463.0" prefWidth="800.0">
                            <children>
-                              <TableView layoutX="7.0" layoutY="7.0" prefHeight="439.0" prefWidth="783.0">
+                              <TableView layoutX="7.0" layoutY="7.0" prefHeight="349.0" prefWidth="783.0">
                                  <columns>
                                     <TableColumn prefWidth="44.0" text="ID." />
                                     <TableColumn prefWidth="364.0" text="Nazwa" />
                                     <TableColumn prefWidth="160.0" text="Data" />
-                                    <TableColumn prefWidth="199.0" text="Zobacz" />
                                  </columns>
                               </TableView>
+                              <Button layoutX="370.0" layoutY="383.0" mnemonicParsing="false" onAction="#showRaport" text="Zobacz" />
                            </children>
                         </Pane>
                      </children>

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:controller="sample.AddQuestionFormController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Pane prefHeight="112.0" prefWidth="800.0">
          <children>
@@ -62,8 +62,8 @@
       </VBox>
       <Pane prefHeight="98.0" prefWidth="800.0">
          <children>
-            <Button layoutX="677.0" layoutY="19.0" mnemonicParsing="false" text="Dodaj ankiete" />
-            <Button layoutX="604.0" layoutY="19.0" mnemonicParsing="false" text="Anuluj" />
+            <Button onAction="#addVote" layoutX="677.0" layoutY="19.0" mnemonicParsing="false" text="Dodaj ankiete" />
+            <Button onAction="#cancel" layoutX="604.0" layoutY="19.0" mnemonicParsing="false" text="Anuluj" />
          </children>
       </Pane>
    </children>
