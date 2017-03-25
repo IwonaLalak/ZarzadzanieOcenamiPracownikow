@@ -6,8 +6,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.StackPane;
+import sample.interfaces.ControlledScreen;
 import sample.configuration.Logged;
 import sample.configuration.LoggedUserTabs;
+import sample.controllers.MainPanelController;
 
 
 public class ScreensController extends StackPane {
@@ -32,8 +34,7 @@ public class ScreensController extends StackPane {
             Parent loadScreen = (Parent) myLoader.load();
 
             ControlledScreen myScreenControler = ((ControlledScreen) myLoader.getController());
-            //System.out.println( myScreenControler.getClass().getName());
-            if ( myScreenControler.getClass().getName().equals("sample.MainPanelController") ){
+            if ( myScreenControler.getClass().getName().equals("sample.controllers.MainPanelController") ){
 
                 MainPanelController main = (MainPanelController) myScreenControler;
 

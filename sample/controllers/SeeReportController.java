@@ -1,10 +1,11 @@
-package sample;
+package sample.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
+import sample.Main;
+import sample.ScreensController;
+import sample.interfaces.ControlledScreen;
 
 import java.io.IOException;
 import java.net.URL;

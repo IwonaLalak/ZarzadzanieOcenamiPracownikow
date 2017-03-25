@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 
 
-<Pane fx:controller="sample.LoginController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:controller="sample.controllers.LoginController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Button onAction="#login" layoutX="155.0" layoutY="137.0" mnemonicParsing="false" text="Zaloguj się" />
       <Label layoutX="103.0" layoutY="170.0" text="Niepoprawne dane logowania" textFill="RED" />

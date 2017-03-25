@@ -1,4 +1,4 @@
-package sample;
+package sample.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -7,6 +7,10 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import sample.Main;
+import sample.ScreensController;
+import sample.interfaces.ControlledScreen;
 import sample.configuration.Logged;
 
 public class LoginController implements Initializable, ControlledScreen {

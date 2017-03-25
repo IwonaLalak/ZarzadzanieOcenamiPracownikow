@@ -5,26 +5,27 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+
 public class Main extends Application {
 
     public static String main = "main";
-    public static String mainView = "main_panel.fxml";
+    public static String mainView = "views/main_panel.fxml";
     public static String login = "login";
-    public static String loginView = "login.fxml";
+    public static String loginView = "views/login.fxml";
     public static String change_password = "change_password";
-    public static String change_password_View = "password_change.fxml";
+    public static String change_password_View = "views/password_change.fxml";
     public static String fill_vote = "fill_vote";
-    public static String fill_vote_view = "fill_vote.fxml";
+    public static String fill_vote_view = "views/fill_vote.fxml";
     public static String see_report = "see_report";
-    public static String see_report_view = "see_report.fxml";
+    public static String see_report_view = "views/see_report.fxml";
     public static String add_question_form = "add_question_form";
-    public static String add_question_form_view = "add_question_form.fxml";
+    public static String add_question_form_view = "views/add_question_form.fxml";
     public static String create_new_vote = "create_new_vote";
-    public static String create_new_vote_view = "create_new_vote.fxml";
+    public static String create_new_vote_view = "views/create_new_vote.fxml";
     public static String see_question_form = "see_question_form";
-    public static String see_question_form_view = "see_question_form.fxml";
+    public static String see_question_form_view = "views/see_question_form.fxml";
     public static String see_vote = "see_vote";
-    public static String see_vote_view = "see_vote.fxml";
+    public static String see_vote_view = "views/see_vote.fxml";
 
 
 

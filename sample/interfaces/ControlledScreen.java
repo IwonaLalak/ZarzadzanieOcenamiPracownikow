@@ -1,4 +1,6 @@
-package sample;
+package sample.interfaces;
+
+import sample.ScreensController;
 
 public interface ControlledScreen {
 

@@ -1,19 +1,27 @@
-package sample;
+package sample.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import sample.Main;
+import sample.ScreensController;
+import sample.interfaces.ControlledScreen;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SeeVoteController implements Initializable, ControlledScreen {
+public class FillVoteController implements ControlledScreen, Initializable {
 
     private ScreensController myController;
 
     @FXML
-    private void goBackToVotes(ActionEvent event) throws IOException {
+    private void sendVote(ActionEvent event) throws IOException {
+        myController.setScreen(Main.main);
+    }
+
+    @FXML
+    private void cancelVote(ActionEvent event) throws IOException {
         myController.setScreen(Main.main);
     }
 

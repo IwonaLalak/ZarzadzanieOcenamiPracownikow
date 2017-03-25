@@ -1,9 +1,12 @@
-package sample;
+package sample.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TabPane;
+import sample.Main;
+import sample.ScreensController;
+import sample.interfaces.ControlledScreen;
 
 import java.io.IOException;
 import java.net.URL;
@@ -14,7 +17,7 @@ public class MainPanelController implements ControlledScreen, Initializable {
     private ScreensController myController;
 
     @FXML
-    TabPane tabs;
+    public TabPane tabs;
 
     @FXML
     private void showRaport() throws IOException {
