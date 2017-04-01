@@ -21,7 +21,8 @@ public class Model
     
     public Model() 
     {
-        ResultSet rs = Database.execute("SELECT * FROM Users");
+        String sql = "SELECT * FROM " + this.getTableName();
+        ResultSet rs = Database.execute( sql );
         ResultSetMetaData rsmd;
         
         try {
