@@ -4,6 +4,8 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import sample.database.Database;
+import sample.database.Users;
 
 
 public class Main extends Application {
@@ -22,7 +24,8 @@ public class Main extends Application {
     public static String add_question_form_view = "views/add_question_form.fxml";
     public static String create_new_vote = "create_new_vote";
     public static String create_new_vote_view = "views/create_new_vote.fxml";
-    public static String see_question_form = "see_question_form";
+    public static String see_question_form = ""
+            + "see_question_form";
     public static String see_question_form_view = "views/see_question_form.fxml";
     public static String see_vote = "see_vote";
     public static String see_vote_view = "views/see_vote.fxml";
@@ -31,6 +34,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        
         ScreensController mainContainer = new ScreensController();
         mainContainer.loadScreen(Main.main,Main.mainView);
         mainContainer.loadScreen(Main.login, Main.loginView);

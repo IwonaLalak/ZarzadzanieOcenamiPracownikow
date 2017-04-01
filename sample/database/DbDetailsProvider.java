@@ -5,7 +5,7 @@ public class DbDetailsProvider
     private final String user = "root";
     private final String pass = "";
     private final String host = "jdbc:mysql://localhost/";
-    private final String db_name = "";
+    private final String db_name = "sample";
     
     public String getUser()
     {
@@ -19,7 +19,7 @@ public class DbDetailsProvider
     
     public String getHost()
     {
-        return this.host;
+        return this.host +""+ this.db_name;
     }
     
     public String getDbName()

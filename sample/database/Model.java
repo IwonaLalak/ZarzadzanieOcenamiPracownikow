@@ -1,44 +1,113 @@
 package sample.database;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class Model {
+public class Model 
+{
+    /**
+     * index: nazwa kolumny z Db
+     * value: wartosc z danej kolumny
+     * np. name:Kamil
+     */
+    HashMap data = new HashMap();
+    
+    public Model() 
+    {
+        ResultSet rs = Database.execute("SELECT * FROM Users");
+        ResultSetMetaData rsmd;
+        
+        try {
+            rsmd = rs.getMetaData();
+            
+            int columnCount = rsmd.getColumnCount();
+
+            for (int i = 1; i <= columnCount; i++ ) {
+                String columnName = rsmd.getColumnName(i);
+                this.data.put( columnName, "" );
+            }
+            
+            Set set = data.entrySet();
+            Iterator i = set.iterator();
+            while(i.hasNext()) {
+               Map.Entry me = (Map.Entry)i.next();
+            }
+      
+        } catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
     
     /**
      * Zwraca wszystkie rekordy z bazy
      * @return ResultSet
      */
-    public static ResultSet all()
-    {
-        String tableName = Model.getClassNameFromStatic();
+    public ResultSet all()
+    {   
+        String tableName = this.getTableName();
         String sql = "SELECT * FROM " + tableName;
         
-        return Model.execute( sql );
+        return Database.execute( sql );
     }
     
     /**
      * Zwraca tylko pierwszy rekord z bazy
      * @return ResultSet
      */
-    public static ResultSet first()
+    public ResultSet first()
     {
-        String tableName = Model.getClassNameFromStatic();
+        String tableName = this.getTableName();
         String sql = "SELECT * FROM " + tableName + " LIMIT 1";
         
-        return Model.execute( sql );
+        return Database.execute( sql );
     }
     
     /**
      * Szuka rekordu o podanym id
      * @return ResultSet
      */
-    public static ResultSet find( String id )
+    public Model find( String id )
     {
-        String tableName = Model.getClassNameFromStatic();
+        String tableName = this.getTableName();
         String sql = "Select * FROM " + tableName + " WHERE id = " + id;
         
-        return Model.execute( sql );
+        ResultSet result = Database.execute( sql );
+        try {
+            while( result.next() ){
+                ResultSetMetaData rsmd = result.getMetaData();
+            
+                int columnCount = rsmd.getColumnCount();
+
+                for (int i = 1; i <= columnCount; i++ ) {
+                    String columnName = rsmd.getColumnName(i);
+                    this.data.put( columnName, result.getString(i) );
+                }
+
+            }
+        }
+        catch( Exception e){
+            System.out.println( e.getMessage() );
+        }
+       
+        return this;
+    }
+    
+    public void set( String key, String value )
+    {   
+        this.data.put( key, value);
+    }
+    
+    public String get( String key )
+    {
+        return this.data.get( key ).toString();
     }
     
     /**
@@ -47,39 +116,76 @@ public class Model {
      */
     public boolean save()
     {
-        //TODO
-        
-        return false;
-    }
-    
-    /**
-     * Zwraca nazwe klasy 
-     * @return 
-     */
-    public static String getClassNameFromStatic()
-    {
-        return Thread.currentThread().getStackTrace()[1].getClassName();
-    }
-    
-    /**
-     * Wykonuje SQL query
-     * @param sql
-     * @return 
-     */
-    private static ResultSet execute( String sql ) 
-    {
-        Database db = new Database();
-        
-        ResultSet rs = null;
-        
-        try {
-            rs = db.execute( sql );
+        if( this.data.get("id") == ""){
+            return this.insert();
         }
-        catch( Exception e ){
-            //TODO
-        }
+       
+        Set set = this.data.entrySet();
+        Iterator i = set.iterator();
         
-        return rs;
+        String sql = "UPDATE `" + this.getTableName() + "` SET ";
+                
+        while (i.hasNext()) {
+            Map.Entry me = (Map.Entry) i.next();
+            
+            sql += "`" + me.getKey() + "`='" + me.getValue() + "' ";
+            
+            if(i.hasNext()){
+               sql += ",";
+            }
+        }
+        sql += "WHERE `id`='" + this.data.get( "id" ) + "'";
+       
+        
+        Database.update( sql );
+        
+        return true;
     }
     
+    public boolean insert()
+    {
+        Set set = this.data.entrySet();
+        Iterator i = set.iterator();
+        
+        String sql = "INSERT INTO `" + this.getTableName() + "` ( ";
+        String values = " VALUES( ";
+        while (i.hasNext()) {
+            
+            Map.Entry me = (Map.Entry) i.next();
+            if(me.getKey().equals("id") ){
+                continue;
+            }
+            sql += "`" + me.getKey() + "`";
+            values += "'" + me.getValue() + "' ";
+            if( i.hasNext() ){
+               sql += ",";
+               values += ",";
+            }
+        }
+        
+        values += " )";
+        sql +=  ")" + values;
+        
+        
+        Database.update( sql );
+        
+        return true;
+    }
+    
+    public String getTableName()
+    {
+        return this.getClass().getSimpleName();
+    }
+    
+    public void printModelData() {
+        Set set = this.data.entrySet();
+        Iterator i = set.iterator();
+        
+        while (i.hasNext()) {
+            Map.Entry me = (Map.Entry) i.next();
+            
+            System.out.print(me.getKey() + ": ");
+            System.out.println(me.getValue());
+        }
+    }
 }

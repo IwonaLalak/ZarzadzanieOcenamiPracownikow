@@ -1,15 +1,10 @@
 package sample.database;
 
-import java.beans.Statement;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
+import java.sql.*;
 
 public class Database
 {
-    private Statement prepareStatement() throws ClassNotFoundException, SQLException
+    public static Statement  prepareStatement() throws ClassNotFoundException, SQLException
     {
         Connection conn = null;
         Statement stmt = null;
@@ -27,17 +22,34 @@ public class Database
         return stmt;
     }
     
-    public ResultSet execute( String sql ) 
+    public static ResultSet execute( String sql ) 
     {
+        System.out.println(sql);
         ResultSet result = null;
         
         try {
-            Statement stmt = this.prepareStatement( );
-            //TODO jdbc needed
-            //result = stmt.executeQuery( sql );
+            Statement stmt = Database.prepareStatement( );
+            
+            result = stmt.executeQuery( sql );
         }
-        catch( Exception e ){}
+        catch( Exception e ){
+            System.out.println( e.getMessage() );
+        }
        
         return result;
+    }
+    
+    public static void update( String sql )
+    {
+        System.out.println(sql);
+        try {
+            Statement stmt = Database.prepareStatement( );
+            
+            stmt.executeUpdate( sql );
+        }
+        catch( Exception e ){
+            System.out.println( e.getMessage() );
+        }
+       
     }
 }

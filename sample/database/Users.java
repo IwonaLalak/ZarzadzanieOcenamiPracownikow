@@ -1,6 +1,7 @@
 
 package sample.database;
 
-public class Users extends Model{
+public class Users extends Model
+{
     
 }
