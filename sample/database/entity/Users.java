@@ -1,4 +1,4 @@
-package sample.entity;
+package sample.database.entity;
 
 /*
 @Entity

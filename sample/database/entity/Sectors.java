@@ -1,4 +1,4 @@
-package sample.entity;
+package sample.database.entity;
 
 
 public class Sectors {
