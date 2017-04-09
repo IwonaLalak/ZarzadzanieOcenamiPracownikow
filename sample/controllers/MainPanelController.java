@@ -4,9 +4,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextField;
 import sample.Main;
 import sample.ScreensController;
 import sample.database.Database;
+import sample.database.Sections;
 import sample.interfaces.ControlledScreen;
 
 import java.io.IOException;
@@ -17,6 +19,7 @@ import java.util.ResourceBundle;
 
 public class MainPanelController implements ControlledScreen, Initializable {
 
+    public TextField new_section_name;
     private ScreensController myController;
 
     @FXML
@@ -135,5 +138,15 @@ public class MainPanelController implements ControlledScreen, Initializable {
             System.out.println(result.getString("date"));
         }
     }
+
+    @FXML
+    private void add_new_section(){
+        String get_name = new_section_name.getText();
+        if(get_name!=null && get_name.length()>1){
+            Sections.add_new_section(get_name);
+        }
+
+    }
+
 
 }

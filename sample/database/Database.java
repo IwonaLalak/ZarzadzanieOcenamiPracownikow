@@ -204,6 +204,20 @@ public class Database {
                 "michal adamczyk;3;Ocen wiedze<br/>');");
     }
 
+    public static Connection prepareConn() throws SQLException, ClassNotFoundException {
+        Connection conn = null;
+
+        DbDetailsProvider dbDetailsProvider = new DbDetailsProvider();
+        String user = dbDetailsProvider.getUser();
+        String pass = dbDetailsProvider.getPass();
+        String host = dbDetailsProvider.getHost();
+
+        Class.forName("com.mysql.jdbc.Driver");
+
+        conn = DriverManager.getConnection(host, user, pass);
+
+        return conn;
+    }
 
     public static Statement prepareStatement() throws ClassNotFoundException, SQLException {
         Connection conn = null;
@@ -248,4 +262,5 @@ public class Database {
         }
 
     }
+
 }

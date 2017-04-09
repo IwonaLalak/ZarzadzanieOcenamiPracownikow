@@ -37,7 +37,7 @@ public class LoginController implements Initializable, ControlledScreen {
     Label error;
 
     @FXML
-    private void login() throws IOException, SQLException {
+    private void login() throws IOException, SQLException, ClassNotFoundException {
 
         String log = login.getText();
         String pass = password.getText() ;
