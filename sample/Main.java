@@ -7,6 +7,8 @@ import javafx.stage.Stage;
 import sample.database.Database;
 import sample.database.Users;
 
+import java.sql.ResultSet;
+
 
 public class Main extends Application {
 
@@ -54,6 +56,7 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("System zarządzania pracownikami");
         primaryStage.show();
+
 
     }
 

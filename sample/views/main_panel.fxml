@@ -64,7 +64,7 @@
                </children></AnchorPane>
       </content>
     </Tab>
-      <Tab text="Pracownicy">
+      <Tab text="Pracownicy" onSelectionChanged="#show_all_employes">
           <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
@@ -112,7 +112,7 @@
                   </children></AnchorPane>
           </content>
       </Tab>
-      <Tab text="Działy">
+      <Tab text="Działy" onSelectionChanged="#show_all_sectors">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -154,7 +154,7 @@
             </AnchorPane>
          </content>
       </Tab>
-      <Tab text="Ankiety">
+      <Tab text="Ankiety" onSelectionChanged="#show_all_questionforms">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -195,7 +195,7 @@
             </AnchorPane>
          </content>
       </Tab>
-      <Tab text="Głosowanie">
+      <Tab text="Głosowanie" onSelectionChanged="#show_all_votes">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -241,7 +241,7 @@ nie ta zakladka - ma byc ten button w zakladce glosuj
                </children></AnchorPane>
         </content>
       </Tab>
-      <Tab text="Raporty">
+      <Tab text="Raporty" onSelectionChanged="#show_all_raports">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>

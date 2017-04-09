@@ -10,7 +10,7 @@
 <Pane fx:controller="sample.controllers.LoginController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Button onAction="#login" layoutX="155.0" layoutY="137.0" mnemonicParsing="false" text="Zaloguj się" />
-      <Label layoutX="103.0" layoutY="170.0" text="Niepoprawne dane logowania" textFill="RED" />
+      <Label layoutX="103.0" layoutY="170.0" text=" " textFill="RED" fx:id="error"/>
       <Label layoutX="71.0" layoutY="92.0" text="Hasło:" />
       <PasswordField fx:id="password" layoutX="140.0" layoutY="87.0" prefHeight="26.0" prefWidth="193.0" />
       <Label layoutX="71.0" layoutY="52.0" text="Login:" />

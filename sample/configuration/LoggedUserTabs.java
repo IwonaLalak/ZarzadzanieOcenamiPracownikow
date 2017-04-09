@@ -7,7 +7,9 @@ package sample.configuration;
  */
 public class LoggedUserTabs 
 {
-    public static String [] pracodawca = { "Głosowanie" };
+
+    // dodac final, duzymi literami nazwa
+    public static String [] pracodawca = { "Głosuj" };
     
     public static String [] kierownik = { "Działy" };
     
