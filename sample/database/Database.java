@@ -204,7 +204,7 @@ public class Database {
                 "michal adamczyk;3;Ocen wiedze<br/>');");
     }
 
-    public static Connection prepareConn() throws SQLException, ClassNotFoundException {
+/*    public static Connection prepareConn() throws SQLException, ClassNotFoundException {
         Connection conn = null;
 
         DbDetailsProvider dbDetailsProvider = new DbDetailsProvider();
@@ -217,7 +217,61 @@ public class Database {
         conn = DriverManager.getConnection(host, user, pass);
 
         return conn;
+    }*/
+
+    public static Connection prepareSecureConnection() throws ClassNotFoundException, SQLException {
+        Connection conn = null;
+
+        DbDetailsProvider dbDetailsProvider = new DbDetailsProvider();
+        String user = dbDetailsProvider.getUser();
+        String pass = dbDetailsProvider.getPass();
+        String host = dbDetailsProvider.getHost();
+
+        Class.forName("com.mysql.jdbc.Driver");
+        conn = DriverManager.getConnection(host, user, pass);
+
+
+        return conn;
     }
+
+    public static ResultSet secureExecute(String sql, String tab[]) throws SQLException, ClassNotFoundException {
+        ResultSet result = null;
+        Connection conn = prepareSecureConnection();
+
+        try {
+
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            for(int i=0;i<tab.length;i++){
+                stmt.setString(i+1,tab[i]);
+            }
+
+
+            result = stmt.executeQuery();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return result;
+    }
+
+    public static void secureUpdate(String sql,String tab[]) throws SQLException, ClassNotFoundException {
+
+        Connection conn = prepareSecureConnection();
+        try{
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            for(int i=0;i<tab.length;i++){
+                stmt.setString(i+1,tab[i]);
+            }
+            stmt.executeUpdate();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+
+
+
 
     public static Statement prepareStatement() throws ClassNotFoundException, SQLException {
         Connection conn = null;
