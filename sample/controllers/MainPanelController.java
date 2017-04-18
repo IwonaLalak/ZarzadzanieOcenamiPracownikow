@@ -1,25 +1,36 @@
 package sample.controllers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import sample.Main;
 import sample.ScreensController;
 import sample.database.Database;
 import sample.database.Sections;
+import sample.database.Users;
 import sample.interfaces.ControlledScreen;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MainPanelController implements ControlledScreen, Initializable {
 
     public TextField new_section_name;
+    public ComboBox select_type;
+    public ComboBox select_sector;
+    public TextField get_firstname;
+    public TextField get_lastname;
+    public Label add_new_employee_message;
     private ScreensController myController;
 
     @FXML
@@ -90,6 +101,8 @@ public class MainPanelController implements ControlledScreen, Initializable {
             System.out.print(result.getString("name")+" - ");
             System.out.println(result.getString("type"));
         }
+        get_type_of_employees();
+        get_all_sectors_names();
     }
 
 
@@ -145,8 +158,53 @@ public class MainPanelController implements ControlledScreen, Initializable {
         if(get_name!=null && get_name.length()>1){
             Sections.add_new_section(get_name);
         }
-
     }
 
+    private void get_type_of_employees(){
+       /* ObservableList<String> types =
+                FXCollections.observableArrayList(
+                        "op1",
+                        "opt2"
+                );
+        select_type = new ComboBox(types);*/
+        select_type.getItems().addAll(
+                "kierownik",
+                "pracownik"
+        );
+    }
 
+    private void get_all_sectors_names() throws SQLException {
+        ObservableList<String> names = FXCollections.observableArrayList();
+        ResultSet result = Database.execute("SELECT * FROM sectors");
+        while(result.next()){
+            names.add(result.getString("name"));
+        }
+
+        select_sector.setItems(names);
+    }
+
+    @FXML
+    public void add_new_employee() throws SQLException, ClassNotFoundException {
+        String firstname = get_firstname.getText();
+        String lastname = get_lastname.getText();
+        String type = (String)select_type.getValue();
+        String sector = (String)select_sector.getValue();
+        add_new_employee_message.setText(" ");
+
+        if(
+                firstname!=null&&firstname.length()>1&&
+                lastname!=null&&lastname.length()>1&&
+                type!=null&&type.length()>1&&
+                sector!=null&&sector.length()>1
+           ){
+            String login = Users.addNewEmployee(firstname,lastname,type,sector);
+            add_new_employee_message.setText("Pomyślnie dodano usera. Login: "+login);
+        }
+        else{
+                    add_new_employee_message.setText("Uzupełnij poprawnie formularz");
+        }
+
+
+
+    }
 }
