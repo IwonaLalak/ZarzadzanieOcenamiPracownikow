@@ -31,6 +31,7 @@ public class MainPanelController implements ControlledScreen, Initializable {
     public TextField get_firstname;
     public TextField get_lastname;
     public Label add_new_employee_message;
+    public Label add_new_sector_message;
     private ScreensController myController;
 
     @FXML
@@ -89,6 +90,13 @@ public class MainPanelController implements ControlledScreen, Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        get_type_of_employees();
+        try {
+            get_all_sectors_names();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @FXML
@@ -101,8 +109,7 @@ public class MainPanelController implements ControlledScreen, Initializable {
             System.out.print(result.getString("name")+" - ");
             System.out.println(result.getString("type"));
         }
-        get_type_of_employees();
-        get_all_sectors_names();
+
     }
 
 
@@ -155,9 +162,15 @@ public class MainPanelController implements ControlledScreen, Initializable {
     @FXML
     private void add_new_section() throws SQLException, ClassNotFoundException {
         String get_name = new_section_name.getText();
+        add_new_sector_message.setText("");
         if(get_name!=null && get_name.length()>1){
             Sections.add_new_section(get_name);
+            add_new_sector_message.setText("Dodano nowy dział");
         }
+        else{
+            add_new_sector_message.setText("Uzupełnij poprawnie dane");
+        }
+
     }
 
     private void get_type_of_employees(){
@@ -166,7 +179,8 @@ public class MainPanelController implements ControlledScreen, Initializable {
                         "op1",
                         "opt2"
                 );
-        select_type = new ComboBox(types);*/
+        select_type = new ComboBox(types);
+       */
         select_type.getItems().addAll(
                 "kierownik",
                 "pracownik"
