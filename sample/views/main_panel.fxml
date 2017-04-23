@@ -74,13 +74,12 @@
                                   <children>
                                       <HBox prefHeight="401.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                           <children>
-                                              <TableView prefHeight="400.0" prefWidth="797.0">
+                                              <TableView fx:id="employeeTable" prefHeight="400.0" prefWidth="797.0">
                                                   <columns>
-                                                      <TableColumn prefWidth="45.0" text="ID" />
-                                                      <TableColumn prefWidth="144.0" text="Imie" />
-                                                      <TableColumn prefWidth="177.0" text="Nazwisko" />
-                                                      <TableColumn minWidth="0.0" prefWidth="145.0" text="Dział" />
-                                                      <TableColumn prefWidth="101.0" text="Typ" />
+                                                      <TableColumn fx:id="employeeColumnId" prefWidth="45.0" text="ID" />
+                                                      <TableColumn fx:id="employeeColumnName" prefWidth="144.0" text="Imie" />
+                                                      <TableColumn fx:id="employeeColumnLastName" prefWidth="177.0" text="Nazwisko" />
+                                                      <TableColumn fx:id="employeeColumnType" prefWidth="101.0" text="Typ" />
                                                       <TableColumn minWidth="0.0" prefWidth="90.0" text="Edytuj" />
                                                       <TableColumn prefWidth="77.0" text="Usuń" />
                                                   </columns>
@@ -260,11 +259,11 @@ nie ta zakladka - ma byc ten button w zakladce glosuj
                         </Pane>
                         <Pane prefHeight="463.0" prefWidth="800.0">
                            <children>
-                              <TableView layoutX="7.0" layoutY="7.0" prefHeight="349.0" prefWidth="783.0">
+                              <TableView fx:id="raportTable" layoutX="7.0" layoutY="7.0" prefHeight="349.0" prefWidth="783.0">
                                  <columns>
-                                    <TableColumn prefWidth="44.0" text="ID." />
-                                    <TableColumn prefWidth="364.0" text="Nazwa" />
-                                    <TableColumn prefWidth="160.0" text="Data" />
+                                    <TableColumn fx:id="raportColumnId" prefWidth="44.0" text="ID." />
+                                    <TableColumn fx:id="raportColumnName" prefWidth="364.0" text="Nazwa" />
+                                    <TableColumn fx:id="raportColumnDate" prefWidth="160.0" text="Data" />
                                  </columns>
                               </TableView>
                               <Button layoutX="370.0" layoutY="383.0" mnemonicParsing="false" onAction="#showRaport" text="Zobacz" />

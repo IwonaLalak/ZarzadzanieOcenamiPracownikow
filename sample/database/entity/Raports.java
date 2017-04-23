@@ -2,13 +2,13 @@ package sample.database.entity;
 
 public class Raports {
 
-    private int id;
+    private Integer id;
     private String raport_name;
-    private int vote_id;
+    private Integer vote_id;
     private String datatime;
     private String raport_content;
 
-    public Raports(int id, String raport_name, int vote_id, String datatime, String raport_content){
+    public Raports(int id, String raport_name, int vote_id, String datatime, String raport_content) {
         this.id = id;
         this.raport_name = raport_name;
         this.vote_id = vote_id;
@@ -16,10 +16,7 @@ public class Raports {
         this.raport_content = raport_content;
     }
 
-    public Raports(){
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -35,7 +32,7 @@ public class Raports {
         this.raport_name = raport_name;
     }
 
-    public int getVote_id() {
+    public Integer getVote_id() {
         return vote_id;
     }
 

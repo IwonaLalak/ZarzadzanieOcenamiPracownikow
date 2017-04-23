@@ -1,9 +1,5 @@
 package sample.database.entity;
 
-/*
-@Entity
-@Table( name = "Users" )*/
-
 public class Users {
     private int id;
     private String login;
@@ -13,7 +9,7 @@ public class Users {
     private String type;
     private int sector_id;
 
-    public Users(int id, String login, String password, String firstname, String lastname, String type, int sector_id){
+    public Users(int id, String login, String password, String firstname, String lastname, String type, int sector_id) {
         this.id = id;
         this.login = login;
         this.password = password;
@@ -23,7 +19,7 @@ public class Users {
         this.sector_id = sector_id;
     }
 
-    public Users(){
+    public Users() {
     }
 
     public int getId() {

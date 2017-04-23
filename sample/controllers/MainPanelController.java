@@ -1,26 +1,26 @@
 package sample.controllers;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import sample.Main;
 import sample.ScreensController;
 import sample.database.Database;
-import sample.database.Sections;
-import sample.database.Users;
+import sample.database.SectionsFactory;
+import sample.database.UsersFactory;
+import sample.database.entity.Users;
+import sample.database.entity.Raports;
 import sample.interfaces.ControlledScreen;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MainPanelController implements ControlledScreen, Initializable {
@@ -35,16 +35,39 @@ public class MainPanelController implements ControlledScreen, Initializable {
     private ScreensController myController;
 
     @FXML
+    private TableView<Raports> raportTable;
+    @FXML
+    private TableColumn<Raports, Number> raportColumnId;
+    @FXML
+    private TableColumn<Raports, String> raportColumnName;
+    @FXML
+    private TableColumn<Raports, String> raportColumnDate;
+
+    @FXML
+    private TableView<Users> employeeTable;
+    @FXML
+    private TableColumn<Users, Number> employeeColumnId;
+    @FXML
+    private TableColumn<Users, String> employeeColumnName;
+    @FXML
+    private TableColumn<Users, String> employeeColumnLastName;
+    @FXML
+    private TableColumn<Users, String> employeeColumnType;
+
+
+    @FXML
     public TabPane tabs;
 
     @FXML
     private void showRaport() throws IOException {
         myController.setScreen(Main.see_report);
     }
+
     @FXML
     private void showQuestionForm() throws IOException {
         myController.setScreen(Main.see_question_form);
     }
+
     @FXML
     private void showVote() throws IOException {
         myController.setScreen(Main.see_vote);
@@ -76,7 +99,6 @@ public class MainPanelController implements ControlledScreen, Initializable {
     }
 
 
-
     @FXML
     private void newVote() throws IOException {
         myController.setScreen(Main.create_new_vote);
@@ -96,19 +118,23 @@ public class MainPanelController implements ControlledScreen, Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
     @FXML
     private void show_all_employes() throws SQLException {
-        ResultSet result = Database.execute("SELECT users.id,users.firstname,users.lastname,users.type,sectors.name FROM users,sectors where users.sector_id=sectors.id ");
-        while(result.next()){
-            System.out.print(result.getString("id")+" - ");
-            System.out.print(result.getString("firstname")+" - ");
-            System.out.print(result.getString("lastname")+" - ");
-            System.out.print(result.getString("name")+" - ");
-            System.out.println(result.getString("type"));
+        ResultSet result = Database.execute("SELECT users.id, users.login, users.password, users.firstname,users.lastname,users.type,sectors.name, users.sector_id " +
+                "FROM users,sectors where users.sector_id=sectors.id ");
+        ObservableList<Users> usersModelData = FXCollections.observableArrayList();
+        this.employeeColumnId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()));
+        this.employeeColumnName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFirstname()));
+        this.employeeColumnLastName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLastname()));
+        this.employeeColumnType.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getType()));
+        while (result.next()) {
+            usersModelData.add(new Users(result.getInt("id"), result.getString("login"), result.getString("password"),
+                    result.getString("firstname"), result.getString("lastname"),
+                    result.getString("type"), result.getInt("sector_id")));
         }
+        this.employeeTable.setItems(usersModelData);
 
     }
 
@@ -116,8 +142,8 @@ public class MainPanelController implements ControlledScreen, Initializable {
     @FXML
     private void show_all_sectors() throws SQLException {
         ResultSet result = Database.execute("SELECT * FROM sectors");
-        while(result.next()){
-            System.out.print(result.getString("id")+" - ");
+        while (result.next()) {
+            System.out.print(result.getString("id") + " - ");
             System.out.println(result.getString("name"));
         }
     }
@@ -125,10 +151,10 @@ public class MainPanelController implements ControlledScreen, Initializable {
     @FXML
     private void show_all_questionforms() throws SQLException {
         ResultSet result = Database.execute("SELECT * FROM questionforms");
-        while(result.next()){
-            System.out.print(result.getString("id")+" - ");
-            System.out.print(result.getString("name")+" - ");
-            System.out.print(result.getString("creation_date")+" - ");
+        while (result.next()) {
+            System.out.print(result.getString("id") + " - ");
+            System.out.print(result.getString("name") + " - ");
+            System.out.print(result.getString("creation_date") + " - ");
             System.out.println(result.getString("number_of_questions"));
         }
     }
@@ -137,13 +163,13 @@ public class MainPanelController implements ControlledScreen, Initializable {
     @FXML
     private void show_all_votes() throws SQLException {
         ResultSet result = Database.execute("SELECT *,questionforms.name as questionform_name, sectors.name as sector_name FROM votes,sectors,questionforms WHERE votes.section_id = sectors.id AND votes.questionform_id=questionforms.id");
-        while(result.next()){
-            System.out.print(result.getString("id")+" - ");
-            System.out.print(result.getString("vote_name")+" - ");
-            System.out.print(result.getString("date_from")+" - ");
-            System.out.print(result.getString("date_to")+" - ");
-            System.out.print(result.getString("who")+" - ");
-            System.out.print(result.getString("sector_name")+" - ");
+        while (result.next()) {
+            System.out.print(result.getString("id") + " - ");
+            System.out.print(result.getString("vote_name") + " - ");
+            System.out.print(result.getString("date_from") + " - ");
+            System.out.print(result.getString("date_to") + " - ");
+            System.out.print(result.getString("who") + " - ");
+            System.out.print(result.getString("sector_name") + " - ");
             System.out.println(result.getString("questionform_name"));
         }
     }
@@ -151,29 +177,31 @@ public class MainPanelController implements ControlledScreen, Initializable {
     @FXML
     private void show_all_raports() throws SQLException {
         ResultSet result = Database.execute("SELECT * FROM raports,votes where raports.vote_id=votes.id");
-        while(result.next()){
-            System.out.print(result.getString("id")+" - ");
-            System.out.print(result.getString("raport_name")+" - ");
-            System.out.print(result.getString("vote_name")+" - ");
-            System.out.println(result.getString("date"));
+        ObservableList<Raports> raportsData = FXCollections.observableArrayList();
+        this.raportColumnId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()));
+        this.raportColumnName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRaport_name()));
+        this.raportColumnDate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDatatime()));
+        while (result.next()) {
+            raportsData.add(new Raports(result.getInt("id"), result.getString("raport_name"), result.getInt("vote_id"),
+                    result.getString("date"), result.getString("raport_content")));
         }
+        this.raportTable.setItems(raportsData);
     }
 
     @FXML
     private void add_new_section() throws SQLException, ClassNotFoundException {
         String get_name = new_section_name.getText();
         add_new_sector_message.setText("");
-        if(get_name!=null && get_name.length()>1){
-            Sections.add_new_section(get_name);
+        if (get_name != null && get_name.length() > 1) {
+            SectionsFactory.add_new_section(get_name);
             add_new_sector_message.setText("Dodano nowy dział");
-        }
-        else{
+        } else {
             add_new_sector_message.setText("Uzupełnij poprawnie dane");
         }
 
     }
 
-    private void get_type_of_employees(){
+    private void get_type_of_employees() {
        /* ObservableList<String> types =
                 FXCollections.observableArrayList(
                         "op1",
@@ -190,7 +218,7 @@ public class MainPanelController implements ControlledScreen, Initializable {
     private void get_all_sectors_names() throws SQLException {
         ObservableList<String> names = FXCollections.observableArrayList();
         ResultSet result = Database.execute("SELECT * FROM sectors");
-        while(result.next()){
+        while (result.next()) {
             names.add(result.getString("name"));
         }
 
@@ -201,23 +229,21 @@ public class MainPanelController implements ControlledScreen, Initializable {
     public void add_new_employee() throws SQLException, ClassNotFoundException {
         String firstname = get_firstname.getText();
         String lastname = get_lastname.getText();
-        String type = (String)select_type.getValue();
-        String sector = (String)select_sector.getValue();
+        String type = (String) select_type.getValue();
+        String sector = (String) select_sector.getValue();
         add_new_employee_message.setText(" ");
 
-        if(
-                firstname!=null&&firstname.length()>1&&
-                lastname!=null&&lastname.length()>1&&
-                type!=null&&type.length()>1&&
-                sector!=null&&sector.length()>1
-           ){
-            String login = Users.addNewEmployee(firstname,lastname,type,sector);
-            add_new_employee_message.setText("Pomyślnie dodano usera. Login: "+login);
+        if (
+                firstname != null && firstname.length() > 1 &&
+                        lastname != null && lastname.length() > 1 &&
+                        type != null && type.length() > 1 &&
+                        sector != null && sector.length() > 1
+                ) {
+            String login = UsersFactory.addNewEmployee(firstname, lastname, type, sector);
+            add_new_employee_message.setText("Pomyślnie dodano usera. Login: " + login);
+        } else {
+            add_new_employee_message.setText("Uzupełnij poprawnie formularz");
         }
-        else{
-                    add_new_employee_message.setText("Uzupełnij poprawnie formularz");
-        }
-
 
 
     }

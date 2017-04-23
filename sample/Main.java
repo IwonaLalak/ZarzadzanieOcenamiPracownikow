@@ -4,10 +4,6 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import sample.database.Database;
-import sample.database.Users;
-
-import java.sql.ResultSet;
 
 
 public class Main extends Application {
