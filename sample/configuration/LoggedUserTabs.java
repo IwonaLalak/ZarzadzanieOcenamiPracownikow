@@ -1,5 +1,8 @@
 package sample.configuration;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 
  * @author Kamil
@@ -7,23 +10,26 @@ package sample.configuration;
  */
 public class LoggedUserTabs 
 {
-
-    // dodac final, duzymi literami nazwa
-    public static String [] pracodawca = { "Głosuj" };
+    Map<String, String> map = new HashMap<String, String>();
     
-    public static String [] kierownik = { "Działy" };
+    private static final String [][] tabsToHide = {
+        {UserTypes.PRACODAWCA, Tabs.GŁOSUJ},
+        {UserTypes.KIEROWNIK,  Tabs.DZIAŁY},
+        {UserTypes.PRACOWNIK,  Tabs.PRACOWNICY, Tabs.DZIAŁY, Tabs.ANKIETY, Tabs.GŁOSOWANIE},
+    };
     
-    public static String [] pracownik = { "Pracownicy", "Działy", "Ankiety", "Głosowanie" };
+    private static final String [] defaultTabsToHide = LoggedUserTabs.tabsToHide[2];
     
     public static String[] getTabConfiguration( String name )
     {
-        if( name.equals("pracodawca") ){
-            return LoggedUserTabs.pracodawca;
+        
+        for( String[]conf : LoggedUserTabs.tabsToHide){
+            if( conf[0].equals(name) ){
+                return conf;
+            }
         }
-        else if ( name.equals("kierownik") ){
-            return LoggedUserTabs.kierownik;
-        }
-       
-        return LoggedUserTabs.pracownik;
+        
+        return LoggedUserTabs.defaultTabsToHide;
     }
+        
 }

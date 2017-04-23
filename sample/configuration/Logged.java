@@ -11,6 +11,8 @@ public class Logged
     
     public static void setWho( String name )
     {
-        Logged.WHO = name;
+        if( name.equals(UserTypes.KIEROWNIK) || name.equals(UserTypes.PRACOWNIK) || name.equals(UserTypes.PRACODAWCA)){
+            Logged.WHO = name;
+        }
     }
 }
