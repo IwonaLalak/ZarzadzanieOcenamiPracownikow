@@ -1,17 +1,14 @@
 package sample.controllers;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import sample.Main;
 import sample.ScreensController;
-import sample.database.Questionforms;
+import sample.database.QuestionFormsFactory;
 import sample.interfaces.ControlledScreen;
 
 import java.io.IOException;
@@ -53,7 +50,7 @@ public class AddQuestionFormController implements Initializable, ControlledScree
             }
 
             if (all_questions) {
-                Questionforms.add_new_questionform(qf_name, newQuestions);
+                QuestionFormsFactory.add_new_questionform(qf_name, newQuestions);
                 add_new_qf_message.setText("Pomyslnie dodano ankiete");
             }
         }

@@ -2,7 +2,7 @@ package sample.database.entity;
 
 /*
 @Entity
-@Table( name = "Votes" )*/
+@Table( name = "VotesFactory" )*/
 
 public class Votes {
     private int id;

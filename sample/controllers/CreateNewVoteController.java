@@ -11,7 +11,7 @@ import javafx.scene.control.TextField;
 import sample.Main;
 import sample.ScreensController;
 import sample.database.Database;
-import sample.database.Votes;
+import sample.database.VotesFactory;
 import sample.interfaces.ControlledScreen;
 
 import java.io.IOException;
@@ -94,7 +94,7 @@ public class CreateNewVoteController implements Initializable, ControlledScreen 
                     String nv_sector = show_all_sectors.getValue()+"";
                     String nv_who_can = show_all_types.getValue()+"";
                     String nv_qf_name = show_all_qf.getValue()+"";
-                    Votes.add_new_vote(nv_name,nv_enddate,nv_sector,nv_who_can,nv_qf_name);
+                    VotesFactory.add_new_vote(nv_name,nv_enddate,nv_sector,nv_who_can,nv_qf_name);
                     add_new_vote_msg.setText("Pomyslnie rozpoczeto glosowanie");
                 }
                 else{

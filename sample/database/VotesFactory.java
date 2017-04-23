@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * Created by Iwona on 09.04.17.
  */
-public class Votes extends Model{
+public class VotesFactory extends Model{
 
     public static void add_new_vote(String vote_name, LocalDate enddate, String sector_name, String who_can_vote, String qf_name ) throws SQLException, ClassNotFoundException {
 

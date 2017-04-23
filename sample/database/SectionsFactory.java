@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Created by Iwona on 09.04.17.
  */
-public class Sections extends Model{
+public class SectionsFactory extends Model{
     public static void add_new_section(String name) throws SQLException, ClassNotFoundException {
         /*
         * bez zabezpieczenia

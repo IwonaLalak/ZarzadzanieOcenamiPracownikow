@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by Iwona on 09.04.17.
  */
-public class Questionforms extends Model{
+public class QuestionFormsFactory extends Model{
 
     public static void add_new_questionform(String name, ArrayList<TextField> questions) throws SQLException, ClassNotFoundException {
 
