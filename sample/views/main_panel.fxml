@@ -275,7 +275,7 @@ nie ta zakladka - ma byc ten button w zakladce glosuj
             </AnchorPane>
          </content>
       </Tab>
-      <Tab text="Głosuj">
+      <Tab onSelectionChanged="#showGlosujTable" text="Głosuj">
           <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
@@ -292,13 +292,12 @@ nie ta zakladka - ma byc ten button w zakladce glosuj
                               </Pane>
                               <Pane prefHeight="463.0" prefWidth="800.0">
                                   <children>
-                                      <TableView layoutX="7.0" layoutY="7.0" prefHeight="400.0" prefWidth="783.0">
+                                      <TableView fx:id="glosujTable" layoutX="7.0" layoutY="7.0" prefHeight="400.0" prefWidth="783.0">
                                           <columns>
-                                              <TableColumn prefWidth="44.0" text="Nr." />
-                                              <TableColumn prefWidth="258.0" text="Nazwa" />
-                                              <TableColumn prefWidth="158.0" text="Data zakończenia" />
-                                              <TableColumn prefWidth="160.0" text="Status" />
-                                              <TableColumn prefWidth="145.0" text="Wypełnij" />
+                                              <TableColumn fx:id="glosujColumnNumer" prefWidth="44.0" text="Nr." />
+                                              <TableColumn fx:id="glosujColumnNazwa" prefWidth="258.0" text="Nazwa" />
+                                              <TableColumn fx:id="glosujColumnData" prefWidth="158.0" text="Data zakończenia" />
+                                              <TableColumn fx:id="glosujColumnStatus" prefWidth="160.0" text="Status" />
                                           </columns>
                                       </TableView>
                               <Button layoutX="696.0" layoutY="427.0" mnemonicParsing="false" onAction="#fillVote" text="Wypełnij" />

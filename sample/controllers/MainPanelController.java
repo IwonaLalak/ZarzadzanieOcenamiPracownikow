@@ -22,6 +22,8 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import sample.database.entity.QuestionForms;
+import sample.database.entity.Votes;
 
 public class MainPanelController implements ControlledScreen, Initializable {
 
@@ -43,6 +45,19 @@ public class MainPanelController implements ControlledScreen, Initializable {
     @FXML
     private TableColumn<Raports, String> raportColumnDate;
 
+    
+    @FXML
+    private TableView<Votes> glosujTable;
+    @FXML
+    private TableColumn<Votes, Number> glosujColumnNumer;
+    @FXML
+    private TableColumn<Votes, String> glosujColumnNazwa;
+    @FXML
+    private TableColumn<Votes, String> glosujColumnData;
+    @FXML
+    private TableColumn<Votes, String> glosujColumnStatus;
+    
+    
     @FXML
     private TableView<Users> employeeTable;
     @FXML
@@ -188,6 +203,37 @@ public class MainPanelController implements ControlledScreen, Initializable {
         this.raportTable.setItems(raportsData);
     }
 
+    
+    @FXML
+    private void showGlosujTable() throws SQLException
+    {
+        ResultSet result = Database.execute("SELECT * FROM votes");
+        ObservableList<Votes> votesData = FXCollections.observableArrayList();
+        
+        this.glosujColumnNumer.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()));
+        this.glosujColumnNazwa.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVote_name()));
+        
+        this.glosujColumnData.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDatatime()));
+        this.glosujColumnStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
+        
+        while (result.next()) {
+            votesData.add(
+                    new Votes(
+                            result.getInt("id"), 
+                            result.getString("vote_name"), 
+                            result.getString("date_to"),
+                            result.getInt("is_current"), 
+                            result.getString("who"),
+                            result.getInt("section_id"),
+                            result.getInt("questionform_id")
+                    )
+            );
+        }
+        
+        this.glosujTable.setItems(votesData);
+    }
+    
+    
     @FXML
     private void add_new_section() throws SQLException, ClassNotFoundException {
         String get_name = new_section_name.getText();

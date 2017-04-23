@@ -83,4 +83,8 @@ public class Votes {
     public void setQuestionform_id(int questionform_id) {
         this.questionform_id = questionform_id;
     }
+    
+    public String getStatus(){
+        return ( this.is_current == 1) ? "Wypełniona" : "Niewypełniona";
+    }
 }
