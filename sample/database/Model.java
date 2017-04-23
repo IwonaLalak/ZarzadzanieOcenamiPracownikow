@@ -75,7 +75,7 @@ public class Model
      * Szuka rekordu o podanym id
      * @return ResultSet
      */
-    public Model find( String id )
+    public Model find( int id )
     {
         String tableName = this.getTableName();
         String sql = "Select * FROM " + tableName + " WHERE id = " + id;
@@ -189,4 +189,9 @@ public class Model
             System.out.println(me.getValue());
         }
     }
+
+    public int getIdByUsername( String username ) throws SQLException, ClassNotFoundException
+    {
+        return 0;
+    };
 }

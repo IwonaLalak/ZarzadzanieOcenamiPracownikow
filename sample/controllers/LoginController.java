@@ -47,7 +47,7 @@ public class LoginController implements Initializable, ControlledScreen {
                 // msg="kierownik";
             }else{
                 Logged.setWho(msg);
-
+                Logged.setUsername(log);
                 myController.loadScreen( Main.main,Main.mainView);
                 myController.setScreen(Main.main);
             }
