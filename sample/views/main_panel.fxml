@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<TabPane fx:id="tabs" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.MainPanelController">
+<TabPane fx:id="tabs" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.MainPanelController">
   <tabs>
     <Tab text="Profil">
       <content>
@@ -122,11 +122,11 @@
                            <children>
                               <HBox prefHeight="401.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <TableView prefHeight="400.0" prefWidth="797.0">
+                                    <TableView fx:id="sectorsTable" prefHeight="400.0" prefWidth="797.0">
                                        <columns>
-                                          <TableColumn prefWidth="45.0" text="ID" />
-                                          <TableColumn prefWidth="334.0" text="Nazwa" />
-                                          <TableColumn prefWidth="303.0" text="Kierownik" />
+                                          <TableColumn fx:id="sectorsColumnId" prefWidth="45.0" text="ID" />
+                                          <TableColumn fx:id="sectorsColumnName" prefWidth="334.0" text="Nazwa" />
+                                          <TableColumn fx:id="sectorsColumnManager" prefWidth="303.0" text="Kierownik" />
                                           <TableColumn prefWidth="96.0" text="Usuń" />
                                        </columns>
                                     </TableView>
@@ -139,12 +139,13 @@
                               <Pane prefHeight="196.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
                                     <Label layoutX="30.0" layoutY="24.0" text="Dodaj nowy dział:" />
-                                    <Label layoutX="30.0" layoutY="77.0" text="Nazwa:" />
-                                    <!--<Label layoutX="434.0" layoutY="77.0" text="Kierownik:" />-->
-                                    <Button layoutX="712.0" layoutY="119.0" mnemonicParsing="false" onAction="#add_new_section" text="Dodaj" />
-                                    <TextField fx:id="new_section_name" layoutX="94.0" layoutY="72.0" prefHeight="26.0" prefWidth="324.0" />
-                                    <Label layoutX="30.0" layoutY="124.0" textFill="#ff5500" fx:id="add_new_sector_message"/>
-                                    <!--<ComboBox layoutX="509.0" layoutY="72.0" prefHeight="26.0" prefWidth="259.0" />-->
+                                    <Label layoutX="30.0" layoutY="56.0" text="Nazwa:" />
+                                    <Button layoutX="364.0" layoutY="120.0" mnemonicParsing="false" onAction="#add_new_section" text="Dodaj" />
+                                    <TextField fx:id="new_section_name" layoutX="77.0" layoutY="52.0" prefHeight="26.0" prefWidth="335.0" />
+                                    <Label fx:id="add_new_sector_message" layoutX="30.0" layoutY="124.0" textFill="#ff5500" />
+                                    <TextField fx:id="manager_name" layoutX="102.0" layoutY="86.0" prefHeight="25.0" prefWidth="310.0" />
+                                    <Label layoutX="30.0" layoutY="90.0" text="Kierownik:" />
+                                    <Button layoutX="609.0" layoutY="78.0" mnemonicParsing="false" text="Usuń dział" />
                                  </children>
                               </Pane>
                            </children>
@@ -166,12 +167,12 @@
                            <children>
                               <HBox prefHeight="401.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <TableView prefHeight="400.0" prefWidth="797.0">
+                                    <TableView fx:id="questionformsTable" prefHeight="400.0" prefWidth="797.0">
                                        <columns>
-                                          <TableColumn prefWidth="45.0" text="ID" />
-                                          <TableColumn prefWidth="267.0" text="Nazwa" />
-                                          <TableColumn prefWidth="130.0" text="Data dodania" />
-                                          <TableColumn prefWidth="97.0" text="Ilość pytań" />
+                                          <TableColumn fx:id="questionformsColumnId" prefWidth="45.0" text="ID" />
+                                          <TableColumn fx:id="questionformsColumnName" prefWidth="267.0" text="Nazwa" />
+                                          <TableColumn fx:id="questionformsColumnCreationData" prefWidth="130.0" text="Data dodania" />
+                                          <TableColumn fx:id="questionformsColumnNumberOfQuestions" prefWidth="97.0" text="Ilość pytań" />
                                           <TableColumn prefWidth="119.0" text="Zobacz" />
                                           <TableColumn prefWidth="121.0" text="Usuń" />
                                        </columns>
@@ -213,14 +214,14 @@
                         </Pane>
                         <Pane prefHeight="398.0" prefWidth="800.0">
                            <children>
-                              <TableView layoutX="7.0" layoutY="7.0" prefHeight="379.0" prefWidth="783.0">
+                              <TableView fx:id="showallvotesTable" layoutX="7.0" layoutY="7.0" prefHeight="379.0" prefWidth="783.0">
                                 <columns>
-                                  <TableColumn prefWidth="44.0" text="Nr." />
-                                  <TableColumn prefWidth="120.0" text="Nazwa" />
-                                    <TableColumn prefWidth="87.0" text="Data od" />
-                                    <TableColumn prefWidth="86.0" text="Data do" />
-                                    <TableColumn prefWidth="55.0" text="Dział" />
-                                    <TableColumn prefWidth="103.0" text="Kto głosuje" />
+                                  <TableColumn fx:id="showallvotesColumnId" prefWidth="44.0" text="Nr." />
+                                  <TableColumn fx:id="showallvotesColumnName" prefWidth="120.0" text="Nazwa" />
+                                    <TableColumn fx:id="showallvotesColumnDateFrom" prefWidth="87.0" text="Data od" />
+                                    <TableColumn fx:id="showallvotesColumnDateTo" prefWidth="86.0" text="Data do" />
+                                    <TableColumn fx:id="showallvotesColumnSector" prefWidth="55.0" text="Dział" />
+                                    <TableColumn fx:id="showallvotesColumnWho" prefWidth="103.0" text="Kto głosuje" />
                                     <TableColumn prefWidth="138.0" text="Zakończ szybciej" />
                                     <TableColumn maxWidth="190.0" minWidth="-1.0" prefWidth="134.0" text="Zobacz przebieg" />
                                 </columns>

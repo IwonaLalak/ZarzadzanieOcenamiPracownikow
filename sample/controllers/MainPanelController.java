@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import sample.database.entity.QuestionForms;
 import sample.database.entity.Votes;
+import sample.database.entity.Sectors;
 
 public class MainPanelController implements ControlledScreen, Initializable {
 
@@ -69,6 +70,40 @@ public class MainPanelController implements ControlledScreen, Initializable {
     @FXML
     private TableColumn<Users, String> employeeColumnType;
 
+    @FXML
+    private TableView<Sectors> sectorsTable;
+    @FXML
+    private TableColumn<Sectors, Number> sectorsColumnId;
+    @FXML
+    private TableColumn<Sectors, String> sectorsColumnName;
+    @FXML
+    private TableColumn<Sectors, String> sectorsColumnManager;
+
+    @FXML
+    private TableView<QuestionForms> questionformsTable;
+    @FXML
+    private TableColumn<QuestionForms, Number> questionformsColumnId;
+    @FXML
+    private TableColumn<QuestionForms, String> questionformsColumnName;
+    @FXML
+    private TableColumn<QuestionForms, String> questionformsColumnCreationData;
+    @FXML
+    private TableColumn<QuestionForms, Number> questionformsColumnNumberOfQuestions;
+
+    @FXML
+    private TableView<Votes> showallvotesTable;
+    @FXML
+    private TableColumn<Votes, Number> showallvotesColumnId;
+    @FXML
+    private TableColumn<Votes, String> showallvotesColumnName;
+    @FXML
+    private TableColumn<Votes, String> showallvotesColumnDateFrom;
+    @FXML
+    private TableColumn<Votes, Number> showallvotesColumnDateTo;
+    @FXML
+    private TableColumn<Votes, Number> showallvotesColumnSector;
+    @FXML
+    private TableColumn<Votes, String> showallvotesColumnWho;
 
     @FXML
     public TabPane tabs;
@@ -157,28 +192,45 @@ public class MainPanelController implements ControlledScreen, Initializable {
     @FXML
     private void show_all_sectors() throws SQLException {
         ResultSet result = Database.execute("SELECT * FROM sectors");
+        ObservableList<Sectors> sectorsData = FXCollections.observableArrayList();
+        this.sectorsColumnId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()));
+        this.sectorsColumnName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
+ //     this.sectorsColumnManager.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getManager()));
         while (result.next()) {
-            System.out.print(result.getString("id") + " - ");
-            System.out.println(result.getString("name"));
+            sectorsData.add(new Sectors(result.getInt("id"), result.getString("name")));
         }
+        this.sectorsTable.setItems(sectorsData);
     }
 
     @FXML
     private void show_all_questionforms() throws SQLException {
         ResultSet result = Database.execute("SELECT * FROM questionforms");
+        ObservableList<QuestionForms> questionFormsData = FXCollections.observableArrayList();
+        this.questionformsColumnId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()));
+        this.questionformsColumnName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
+        this.questionformsColumnCreationData.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCreation_data()));
+        this.questionformsColumnNumberOfQuestions.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getNumber_of_questions()));
         while (result.next()) {
-            System.out.print(result.getString("id") + " - ");
-            System.out.print(result.getString("name") + " - ");
-            System.out.print(result.getString("creation_date") + " - ");
-            System.out.println(result.getString("number_of_questions"));
+            questionFormsData.add(new QuestionForms(result.getInt("id"), result.getString("name"), result.getString("creation_date"), result.getInt("number_of_questions")));
         }
+        this.questionformsTable.setItems(questionFormsData);
     }
 
 
     @FXML
     private void show_all_votes() throws SQLException {
         ResultSet result = Database.execute("SELECT *,questionforms.name as questionform_name, sectors.name as sector_name FROM votes,sectors,questionforms WHERE votes.section_id = sectors.id AND votes.questionform_id=questionforms.id");
+        ObservableList<Votes> showAllVotesData = FXCollections.observableArrayList();
+        this.showallvotesColumnId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()));
+        this.showallvotesColumnName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVote_name()));
+        this.showallvotesColumnDateFrom.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDatatime()));
+        this.showallvotesColumnDateTo.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getIs_current()));
+        this.showallvotesColumnWho.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getWho()));
+        this.showallvotesColumnSector.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSection_id()));
         while (result.next()) {
+/*
+            showAllVotesData.add(new Votes(result.getInt("id"), result.getString("vote_name"), result.getString("date_from"), result.getString("date_to") ,result.getString("sector_name")));
+*/
             System.out.print(result.getString("id") + " - ");
             System.out.print(result.getString("vote_name") + " - ");
             System.out.print(result.getString("date_from") + " - ");
@@ -187,6 +239,7 @@ public class MainPanelController implements ControlledScreen, Initializable {
             System.out.print(result.getString("sector_name") + " - ");
             System.out.println(result.getString("questionform_name"));
         }
+//        this.questionformsTable.setItems(showAllVotesData);
     }
 
     @FXML
