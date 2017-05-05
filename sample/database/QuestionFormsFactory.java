@@ -1,6 +1,8 @@
 package sample.database;
 
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Font;
 
 import javax.xml.crypto.Data;
 import java.sql.ResultSet;
@@ -10,48 +12,62 @@ import java.util.ArrayList;
 /**
  * Created by Iwona on 09.04.17.
  */
-public class QuestionFormsFactory extends Model{
+public class QuestionFormsFactory extends Model {
 
     public static void add_new_questionform(String name, ArrayList<TextField> questions) throws SQLException, ClassNotFoundException {
 
 
         // check na konsole
-        System.out.println("name: "+name);
+        System.out.println("name: " + name);
 
-        for(int i=0;i<questions.size();i++){
-            System.out.println("q: "+questions.get(i).getText());
+        for (int i = 0; i < questions.size(); i++) {
+            System.out.println("q: " + questions.get(i).getText());
         }
 
         // pierw insertujemy ankiete
         String sql = "INSERT INTO `questionforms` (`id`, `name`,`creation_date`,`number_of_questions`) VALUES (NULL, ?, CURRENT_TIMESTAMP, ?)";
         String tab[] = new String[2];
         tab[0] = name;
-        tab[1] = questions.size()+"";
+        tab[1] = questions.size() + "";
 
-        Database.secureUpdate(sql,tab);
+        Database.secureUpdate(sql, tab);
 
 
         // gdy mamy id ankiety mozemy insertowac pytania
 
         String id_of_new_qf = null;
         sql = "SELECT id FROM questionforms WHERE name=?";
-        tab= new String[1];
+        tab = new String[1];
         tab[0] = name;
-        ResultSet result = Database.secureExecute(sql,tab);
-        if(result.first()){
+        ResultSet result = Database.secureExecute(sql, tab);
+        if (result.first()) {
             //pobieramy idka
             id_of_new_qf = result.getString("id");
         }
-        if(id_of_new_qf!=null){
-            for(int i=0;i<questions.size();i++){
-                sql = "INSERT INTO `questions` (`id`, `content`,`questionform_id`) VALUES (NULL, ?, "+id_of_new_qf+")";
+        if (id_of_new_qf != null) {
+            for (int i = 0; i < questions.size(); i++) {
+                sql = "INSERT INTO `questions` (`id`, `content`,`questionform_id`) VALUES (NULL, ?, " + id_of_new_qf + ")";
                 tab[0] = questions.get(i).getText();
-                Database.secureUpdate(sql,tab);
+                Database.secureUpdate(sql, tab);
             }
 
         }
 
 
+    }
+
+    public static ArrayList<Label> getQuestionsToFillVote(String voteid) throws SQLException, ClassNotFoundException {
+        ArrayList<Label> array = new ArrayList<>();
+        String sql = "select questions.content from questions, votes where votes.id=? and questions.questionform_id=votes.questionform_id";
+        String tab[] = new String[1];
+        tab[0] = voteid;
+        ResultSet result = Database.secureExecute(sql, tab);
+        while (result.next()) {
+            Label question_data = new Label();
+            question_data.setText(result.getString("content"));
+            array.add(question_data);
+        }
+        return array;
     }
 
 }

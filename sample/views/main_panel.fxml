@@ -293,7 +293,7 @@ nie ta zakladka - ma byc ten button w zakladce glosuj
                               </Pane>
                               <Pane prefHeight="463.0" prefWidth="800.0">
                                   <children>
-                                      <TableView fx:id="glosujTable" layoutX="7.0" layoutY="7.0" prefHeight="400.0" prefWidth="783.0">
+                                      <TableView fx:id="glosujTable" layoutX="7.0" layoutY="7.0" prefHeight="400.0" prefWidth="783.0" onMouseClicked="#getVoteID">
                                           <columns>
                                               <TableColumn fx:id="glosujColumnNumer" prefWidth="44.0" text="Nr." />
                                               <TableColumn fx:id="glosujColumnNazwa" prefWidth="258.0" text="Nazwa" />

@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import sample.Main;
 import sample.ScreensController;
 import sample.database.Database;
@@ -21,7 +22,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+
 import sample.database.entity.QuestionForms;
 import sample.database.entity.Votes;
 import sample.database.entity.Sectors;
@@ -46,7 +49,7 @@ public class MainPanelController implements ControlledScreen, Initializable {
     @FXML
     private TableColumn<Raports, String> raportColumnDate;
 
-    
+
     @FXML
     private TableView<Votes> glosujTable;
     @FXML
@@ -57,8 +60,8 @@ public class MainPanelController implements ControlledScreen, Initializable {
     private TableColumn<Votes, String> glosujColumnData;
     @FXML
     private TableColumn<Votes, String> glosujColumnStatus;
-    
-    
+
+
     @FXML
     private TableView<Users> employeeTable;
     @FXML
@@ -108,6 +111,13 @@ public class MainPanelController implements ControlledScreen, Initializable {
     @FXML
     public TabPane tabs;
 
+    /*public ArrayList<Label> peopleArray = new ArrayList<>();
+    public ArrayList<Label> questionArray = new ArrayList<>();
+    public ArrayList<ComboBox> gradeArray = new ArrayList<>();*/
+
+    public static String voteID;
+
+
     @FXML
     private void showRaport() throws IOException {
         myController.setScreen(Main.see_report);
@@ -134,7 +144,8 @@ public class MainPanelController implements ControlledScreen, Initializable {
     }
 
     @FXML
-    private void fillVote() throws IOException {
+    private void fillVote() throws IOException, SQLException, ClassNotFoundException {
+
         myController.setScreen(Main.fill_vote);
     }
 
@@ -195,7 +206,7 @@ public class MainPanelController implements ControlledScreen, Initializable {
         ObservableList<Sectors> sectorsData = FXCollections.observableArrayList();
         this.sectorsColumnId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()));
         this.sectorsColumnName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
- //     this.sectorsColumnManager.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getManager()));
+        //     this.sectorsColumnManager.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getManager()));
         while (result.next()) {
             sectorsData.add(new Sectors(result.getInt("id"), result.getString("name")));
         }
@@ -256,37 +267,37 @@ public class MainPanelController implements ControlledScreen, Initializable {
         this.raportTable.setItems(raportsData);
     }
 
-    
+    ObservableList<Votes> votesData = FXCollections.observableArrayList();
+
     @FXML
-    private void showGlosujTable() throws SQLException
-    {
+    private void showGlosujTable() throws SQLException {
         ResultSet result = Database.execute("SELECT * FROM votes");
-        ObservableList<Votes> votesData = FXCollections.observableArrayList();
-        
+
+
         this.glosujColumnNumer.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()));
         this.glosujColumnNazwa.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVote_name()));
-        
+
         this.glosujColumnData.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDatatime()));
         this.glosujColumnStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
-        
+
         while (result.next()) {
             votesData.add(
                     new Votes(
-                            result.getInt("id"), 
-                            result.getString("vote_name"), 
+                            result.getInt("id"),
+                            result.getString("vote_name"),
                             result.getString("date_to"),
-                            result.getInt("is_current"), 
+                            result.getInt("is_current"),
                             result.getString("who"),
                             result.getInt("section_id"),
                             result.getInt("questionform_id")
                     )
             );
         }
-        
+
         this.glosujTable.setItems(votesData);
     }
-    
-    
+
+
     @FXML
     private void add_new_section() throws SQLException, ClassNotFoundException {
         String get_name = new_section_name.getText();
@@ -345,5 +356,10 @@ public class MainPanelController implements ControlledScreen, Initializable {
         }
 
 
+    }
+
+    public void getVoteID(MouseEvent mouseEvent) {
+        Votes selected_vote = glosujTable.getSelectionModel().getSelectedItem();
+        voteID = selected_vote.getId() + "";
     }
 }
