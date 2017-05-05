@@ -13,6 +13,7 @@ import sample.Main;
 import sample.ScreensController;
 import sample.database.QuestionFormsFactory;
 import sample.database.UsersFactory;
+import sample.database.VotesFactory;
 import sample.interfaces.ControlledScreen;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ public class FillVoteController implements ControlledScreen, Initializable {
 
     public Pane place_for_questions;
     public Button loadDataBtn;
+    public Label send_your_vote_msg;
     private ScreensController myController;
 
     public ArrayList<Label> peopleArray = new ArrayList<>();
@@ -34,13 +36,33 @@ public class FillVoteController implements ControlledScreen, Initializable {
 
 
     @FXML
-    private void sendVote(ActionEvent event) throws IOException {
-        //   place_for_questions.getChildren().removeAll(peopleArray);
-        myController.setScreen(Main.main);
+    private void sendVote(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
+        //   TODO: wyczyścić pane tak jak w cancelu
+
+
+        send_your_vote_msg.setText("");
+        boolean everything_filled = true;
+        // check if everything is filled
+        for (int i = 0; i < gradeArray.size(); i++) {
+            if (gradeArray.get(i).getValue() == null) {
+                send_your_vote_msg.setText("Nie uzupełniono wszystkich ocen");
+                everything_filled = false;
+                break;
+            }
+        }
+        if (everything_filled) {
+            // System.out.println("ok");
+            for (int i = 0; i < gradeArray.size(); i++) {
+                VotesFactory.send_your_vote(gradeArray.get(i).getId(), gradeArray.get(i).getValue() + "", peopleArray, questionArray, MainPanelController.voteID);
+            }
+            VotesFactory.select_that_user_voted(MainPanelController.voteID);
+            myController.setScreen(Main.main);
+        }
     }
 
     @FXML
     private void cancelVote(ActionEvent event) throws IOException {
+        send_your_vote_msg.setText("");
         loadDataBtn.setDisable(false);
         place_for_questions.getChildren().removeAll(peopleArray);
         place_for_questions.getChildren().removeAll(questionArray);
@@ -63,8 +85,8 @@ public class FillVoteController implements ControlledScreen, Initializable {
 
     public void getArraysData() throws SQLException, ClassNotFoundException {
         String voteID = MainPanelController.voteID;
-        System.out.println("voteid: " + voteID);
-
+        // System.out.println("voteid: " + voteID);
+        send_your_vote_msg.setText("");
         loadDataBtn.setDisable(true);
 
         double layoutY = 5.00;
@@ -90,7 +112,7 @@ public class FillVoteController implements ControlledScreen, Initializable {
 
                 peopleArray.get(i).setLayoutY(layoutY);
                 peopleArray.get(i).setLayoutX(layoutXperson);
-                System.out.println(peopleArray.get(i).getText());
+                peopleArray.get(i).setId(i + "");
 
                 for (int j = 0; j < currentQuestionArray.size(); j++) {
 
@@ -100,14 +122,14 @@ public class FillVoteController implements ControlledScreen, Initializable {
                         questionArray.get(current_index).setText(currentQuestionArray.get(j).getText());
                         questionArray.get(current_index).setLayoutY(layoutY);
                         questionArray.get(current_index).setLayoutX(layoutXquestion);
-                        questionArray.get(current_index).setId("label" + i + "/" + j);
+                        questionArray.get(current_index).setId(j + "");
 
                         gradeArray.add(new ComboBox<String>(options));
                         gradeArray.get(current_index).setLayoutY(layoutY);
                         gradeArray.get(current_index).setLayoutX(layoutXcombobox);
                         gradeArray.get(current_index).setPrefWidth(120.00);
-                        gradeArray.get(current_index).setId(peopleArray.get(i).getText() + ";" + questionArray.get(current_index).getText());
-
+                        gradeArray.get(current_index).setId("person" + peopleArray.get(i).getId() + ";question" + questionArray.get(current_index).getId());
+                        //  System.out.println(gradeArray.get(current_index).getId());
                         current_index++;
                         while (layoutY > place_for_questions.getPrefHeight() - 10.00)
                             place_for_questions.setPrefHeight(place_for_questions.getPrefHeight() + 50.00);

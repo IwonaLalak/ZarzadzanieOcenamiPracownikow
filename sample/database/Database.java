@@ -291,7 +291,6 @@ public class Database {
     }
 
     public static ResultSet execute(String sql) {
-        System.out.println(sql);
         ResultSet result = null;
 
         try {
@@ -306,7 +305,6 @@ public class Database {
     }
 
     public static void update(String sql) {
-        System.out.println(sql);
         try {
             Statement stmt = Database.prepareStatement();
 

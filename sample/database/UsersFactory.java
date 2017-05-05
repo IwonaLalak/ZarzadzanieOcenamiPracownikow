@@ -7,11 +7,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 import javafx.scene.control.Label;
 import javafx.scene.text.*;
 import javafx.scene.text.Font;
 
 public class UsersFactory extends Model {
+
+    static String currentUserFullName;
+    public static String currentUserID;
+
     public static String login(String log, String pass) throws SQLException, ClassNotFoundException {
 
         String type = "";
@@ -29,11 +34,13 @@ public class UsersFactory extends Model {
         String tab[] = new String[2];
         tab[0] = log;
         tab[1] = pass;
-        String sql = "SELECT `type` FROM `users` WHERE `users`.`login`= ? AND `users`.`password`= ? ";
+        String sql = "SELECT `type`,`firstname`,`lastname`,`id` FROM `users` WHERE `users`.`login`= ? AND `users`.`password`= ? ";
 
         ResultSet result = Database.secureExecute(sql, tab);
         if (result.first()) {
             type = result.getString("type");
+            currentUserFullName = result.getString("firstname") + " " + result.getString("lastname");
+            currentUserID = result.getString("id");
         }
         return type;
     }
@@ -68,7 +75,7 @@ public class UsersFactory extends Model {
         sql = "INSERT INTO `users` (`id`, `login`, `password`, `firstname`, `lastname`, `type`, `sector_id`) VALUES\n" +
                 "(NULL, ?, ?, ?, ?, ?, ?)";
 
-        Database.secureUpdate(sql,tab);
+        Database.secureUpdate(sql, tab);
         return login;
 
 
@@ -77,12 +84,12 @@ public class UsersFactory extends Model {
     public static ArrayList<Label> getPeopleToFillVote(String voteid) throws SQLException, ClassNotFoundException {
         ArrayList<Label> array = new ArrayList<>();
         String sql = "select users.firstname, users.lastname from votes, users where votes.id=? and votes.section_id=users.sector_id ";
-        String tab[] = new String [1];
+        String tab[] = new String[1];
         tab[0] = voteid;
         ResultSet result = Database.secureExecute(sql, tab);
 
         while (result.next()) {
-            String text = result.getString("firstname") + " "+result.getString("lastname");
+            String text = result.getString("firstname") + " " + result.getString("lastname");
             Label person_data = new Label();
             person_data.setText(text);
             person_data.setFont(Font.font(18.00));
