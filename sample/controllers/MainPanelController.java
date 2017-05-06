@@ -308,7 +308,6 @@ public class MainPanelController implements ControlledScreen, Initializable {
         } else {
             add_new_sector_message.setText("Uzupełnij poprawnie dane");
         }
-
     }
 
     private void get_type_of_employees() {

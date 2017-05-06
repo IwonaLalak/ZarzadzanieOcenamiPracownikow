@@ -2,6 +2,7 @@ package sample.database.entity;
 
 /*
 @Entity
+
 @Table( name = "VotesFactory" )*/
 
 public class Votes {

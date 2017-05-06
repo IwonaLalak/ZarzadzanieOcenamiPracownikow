@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -8,8 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox fx:controller="sample.controllers.SeeQuestionFormController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.SeeQuestionFormController">
    <children>
       <Pane prefHeight="112.0" prefWidth="800.0">
          <children>
@@ -30,15 +33,15 @@
             <TableView layoutX="6.0" layoutY="7.0" prefHeight="405.0" prefWidth="786.0">
               <columns>
                 <TableColumn prefWidth="75.0" text="Nr." />
-                <TableColumn prefWidth="576.0" text="Pytanie" />
-                  <TableColumn prefWidth="109.0" text="Edytuj" />
+                <TableColumn prefWidth="690.0" text="Pytanie" />
               </columns>
             </TableView>
          </children>
       </Pane>
       <Pane prefHeight="144.0" prefWidth="800.0">
          <children>
-            <Button onAction="#goBackToQuestionForms" layoutX="700.0" layoutY="35.0" mnemonicParsing="false" text="Powrót" />
+            <Button layoutX="40.0" layoutY="14.0" mnemonicParsing="false" onAction="#goBackToQuestionForms" prefHeight="25.0" prefWidth="71.0" text="Powrót" />
+            <Button layoutX="660.0" layoutY="14.0" mnemonicParsing="false" text="Edytuj pytanie" />
          </children>
       </Pane>
    </children>
