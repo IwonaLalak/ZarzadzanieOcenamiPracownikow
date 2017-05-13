@@ -16,7 +16,7 @@
                   <Font size="25.0" />
                </font>
             </Label>
-            <Label layoutX="127.0" layoutY="24.0" text="Ankieta dot. pracy">
+            <Label fx:id="reportTitle" layoutX="127.0" layoutY="24.0" text="">
                <font>
                   <Font size="25.0" />
                </font>
@@ -26,6 +26,11 @@
       <Pane prefHeight="492.0" prefWidth="800.0">
          <children>
             <ListView prefHeight="443.0" prefWidth="800.0" />
+            <Label fx:id="reportContent" layoutX="20.0" layoutY="24" text="">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
       <Pane prefHeight="144.0" prefWidth="800.0">
@@ -33,5 +38,5 @@
             <Button onAction="#goBackToReports" layoutX="700.0" layoutY="35.0" mnemonicParsing="false" text="Powrót" />
          </children>
       </Pane>
-   </children>
+    </children>
 </VBox>
