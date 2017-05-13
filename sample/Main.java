@@ -52,8 +52,6 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("System zarządzania pracownikami");
         primaryStage.show();
-
-
     }
 
 

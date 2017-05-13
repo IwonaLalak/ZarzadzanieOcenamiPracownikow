@@ -75,7 +75,7 @@ public class MainPanelController implements ControlledScreen, Initializable {
 
     @FXML
     private void showRaport() throws IOException {
-        myController.setScreen(Main.see_report);
+        myController.setScreenWithData(Main.see_report, raportTable.getSelectionModel().getSelectedItem());
     }
 
     @FXML
