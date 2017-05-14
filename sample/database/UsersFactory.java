@@ -1,17 +1,12 @@
 
 package sample.database;
 
-import java.awt.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+import javafx.scene.control.Label;
+import javafx.scene.text.Font;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import javafx.scene.control.Label;
-import javafx.scene.text.*;
-import javafx.scene.text.Font;
-import sample.controllers.MainPanelController;
 
 public class UsersFactory extends Model {
 
@@ -73,8 +68,8 @@ public class UsersFactory extends Model {
             tab[5] = result.getString("id");
         }
 
-        sql = "INSERT INTO `users` (`id`, `login`, `password`, `firstname`, `lastname`, `type`, `sector_id`) VALUES\n" +
-                "(NULL, ?, ?, ?, ?, ?, ?)";
+        sql = "INSERT INTO `users` (`id`, `login`, `password`, `firstname`, `lastname`, `type`, `sector_id`, `email`) VALUES\n" +
+                "(NULL, ?, ?, ?, ?, ?, ?, ?)";
 
         Database.secureUpdate(sql, tab);
         return login;

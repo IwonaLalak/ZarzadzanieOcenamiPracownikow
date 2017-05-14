@@ -11,9 +11,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+
 public class SeeVoteController implements Initializable, ControlledScreen {
 
     private ScreensController myController;
+
 
     @FXML
     private void goBackToVotes(ActionEvent event) throws IOException {

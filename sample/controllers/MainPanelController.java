@@ -9,7 +9,6 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 import sample.Main;
 import sample.ScreensController;
@@ -23,12 +22,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-
-import sample.database.entity.QuestionForms;
-import sample.database.entity.Votes;
-import sample.database.entity.Sectors;
 
 import static sample.database.UsersFactory.currentUserID;
 
@@ -88,8 +82,6 @@ public class MainPanelController implements ControlledScreen, Initializable {
     private TableColumn<Sectors, Number> sectorsColumnId;
     @FXML
     private TableColumn<Sectors, String> sectorsColumnName;
-    @FXML
-    private TableColumn<Sectors, String> sectorsColumnManager;
 
     @FXML
     private TableView<QuestionForms> questionformsTable;
@@ -116,6 +108,8 @@ public class MainPanelController implements ControlledScreen, Initializable {
     private TableColumn<Votes, Number> showallvotesColumnSector;
     @FXML
     private TableColumn<Votes, String> showallvotesColumnWho;
+    @FXML
+    private TableColumn<Votes, Number> showallvotesColumnCurrent;
 
     @FXML
     public TabPane tabs;
@@ -227,7 +221,6 @@ public class MainPanelController implements ControlledScreen, Initializable {
         this.questionformsTable.setItems(questionFormsData);
     }
 
-
     @FXML
     private void show_all_votes() throws SQLException {
         ResultSet result = Database.execute("SELECT *,questionforms.name as questionform_name, sectors.name as sector_name FROM votes,sectors,questionforms WHERE votes.section_id = sectors.id AND votes.questionform_id=questionforms.id");
@@ -238,6 +231,11 @@ public class MainPanelController implements ControlledScreen, Initializable {
         this.showallvotesColumnDateTo.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getIs_current()));
         this.showallvotesColumnWho.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getWho()));
         this.showallvotesColumnSector.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSection_id()));
+        this.showallvotesColumnCurrent.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getIs_current()));
+        while (result.next()) {
+            showAllVotesData.add(new Votes(result.getInt("id"), result.getString("vote_name"), result.getString("creation_date"), result.getInt("date_to"), result.getString("who"), result.getInt("section_id"), result.getInt("questionform_id"), result.getInt("is_current")));
+        }
+        this.showallvotesTable.setItems(showAllVotesData);
     }
 
     @FXML

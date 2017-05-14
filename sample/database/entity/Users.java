@@ -17,6 +17,7 @@ public class Users {
         this.lastname = lastname;
         this.type = type;
         this.sector_id = sector_id;
+
     }
 
     public Users() {
@@ -77,4 +78,5 @@ public class Users {
     public void setSector_id(int sector_id) {
         this.sector_id = sector_id;
     }
+
 }
