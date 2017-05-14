@@ -7,10 +7,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import javafx.scene.control.Label;
 import javafx.scene.text.*;
 import javafx.scene.text.Font;
+import sample.configuration.UserTypes;
 
 public class UsersFactory extends Model {
 
@@ -96,6 +98,25 @@ public class UsersFactory extends Model {
             array.add(person_data);
         }
         return array;
+    }
+
+    public static String[] getEmployeeUsersEmails() throws SQLException, ClassNotFoundException {
+        LinkedList<String> getEmails = new LinkedList<>();
+        try {
+            ResultSet result = Database.secureExecute("SELECT email FROM Users where type = ?", new String[]{UserTypes.PRACOWNIK});
+            while (result.next()) {
+                getEmails.push(result.getString("email"));
+            }
+        } catch (SQLException e) {
+            System.out.print("Problem with SQL Statement" + e.getStackTrace());
+        } catch (ClassNotFoundException e) {
+            System.out.print("Problem with ClassNotFound" + e.getStackTrace());
+        }
+        String[] emails = new String[getEmails.size()];
+        for (int i = 0; i < getEmails.size(); i++) {
+            emails[i]= getEmails.get(i);
+        }
+        return emails;
     }
 
 
