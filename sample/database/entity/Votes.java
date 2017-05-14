@@ -13,8 +13,9 @@ public class Votes {
     private String who;
     private int section_id;
     private int questionform_id;
+    private int filled;
 
-    public Votes(int id, String vote_name, String datatime, int is_current, String who, int section_id, int questionform_id){
+    public Votes(int id, String vote_name, String datatime, int is_current, String who, int section_id, int questionform_id, int filled){
         this.id = id;
         this.vote_name = vote_name;
         this.datatime = datatime;
@@ -22,6 +23,7 @@ public class Votes {
         this.who = who;
         this.section_id = section_id;
         this.questionform_id = questionform_id;
+        this.filled = filled;
 
     }
 
@@ -86,6 +88,6 @@ public class Votes {
     }
     
     public String getStatus(){
-        return ( this.is_current == 1) ? "Wypełniona" : "Niewypełniona";
+        return ( this.filled == 1) ? "Wypełniona" : "Niewypełniona";
     }
 }

@@ -256,30 +256,36 @@ public class MainPanelController implements ControlledScreen, Initializable {
 
     @FXML
     private void showGlosujTable() throws SQLException {
-        ResultSet result = Database.execute("SELECT * FROM votes");
-        ObservableList<Votes> votesData = FXCollections.observableArrayList();
+        if(currentUserID!=null){
+            //ResultSet result = Database.execute("select id, vote_name, date_to from votes, user_fill_vote, sectors, users where votes.is_current=1 and users.id="+currentUserID+" and users.sector_id=sectors.id and votes.section_id=sectors.id and user_fill_vote.vote_id=votes.id and user_fill_vote.user_id=users.id");
+            //ResultSet result = Database.execute("select vote_name, id, date_to, is_current, section_id, questionform_id from votes");
+            ResultSet result = Database.execute("select votes.vote_name, votes.id, votes.is_current, votes.who, votes.section_id, votes.questionform_id, votes.date_to, user_fill_vote.filled from votes, user_fill_vote, sectors, users where votes.is_current=1 and users.id="+currentUserID+" and users.sector_id=sectors.id and votes.section_id=sectors.id and user_fill_vote.vote_id=votes.id and user_fill_vote.user_id=users.id and votes.who=users.type");
+            ObservableList<Votes> votesData = FXCollections.observableArrayList();
 
-        this.glosujColumnNumer.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()));
-        this.glosujColumnNazwa.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVote_name()));
+            this.glosujColumnNumer.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()));
+            this.glosujColumnNazwa.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVote_name()));
 
-        this.glosujColumnData.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDatatime()));
-        this.glosujColumnStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
+            this.glosujColumnData.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDatatime()));
+            this.glosujColumnStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
 
-        while (result.next()) {
-            votesData.add(
-                    new Votes(
-                            result.getInt("id"),
-                            result.getString("vote_name"),
-                            result.getString("date_to"),
-                            result.getInt("is_current"),
-                            result.getString("who"),
-                            result.getInt("section_id"),
-                            result.getInt("questionform_id")
-                    )
-            );
+            while (result.next()) {
+                votesData.add(
+                        new Votes(
+                                result.getInt("id"),
+                                result.getString("vote_name"),
+                                result.getString("date_to"),
+                                result.getInt("is_current"),
+                                result.getString("who"),
+                                result.getInt("section_id"),
+                                result.getInt("questionform_id"),
+                                result.getInt("filled")
+                        )
+                );
+            }
+
+            this.glosujTable.setItems(votesData);
         }
 
-        this.glosujTable.setItems(votesData);
     }
 
 
