@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javafx.scene.control.Label;
 import javafx.scene.text.*;
 import javafx.scene.text.Font;
+import sample.controllers.MainPanelController;
 
 public class UsersFactory extends Model {
 
@@ -98,5 +99,20 @@ public class UsersFactory extends Model {
         return array;
     }
 
+    public static String[] getCurrentUserData() throws SQLException {
+        String tab[] = new String [3];
+        if(currentUserID!=null){
+            String sql = "select firstname, lastname, type, name from users, sectors where users.sector_id=sectors.id and users.id="+currentUserID;
+            ResultSet result = Database.execute(sql);
+            if (result.first()) {
+                tab[0] = result.getString("firstname") + " " + result.getString("lastname");
+                tab[1] = result.getString("type");
+                tab[2] = result.getString("name");
+            }
+
+
+        }
+        return tab;
+    }
 
 }

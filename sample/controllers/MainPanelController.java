@@ -5,9 +5,11 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 import sample.Main;
 import sample.ScreensController;
@@ -28,6 +30,8 @@ import sample.database.entity.QuestionForms;
 import sample.database.entity.Votes;
 import sample.database.entity.Sectors;
 
+import static sample.database.UsersFactory.currentUserID;
+
 public class MainPanelController implements ControlledScreen, Initializable {
 
     public TextField new_section_name;
@@ -37,6 +41,9 @@ public class MainPanelController implements ControlledScreen, Initializable {
     public TextField get_lastname;
     public Label add_new_employee_message;
     public Label add_new_sector_message;
+    public Label user_section;
+    public Label user_type;
+    public Label user_name;
     private ScreensController myController;
 
 
@@ -340,4 +347,13 @@ public class MainPanelController implements ControlledScreen, Initializable {
         voteID = selected_vote.getId() + "";
     }
 
+    public void showUserData(Event event) throws SQLException {
+        if(currentUserID!=null) {
+            String tab[] = UsersFactory.getCurrentUserData();
+            user_name.setText(tab[0]);
+            user_type.setText(tab[1]);
+            user_section.setText(tab[2]);
+        }
+
+    }
 }
