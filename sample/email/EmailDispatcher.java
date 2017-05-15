@@ -8,6 +8,7 @@ public class EmailDispatcher {
     public static void sendFromGMail(String[] emailsToSend) {
 
         final String username = "testpracownikemail@gmail.com";
+        // testpracownikemail2@gmail.com , testpracownikemail3@gmail.com
         final String password = "test1234567";
 
         Properties props = new Properties();

@@ -119,7 +119,7 @@ public class UsersFactory extends Model {
     public static String[] getEmployeeUsersEmails() throws SQLException, ClassNotFoundException {
         LinkedList<String> getEmails = new LinkedList<>();
         try {
-            ResultSet result = Database.secureExecute("SELECT email FROM Users where type = ?", new String[]{UserTypes.PRACOWNIK});
+            ResultSet result = Database.secureExecute("SELECT email FROM users where type = ?", new String[]{UserTypes.PRACOWNIK});
             while (result.next()) {
                 getEmails.push(result.getString("email"));
             }

@@ -198,12 +198,13 @@ public class VotesFactory extends Model {
 
         // insert oceny do logow
         String sql = "INSERT INTO `logs` (`id`, `vote_id`, `user_id`, `date`, `log_content`, `log_short`) VALUES (NULL, ?, ?, CURRENT_TIMESTAMP, ?, ?)";
+
         String param[] = new String[4];
         param[0] = voteID;
         param[1] = UsersFactory.currentUserID;
         param[2] = log_content;
         param[3] = log_short;
-
+        //System.out.println("wysylanie: "+param[0]+" "+param[1]+" "+param[2]+" "+param[3]+" ");
         Database.secureUpdate(sql, param);
 
     }
