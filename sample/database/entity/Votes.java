@@ -91,3 +91,4 @@ public class Votes {
         return ( this.filled == 1) ? "Wypełniona" : "Niewypełniona";
     }
 }
+

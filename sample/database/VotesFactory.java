@@ -216,3 +216,4 @@ public class VotesFactory extends Model {
     }
 
 }
+

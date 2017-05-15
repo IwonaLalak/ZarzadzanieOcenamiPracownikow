@@ -289,6 +289,7 @@ public class MainPanelController implements ControlledScreen, Initializable {
     }
 
 
+
     @FXML
     private void add_new_section() throws SQLException, ClassNotFoundException {
         String get_name = new_section_name.getText();
