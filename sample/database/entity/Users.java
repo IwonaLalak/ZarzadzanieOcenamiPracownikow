@@ -6,10 +6,11 @@ public class Users {
     private String password;
     private String firstname;
     private String lastname;
+    private String email;
     private String type;
     private int sector_id;
 
-    public Users(int id, String login, String password, String firstname, String lastname, String type, int sector_id) {
+    public Users(int id, String login, String password, String firstname, String lastname, String type, int sector_id, String email) {
         this.id = id;
         this.login = login;
         this.password = password;
@@ -17,6 +18,7 @@ public class Users {
         this.lastname = lastname;
         this.type = type;
         this.sector_id = sector_id;
+        this.email = email;
     }
 
     public Users() {
@@ -76,5 +78,13 @@ public class Users {
 
     public void setSector_id(int sector_id) {
         this.sector_id = sector_id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

@@ -24,16 +24,6 @@ public class UsersFactory extends Model {
 
         String type = "";
 
-        /*
-         * bez zabezpiecznia
-         *
-       ResultSet result = Database.execute("SELECT `type` FROM `users` WHERE `users`.`login`='" + log + "' AND `users`.`password`='" + pass + "'");
-
-        if (result.first()) {
-            //System.out.println(result.getString("type") +" aaaaa");
-            type = result.getString("type");
-        }*/
-
         String tab[] = new String[2];
         tab[0] = log;
         tab[1] = pass;
@@ -49,11 +39,11 @@ public class UsersFactory extends Model {
     }
 
 
-    public static String addNewEmployee(String firstname, String lastname, String type, String sector) throws SQLException, ClassNotFoundException {
+    public static String addNewEmployee(String firstname, String lastname, String email, String type, String sector) throws SQLException, ClassNotFoundException {
 
         // getting id of sector name
 
-        String tab[] = new String[6];
+        String tab[] = new String[7];
 
         // create login
         char pom1 = firstname.toCharArray()[0];
@@ -61,22 +51,23 @@ public class UsersFactory extends Model {
         // create pass
         String pass = "xxx";
         tab[0] = login;
-        tab[1] = pass;
-        tab[2] = firstname;
-        tab[3] = lastname;
-        tab[4] = type;
-        tab[5] = null;
+        tab[1] = email;
+        tab[2] = pass;
+        tab[3] = firstname;
+        tab[4] = lastname;
+        tab[5] = type;
+        tab[6] = null;
 
         String tab_pom[] = new String[1];
         tab_pom[0] = sector;
         String sql = "SELECT id FROM sectors WHERE name = ?";
         ResultSet result = Database.secureExecute(sql, tab_pom);
         if (result.first()) {
-            tab[5] = result.getString("id");
+            tab[6] = result.getString("id");
         }
 
-        sql = "INSERT INTO `users` (`id`, `login`, `password`, `firstname`, `lastname`, `type`, `sector_id`) VALUES\n" +
-                "(NULL, ?, ?, ?, ?, ?, ?)";
+        sql = "INSERT INTO `users` (`id`, `login`, `email`, `password`, `firstname`, `lastname`, `type`, `sector_id`) VALUES\n" +
+                "(NULL, ?, ?, ?, ?, ?, ?, ?)";
 
         Database.secureUpdate(sql, tab);
         return login;

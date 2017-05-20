@@ -194,16 +194,24 @@ public class VotesFactory extends Model {
         }
 
         String log_short = people.get(Integer.parseInt(employee_id)).getText() + ";" + grade + ";" + questions.get(Integer.parseInt(question_id)).getText();
+        /*System.out.println("-----");
+        System.out.println("oceniany: "+employee_id +" "+ people.get(Integer.parseInt(employee_id)).getText());
+        System.out.println("ocena: "+grade);
+        System.out.println("pytanie: "+question_id+" "+questions.get(Integer.parseInt(question_id)).getText());*/
+
         String log_content = "Uzytkownik " + UsersFactory.currentUserFullName + " ocenil " + people.get(Integer.parseInt(employee_id)).getText() + " na ocene " + grade + " w pytaniu " + questions.get(Integer.parseInt(question_id)).getText();
 
         // insert oceny do logow
-        String sql = "INSERT INTO `logs` (`id`, `vote_id`, `user_id`, `date`, `log_content`, `log_short`) VALUES (NULL, ?, ?, CURRENT_TIMESTAMP, ?, ?)";
+        String sql = "INSERT INTO `logs` (`id`, `vote_id`, `user_id`, `date`, `log_content`, `log_short`, `rated_person`, `grade`, `on_question`) VALUES (NULL, ?, ?, CURRENT_TIMESTAMP, ?, ?, ?, ?, ?)";
 
-        String param[] = new String[4];
+        String param[] = new String[7];
         param[0] = voteID;
         param[1] = UsersFactory.currentUserID;
         param[2] = log_content;
         param[3] = log_short;
+        param[4] = people.get(Integer.parseInt(employee_id)).getText();
+        param[5] = grade;
+        param[6] = questions.get(Integer.parseInt(question_id)).getText();
         //System.out.println("wysylanie: "+param[0]+" "+param[1]+" "+param[2]+" "+param[3]+" ");
         Database.secureUpdate(sql, param);
 

@@ -44,6 +44,7 @@ public class MainPanelController implements ControlledScreen, Initializable {
     public Label user_section;
     public Label user_type;
     public Label user_name;
+    public TextField get_email;
     private ScreensController myController;
 
 
@@ -81,6 +82,8 @@ public class MainPanelController implements ControlledScreen, Initializable {
     private TableColumn<Users, String> employeeColumnLastName;
     @FXML
     private TableColumn<Users, String> employeeColumnType;
+    @FXML
+    private TableColumn<Users, String> employeeColumnEmail;
 
     @FXML
     private TableView<Sectors> sectorsTable;
@@ -184,17 +187,25 @@ public class MainPanelController implements ControlledScreen, Initializable {
 
     @FXML
     private void show_all_employes() throws SQLException {
-        ResultSet result = Database.execute("SELECT users.id, users.login, users.password, users.firstname,users.lastname,users.type,sectors.name, users.sector_id " +
+        ResultSet result = Database.execute("SELECT users.id, users.login, users.email, users.password, users.firstname,users.lastname,users.type,sectors.name, users.sector_id " +
                 "FROM users,sectors where users.sector_id=sectors.id ");
         ObservableList<Users> usersModelData = FXCollections.observableArrayList();
         this.employeeColumnId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()));
         this.employeeColumnName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFirstname()));
         this.employeeColumnLastName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLastname()));
         this.employeeColumnType.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getType()));
+        this.employeeColumnEmail.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmail()));
         while (result.next()) {
-            usersModelData.add(new Users(result.getInt("id"), result.getString("login"), result.getString("password"),
-                    result.getString("firstname"), result.getString("lastname"),
-                    result.getString("type"), result.getInt("sector_id")));
+            usersModelData.add(new Users(
+                    result.getInt("id"),
+                    result.getString("login"),
+                    result.getString("password"),
+                    result.getString("firstname"),
+                    result.getString("lastname"),
+                    result.getString("type"),
+                    result.getInt("sector_id"),
+                    result.getString("email")
+            ));
         }
         this.employeeTable.setItems(usersModelData);
 
@@ -256,10 +267,10 @@ public class MainPanelController implements ControlledScreen, Initializable {
 
     @FXML
     private void showGlosujTable() throws SQLException {
-        if(currentUserID!=null){
+        if (currentUserID != null) {
             //ResultSet result = Database.execute("select id, vote_name, date_to from votes, user_fill_vote, sectors, users where votes.is_current=1 and users.id="+currentUserID+" and users.sector_id=sectors.id and votes.section_id=sectors.id and user_fill_vote.vote_id=votes.id and user_fill_vote.user_id=users.id");
             //ResultSet result = Database.execute("select vote_name, id, date_to, is_current, section_id, questionform_id from votes");
-            ResultSet result = Database.execute("select votes.vote_name, votes.id, votes.is_current, votes.who, votes.section_id, votes.questionform_id, votes.date_to, user_fill_vote.filled from votes, user_fill_vote, sectors, users where votes.is_current=1 and users.id="+currentUserID+" and users.sector_id=sectors.id and votes.section_id=sectors.id and user_fill_vote.vote_id=votes.id and user_fill_vote.user_id=users.id and votes.who=users.type");
+            ResultSet result = Database.execute("select votes.vote_name, votes.id, votes.is_current, votes.who, votes.section_id, votes.questionform_id, votes.date_to, user_fill_vote.filled from votes, user_fill_vote, sectors, users where votes.is_current=1 and users.id=" + currentUserID + " and users.sector_id=sectors.id and votes.section_id=sectors.id and user_fill_vote.vote_id=votes.id and user_fill_vote.user_id=users.id and votes.who=users.type");
             ObservableList<Votes> votesData = FXCollections.observableArrayList();
 
             this.glosujColumnNumer.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()));
@@ -287,7 +298,6 @@ public class MainPanelController implements ControlledScreen, Initializable {
         }
 
     }
-
 
 
     @FXML
@@ -331,6 +341,7 @@ public class MainPanelController implements ControlledScreen, Initializable {
     public void add_new_employee() throws SQLException, ClassNotFoundException {
         String firstname = get_firstname.getText();
         String lastname = get_lastname.getText();
+        String email = get_email.getText();
         String type = (String) select_type.getValue();
         String sector = (String) select_sector.getValue();
         add_new_employee_message.setText(" ");
@@ -338,10 +349,11 @@ public class MainPanelController implements ControlledScreen, Initializable {
         if (
                 firstname != null && firstname.length() > 1 &&
                         lastname != null && lastname.length() > 1 &&
+                        email != null && email.length() > 1 &&
                         type != null && type.length() > 1 &&
                         sector != null && sector.length() > 1
                 ) {
-            String login = UsersFactory.addNewEmployee(firstname, lastname, type, sector);
+            String login = UsersFactory.addNewEmployee(firstname, lastname, email, type, sector);
             add_new_employee_message.setText("Pomyślnie dodano usera. Login: " + login);
         } else {
             add_new_employee_message.setText("Uzupełnij poprawnie formularz");
@@ -355,7 +367,7 @@ public class MainPanelController implements ControlledScreen, Initializable {
     }
 
     public void showUserData(Event event) throws SQLException {
-        if(currentUserID!=null) {
+        if (currentUserID != null) {
             String tab[] = UsersFactory.getCurrentUserData();
             user_name.setText(tab[0]);
             user_type.setText(tab[1]);
