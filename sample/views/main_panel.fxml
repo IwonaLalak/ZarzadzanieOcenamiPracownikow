@@ -79,7 +79,7 @@
                                   <children>
                                       <HBox prefHeight="401.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                           <children>
-                                              <TableView fx:id="employeeTable" prefHeight="261.0" prefWidth="797.0">
+                                              <TableView fx:id="employeeTable" onMouseClicked="#getEmployeeID" prefHeight="261.0" prefWidth="797.0">
                                                   <columns>
                                                       <TableColumn fx:id="employeeColumnId" prefWidth="45.0" text="ID" />
                                                       <TableColumn fx:id="employeeColumnName" prefWidth="109.0" text="Imie" />
@@ -107,9 +107,9 @@
                                     <Label layoutX="346.0" layoutY="37.0" text="Dział:" />
                                     <ComboBox fx:id="select_sector" layoutX="382.0" layoutY="33.0" prefHeight="26.0" prefWidth="242.0" />
                                     <Label fx:id="add_new_employee_message" layoutX="30.0" layoutY="124.0" textFill="#ff5500" />
-                                    <Button layoutX="715.0" layoutY="67.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="59.0" text="Usuń" />
+                                    <Button layoutX="715.0" layoutY="67.0" mnemonicParsing="false" onAction="#remove_employee" prefHeight="26.0" prefWidth="59.0" text="Usuń" />
                                     <Button layoutX="715.0" layoutY="34.0" mnemonicParsing="false" text="Edytuj" />
-                                    <TextField layoutX="101.0" layoutY="95.0" prefHeight="25.0" prefWidth="228.0" fx:id="get_email"/>
+                                    <TextField fx:id="get_email" layoutX="101.0" layoutY="95.0" prefHeight="25.0" prefWidth="228.0" />
                                     <Label layoutX="28.0" layoutY="99.0" text="E-mail:" />
                                           </children>
                                       </Pane>
@@ -130,7 +130,7 @@
                            <children>
                               <HBox prefHeight="401.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <TableView fx:id="sectorsTable" prefHeight="400.0" prefWidth="797.0">
+                                    <TableView fx:id="sectorsTable" onMouseClicked="#getSectorID" prefHeight="400.0" prefWidth="797.0">
                                        <columns>
                                           <TableColumn fx:id="sectorsColumnId" prefWidth="45.0" text="ID" />
                                           <TableColumn fx:id="sectorsColumnName" prefWidth="746.0" text="Nazwa" />
@@ -146,12 +146,13 @@
                                  <children>
                                     <Label layoutX="30.0" layoutY="24.0" text="Dodaj nowy dział:" />
                                     <Label layoutX="30.0" layoutY="56.0" text="Nazwa:" />
-                                    <Button layoutX="441.0" layoutY="52.0" mnemonicParsing="false" onAction="#add_new_section" text="Dodaj" />
+                                    <Button layoutX="420.0" layoutY="52.0" mnemonicParsing="false" onAction="#add_new_section" text="Dodaj" fx:id="save_sector_btn"/>
                                     <TextField fx:id="new_section_name" layoutX="77.0" layoutY="52.0" prefHeight="26.0" prefWidth="335.0" />
                                     <Label fx:id="add_new_sector_message" layoutX="30.0" layoutY="124.0" textFill="#ff5500" />
                                     <!--<TextField fx:id="manager_name" layoutX="102.0" layoutY="86.0" prefHeight="25.0" prefWidth="310.0" />
                                     <Label layoutX="30.0" layoutY="90.0" text="Kierownik:" />-->
-                                    <Button layoutX="682.0" layoutY="52.0" mnemonicParsing="false" text="Usuń dział" />
+                                    <Button layoutX="686.0" layoutY="52.0" mnemonicParsing="false" onAction="#remove_section" prefHeight="26.0" prefWidth="91.0" text="Usuń dział" />
+                                    <Button layoutX="574.0" layoutY="51.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="102.0" text="Edytuj dział" />
                                  </children>
                               </Pane>
                            </children>
@@ -173,7 +174,7 @@
                            <children>
                               <HBox prefHeight="401.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <TableView fx:id="questionformsTable" prefHeight="400.0" prefWidth="797.0">
+                                    <TableView fx:id="questionformsTable" onMouseClicked="#getQuestionformID" prefHeight="400.0" prefWidth="797.0">
                                        <columns>
                                           <TableColumn fx:id="questionformsColumnId" prefWidth="45.0" text="ID" />
                                           <TableColumn fx:id="questionformsColumnName" prefWidth="393.0" text="Nazwa" />
@@ -189,9 +190,10 @@
                            <children>
                               <Pane layoutX="176.0" layoutY="-70.0" prefHeight="82.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <Button layoutX="525.0" layoutY="28.0" mnemonicParsing="false" onAction="#createNewQuestionForm" text="Dodaj nową ankietę" />
-                                    <Button layoutX="391.0" layoutY="28.0" mnemonicParsing="false" onAction="#showQuestionForm" text="Zobacz ankietę" />
-                                    <Button layoutX="680.0" layoutY="28.0" mnemonicParsing="false" text="Usuń ankietę" />
+                                    <Button layoutX="523.0" layoutY="15.0" mnemonicParsing="false" onAction="#createNewQuestionForm" text="Dodaj nową ankietę" />
+                                    <Button layoutX="391.0" layoutY="15.0" mnemonicParsing="false" onAction="#showQuestionForm" text="Zobacz ankietę" />
+                                    <Button layoutX="680.0" layoutY="15.0" mnemonicParsing="false" onAction="#remove_questionform" text="Usuń ankietę" />
+                                    <Label fx:id="remove_qf_message" layoutX="22.0" layoutY="52.0" textFill="#ff5500" />
                                  </children>
                               </Pane>
                            </children>
