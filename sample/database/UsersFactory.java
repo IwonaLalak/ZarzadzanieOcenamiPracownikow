@@ -126,11 +126,5 @@ public class UsersFactory extends Model {
         return emails;
     }
 
-    public static void remove_employee(String id) throws SQLException, ClassNotFoundException {
-        String sql = "DELETE FROM `users` WHERE `users`.`id` = ?";
-        String tab[] = {id};
-        Database.secureUpdate(sql,tab);
-    }
-
 
 }

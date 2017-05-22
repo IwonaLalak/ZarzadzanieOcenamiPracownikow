@@ -70,10 +70,4 @@ public class QuestionFormsFactory extends Model {
         return array;
     }
 
-    public static void remove_questionform(String id) throws SQLException, ClassNotFoundException {
-        String sql = "DELETE FROM `questionforms` WHERE `questionforms`.`id` = ?";
-        String tab[] = {id};
-        Database.secureUpdate(sql,tab);
-    }
-
 }

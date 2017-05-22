@@ -9,11 +9,11 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 import sample.Main;
 import sample.ScreensController;
 import sample.database.Database;
-import sample.database.QuestionFormsFactory;
 import sample.database.SectionsFactory;
 import sample.database.UsersFactory;
 import sample.database.entity.*;
@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import sample.database.entity.QuestionForms;
@@ -45,16 +45,10 @@ public class MainPanelController implements ControlledScreen, Initializable {
     public Label user_type;
     public Label user_name;
     public TextField get_email;
-    public Label remove_qf_message;
-    public Button save_sector_btn;
     private ScreensController myController;
 
 
-    public static String selected_voteID;
-    public static String selected_sectorID;
-    public static String selected_sectorName;
-    public static String selected_employeeID;
-    public static String selected_questionformID;
+    public static String voteID;
 
     @FXML
     private TableView<Raports> raportTable;
@@ -191,10 +185,6 @@ public class MainPanelController implements ControlledScreen, Initializable {
         }
     }
 
-    /*
-    * pokazywanie tabeli
-    * */
-
     @FXML
     private void show_all_employes() throws SQLException {
         ResultSet result = Database.execute("SELECT users.id, users.login, users.email, users.password, users.firstname,users.lastname,users.type,sectors.name, users.sector_id " +
@@ -309,34 +299,34 @@ public class MainPanelController implements ControlledScreen, Initializable {
 
     }
 
-    /*
-    * profil
-    * */
 
-    // pobieranie informacji z bazy i wyswietlanie je w profilu
-    public void showUserData(Event event) throws SQLException {
-        if (currentUserID != null) {
-            String tab[] = UsersFactory.getCurrentUserData();
-            user_name.setText(tab[0]);
-            user_type.setText(tab[1]);
-            user_section.setText(tab[2]);
+    @FXML
+    private void add_new_section() throws SQLException, ClassNotFoundException {
+        String get_name = new_section_name.getText();
+        add_new_sector_message.setText("");
+        if (get_name != null && get_name.length() > 1) {
+            SectionsFactory.add_new_section(get_name);
+            add_new_sector_message.setText("Dodano nowy dział");
+        } else {
+            add_new_sector_message.setText("Uzupełnij poprawnie dane");
         }
 
     }
 
-    /*
-    * pracownicy
-    * */
-
-    // dodawanie - pobieranie typow do comboboxa
     private void get_type_of_employees() {
+       /* ObservableList<String> types =
+                FXCollections.observableArrayList(
+                        "op1",
+                        "opt2"
+                );
+        select_type = new ComboBox(types);
+       */
         select_type.getItems().addAll(
                 "kierownik",
                 "pracownik"
         );
     }
 
-    // dodawanie - pobieranie dzialow do comboboxa
     private void get_all_sectors_names() throws SQLException {
         ObservableList<String> names = FXCollections.observableArrayList();
         ResultSet result = Database.execute("SELECT * FROM sectors");
@@ -347,7 +337,6 @@ public class MainPanelController implements ControlledScreen, Initializable {
         select_sector.setItems(names);
     }
 
-    // dodawanie - walidacja i insertowanie
     @FXML
     public void add_new_employee() throws SQLException, ClassNotFoundException {
         String firstname = get_firstname.getText();
@@ -372,99 +361,18 @@ public class MainPanelController implements ControlledScreen, Initializable {
 
     }
 
-    // pobieranie idka do usuwania / edycji
-    public void getEmployeeID(MouseEvent mouseEvent) {
-        Users selected_employee = employeeTable.getSelectionModel().getSelectedItem();
-        selected_employeeID = selected_employee.getId() + "";
-    }
-
-    // usuwanie
-    public void remove_employee(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
-        add_new_employee_message.setText("");
-        if (selected_employeeID != null) {
-            UsersFactory.remove_employee(selected_employeeID);
-            add_new_employee_message.setText("Usunięto osobę o id " + selected_employeeID);
-            show_all_employes();
-        } else {
-            add_new_employee_message.setText("Nie wybrano id do usunięcia");
-        }
-    }
-
-    /*
-    * dzialy
-    * */
-
-    // dodawanie
-    @FXML
-    private void add_new_section() throws SQLException, ClassNotFoundException {
-        String get_name = new_section_name.getText();
-        add_new_sector_message.setText("");
-        if (get_name != null && get_name.length() > 1) {
-            if (Objects.equals(save_sector_btn.getText(), "Dodaj")) {
-                SectionsFactory.add_new_section(get_name);
-                add_new_sector_message.setText("Dodano nowy dział");
-            }
-            show_all_sectors();
-        } else {
-            add_new_sector_message.setText("Uzupełnij poprawnie dane");
-        }
-    }
-
-    // pobieranie idka do usuwania / edytowania
-    public void getSectorID(MouseEvent mouseEvent) {
-        Sectors selected_sector = sectorsTable.getSelectionModel().getSelectedItem();
-        selected_sectorID = selected_sector.getId() + "";
-        selected_sectorName = selected_sector.getName() + "";
-    }
-
-    // usuwanie
-    public void remove_section(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
-        add_new_sector_message.setText("");
-        if (selected_sectorID != null) {
-            if (SectionsFactory.check_employees_in_sector(selected_sectorID) > 0) {
-                if (SectionsFactory.check_employees_in_sector(selected_sectorID) == 1)
-                    add_new_sector_message.setText("Nie mozna usunąć działu, ponieważ jest w nim " + SectionsFactory.check_employees_in_sector(selected_sectorID) + " pracownik");
-                else
-                    add_new_sector_message.setText("Nie mozna usunąć działu, ponieważ jest w nim " + SectionsFactory.check_employees_in_sector(selected_sectorID) + " pracowników");
-            } else {
-                SectionsFactory.remove_section(selected_sectorID);
-                add_new_sector_message.setText("Usunięto dział o id " + selected_sectorID);
-                show_all_sectors();
-            }
-        } else {
-            add_new_employee_message.setText("Nie wybrano id do usunięcia");
-        }
-    }
-
-    /*
-    * ankiety
-    * */
-
-    // pobieranie idka do usuwania / zobaczenia ankiety
-    public void getQuestionformID(MouseEvent mouseEvent) {
-        QuestionForms selected_qf = questionformsTable.getSelectionModel().getSelectedItem();
-        selected_questionformID = selected_qf.getId() + "";
-    }
-
-    // usuwanie
-    public void remove_questionform(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
-        remove_qf_message.setText("");
-        if (selected_questionformID != null) {
-            QuestionFormsFactory.remove_questionform(selected_questionformID);
-            remove_qf_message.setText("Usunięto ankiete o id " + selected_questionformID);
-            show_all_questionforms();
-        }
-    }
-
-    /*
-    *  glosowania - wypelnianie
-    * */
-
-    // pobieranie idka do wybierania ankiety
     public void getVoteID(MouseEvent mouseEvent) {
         Votes selected_vote = glosujTable.getSelectionModel().getSelectedItem();
-        selected_voteID = selected_vote.getId() + "";
+        voteID = selected_vote.getId() + "";
     }
 
+    public void showUserData(Event event) throws SQLException {
+        if (currentUserID != null) {
+            String tab[] = UsersFactory.getCurrentUserData();
+            user_name.setText(tab[0]);
+            user_type.setText(tab[1]);
+            user_section.setText(tab[2]);
+        }
 
+    }
 }

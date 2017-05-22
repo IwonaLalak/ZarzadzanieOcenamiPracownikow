@@ -53,9 +53,9 @@ public class FillVoteController implements ControlledScreen, Initializable {
         if (everything_filled) {
             // System.out.println("ok");
             for (int i = 0; i < gradeArray.size(); i++) {
-                VotesFactory.send_your_vote(gradeArray.get(i).getId(), gradeArray.get(i).getValue() + "", peopleArray, questionArray, MainPanelController.selected_voteID);
+                VotesFactory.send_your_vote(gradeArray.get(i).getId(), gradeArray.get(i).getValue() + "", peopleArray, questionArray, MainPanelController.voteID);
             }
-            VotesFactory.select_that_user_voted(MainPanelController.selected_voteID);
+            VotesFactory.select_that_user_voted(MainPanelController.voteID);
             myController.setScreen(Main.main);
         }
     }
@@ -84,8 +84,8 @@ public class FillVoteController implements ControlledScreen, Initializable {
     }
 
     public void getArraysData() throws SQLException, ClassNotFoundException {
-        String voteID = MainPanelController.selected_voteID;
-        // System.out.println("voteid: " + selected_voteID);
+        String voteID = MainPanelController.voteID;
+        // System.out.println("voteid: " + voteID);
         send_your_vote_msg.setText("");
         loadDataBtn.setDisable(true);
 
