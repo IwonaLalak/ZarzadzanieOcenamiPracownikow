@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import sample.database.Database;
 
 
 public class Main extends Application {
@@ -32,7 +33,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        
+
         ScreensController mainContainer = new ScreensController();
         mainContainer.loadScreen(Main.main,Main.mainView);
         mainContainer.loadScreen(Main.login, Main.loginView);
@@ -55,7 +56,6 @@ public class Main extends Application {
 
 
     }
-
 
     public static void main(String[] args) {
         launch(args);
