@@ -9,17 +9,17 @@ import java.util.ArrayList;
  */
 public class SectionsFactory extends Model{
     public static void add_new_section(String name) throws SQLException, ClassNotFoundException {
-        /*
-        * bez zabezpieczenia
-        *
-        Database.update("INSERT INTO `sectors` (`id`, `name`) VALUES (NULL, '"+name+"')");
-        */
-
         String sql = "INSERT INTO `sectors` (`id`, `name`) VALUES (NULL, ?)";
         String tab[] = new String [1];
         tab[0] = name;
         Database.secureUpdate(sql,tab);
 
+    }
+
+    public static void edit_section(String id,String name) throws SQLException, ClassNotFoundException {
+        String sql = "UPDATE `sectors` SET `name` = ? WHERE `sectors`.`id` = ?";
+        String tab[] = {name, id};
+        Database.secureUpdate(sql,tab);
     }
 
     public static int check_employees_in_sector(String id) throws SQLException, ClassNotFoundException {
