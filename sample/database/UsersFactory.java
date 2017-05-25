@@ -71,8 +71,21 @@ public class UsersFactory extends Model {
 
         Database.secureUpdate(sql, tab);
         return login;
+    }
 
+    public static void edit_employee(String id, String email, String type, String sector) throws SQLException, ClassNotFoundException {
 
+        String tab[] = {email, type, sector, id};
+
+        String tab_pom[] = {sector};
+        String sql = "SELECT id FROM sectors WHERE name = ?";
+        ResultSet result = Database.secureExecute(sql, tab_pom);
+        if (result.first()) {
+            tab[2] = result.getString("id");
+        }
+
+        sql = "UPDATE `users` SET `email` = ?, `type` = ?, `sector_id` = ? WHERE `users`.`id` = ? ";
+        Database.secureUpdate(sql, tab);
     }
 
     public static ArrayList<Label> getPeopleToFillVote(String voteid) throws SQLException, ClassNotFoundException {
@@ -93,9 +106,9 @@ public class UsersFactory extends Model {
     }
 
     public static String[] getCurrentUserData() throws SQLException {
-        String tab[] = new String [3];
-        if(currentUserID!=null){
-            String sql = "select firstname, lastname, type, name from users, sectors where users.sector_id=sectors.id and users.id="+currentUserID;
+        String tab[] = new String[3];
+        if (currentUserID != null) {
+            String sql = "select firstname, lastname, type, name from users, sectors where users.sector_id=sectors.id and users.id=" + currentUserID;
             ResultSet result = Database.execute(sql);
             if (result.first()) {
                 tab[0] = result.getString("firstname") + " " + result.getString("lastname");
@@ -107,6 +120,7 @@ public class UsersFactory extends Model {
         }
         return tab;
     }
+
     public static String[] getEmployeeUsersEmails() throws SQLException, ClassNotFoundException {
         LinkedList<String> getEmails = new LinkedList<>();
         try {
@@ -121,7 +135,7 @@ public class UsersFactory extends Model {
         }
         String[] emails = new String[getEmails.size()];
         for (int i = 0; i < getEmails.size(); i++) {
-            emails[i]= getEmails.get(i);
+            emails[i] = getEmails.get(i);
         }
         return emails;
     }
@@ -129,7 +143,7 @@ public class UsersFactory extends Model {
     public static void remove_employee(String id) throws SQLException, ClassNotFoundException {
         String sql = "DELETE FROM `users` WHERE `users`.`id` = ?";
         String tab[] = {id};
-        Database.secureUpdate(sql,tab);
+        Database.secureUpdate(sql, tab);
     }
 
 

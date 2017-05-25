@@ -8,17 +8,17 @@ public class Users {
     private String lastname;
     private String email;
     private String type;
-    private int sector_id;
+    private String sector_name;
 
-    public Users(int id, String login, String password, String firstname, String lastname, String type, int sector_id, String email) {
+    public Users(int id, String login, String password, String firstname, String lastname, String email, String type, String sector_name) {
         this.id = id;
         this.login = login;
         this.password = password;
         this.firstname = firstname;
         this.lastname = lastname;
-        this.type = type;
-        this.sector_id = sector_id;
         this.email = email;
+        this.type = type;
+        this.sector_name = sector_name;
     }
 
     public Users() {
@@ -72,19 +72,19 @@ public class Users {
         this.type = type;
     }
 
-    public int getSector_id() {
-        return sector_id;
-    }
-
-    public void setSector_id(int sector_id) {
-        this.sector_id = sector_id;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getSector_name() {
+        return sector_name;
+    }
+
+    public void setSector_name(String sector_name) {
+        this.sector_name = sector_name;
     }
 }

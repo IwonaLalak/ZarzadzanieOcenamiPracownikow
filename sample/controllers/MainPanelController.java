@@ -47,6 +47,7 @@ public class MainPanelController implements ControlledScreen, Initializable {
     public TextField get_email;
     public Label remove_qf_message;
     public Button save_sector_btn;
+    public Button save_employee_btn;
     private ScreensController myController;
 
 
@@ -54,6 +55,9 @@ public class MainPanelController implements ControlledScreen, Initializable {
     public static String selected_sectorID;
     public static String selected_sectorName;
     public static String selected_employeeID;
+    public static String selected_employeeFirstname;
+    public static String selected_employeeLastname;
+    public static String selected_employeeEmail;
     public static String selected_questionformID;
 
     @FXML
@@ -90,6 +94,8 @@ public class MainPanelController implements ControlledScreen, Initializable {
     private TableColumn<Users, String> employeeColumnType;
     @FXML
     private TableColumn<Users, String> employeeColumnEmail;
+    @FXML
+    private TableColumn<Users, String> employeeColumnSector;
 
     @FXML
     private TableView<Sectors> sectorsTable;
@@ -203,8 +209,9 @@ public class MainPanelController implements ControlledScreen, Initializable {
         this.employeeColumnId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()));
         this.employeeColumnName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFirstname()));
         this.employeeColumnLastName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLastname()));
-        this.employeeColumnType.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getType()));
         this.employeeColumnEmail.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmail()));
+        this.employeeColumnType.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getType()));
+        this.employeeColumnSector.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSector_name()));
         while (result.next()) {
             usersModelData.add(new Users(
                     result.getInt("id"),
@@ -212,9 +219,9 @@ public class MainPanelController implements ControlledScreen, Initializable {
                     result.getString("password"),
                     result.getString("firstname"),
                     result.getString("lastname"),
+                    result.getString("email"),
                     result.getString("type"),
-                    result.getInt("sector_id"),
-                    result.getString("email")
+                    result.getString("name")
             ));
         }
         this.employeeTable.setItems(usersModelData);
@@ -363,9 +370,23 @@ public class MainPanelController implements ControlledScreen, Initializable {
                         email != null && email.length() > 1 &&
                         type != null && type.length() > 1 &&
                         sector != null && sector.length() > 1
-                ) {
-            String login = UsersFactory.addNewEmployee(firstname, lastname, email, type, sector);
-            add_new_employee_message.setText("Pomyślnie dodano usera. Login: " + login);
+            )
+        {
+            if(Objects.equals(save_employee_btn.getText(), "Dodaj")){ // just adding
+                String login = UsersFactory.addNewEmployee(firstname, lastname, email, type, sector);
+                add_new_employee_message.setText("Pomyślnie dodano usera. Login: " + login);
+            }
+            else{ // editing
+                UsersFactory.edit_employee(selected_employeeID,get_email.getText(),(String) select_type.getValue(),(String) select_sector.getValue());
+                get_firstname.setDisable(false);
+                get_lastname.setDisable(false);
+                add_new_employee_message.setText("Pomyślnie edytowano usera.");
+                save_employee_btn.setText("Dodaj");
+            }
+            get_firstname.setText("");
+            get_lastname.setText("");
+            get_email.setText("");
+            show_all_employes();
         } else {
             add_new_employee_message.setText("Uzupełnij poprawnie formularz");
         }
@@ -376,6 +397,22 @@ public class MainPanelController implements ControlledScreen, Initializable {
     public void getEmployeeID(MouseEvent mouseEvent) {
         Users selected_employee = employeeTable.getSelectionModel().getSelectedItem();
         selected_employeeID = selected_employee.getId() + "";
+        selected_employeeFirstname = selected_employee.getFirstname() + "";
+        selected_employeeLastname = selected_employee.getLastname() + "";
+        selected_employeeEmail = selected_employee.getEmail() + "";
+    }
+
+    public void edit_employee(ActionEvent actionEvent) {
+        if (selected_employeeID != null) {
+            save_employee_btn.setText("Zapisz");
+            get_firstname.setText(selected_employeeFirstname);
+            get_lastname.setText(selected_employeeLastname);
+            get_email.setText(selected_employeeEmail);
+            get_firstname.setDisable(true);
+            get_lastname.setDisable(true);
+        } else {
+            add_new_employee_message.setText("Nie wybrano id do edytowania");
+        }
     }
 
     // usuwanie
@@ -400,10 +437,17 @@ public class MainPanelController implements ControlledScreen, Initializable {
         String get_name = new_section_name.getText();
         add_new_sector_message.setText("");
         if (get_name != null && get_name.length() > 1) {
-            if (Objects.equals(save_sector_btn.getText(), "Dodaj")) {
+            if (Objects.equals(save_sector_btn.getText(), "Dodaj")) // just adding
+            {
                 SectionsFactory.add_new_section(get_name);
                 add_new_sector_message.setText("Dodano nowy dział");
+            } else // editing
+            {
+                SectionsFactory.edit_section(selected_sectorID, new_section_name.getText());
+                add_new_sector_message.setText("Zmieniono nazwę działu");
+                save_sector_btn.setText("Dodaj");
             }
+            new_section_name.setText("");
             show_all_sectors();
         } else {
             add_new_sector_message.setText("Uzupełnij poprawnie dane");
@@ -415,6 +459,17 @@ public class MainPanelController implements ControlledScreen, Initializable {
         Sectors selected_sector = sectorsTable.getSelectionModel().getSelectedItem();
         selected_sectorID = selected_sector.getId() + "";
         selected_sectorName = selected_sector.getName() + "";
+    }
+
+    // edytowanie
+    public void edit_section(ActionEvent actionEvent) {
+        if (selected_sectorID != null && selected_sectorName != null) {
+            save_sector_btn.setText("Zapisz");
+            new_section_name.setText(selected_sectorName);
+
+        } else {
+            add_new_sector_message.setText("Nie wybrano id do edytowania");
+        }
     }
 
     // usuwanie

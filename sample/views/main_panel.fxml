@@ -82,10 +82,11 @@
                                               <TableView fx:id="employeeTable" onMouseClicked="#getEmployeeID" prefHeight="261.0" prefWidth="797.0">
                                                   <columns>
                                                       <TableColumn fx:id="employeeColumnId" prefWidth="45.0" text="ID" />
-                                                      <TableColumn fx:id="employeeColumnName" prefWidth="109.0" text="Imie" />
-                                                      <TableColumn fx:id="employeeColumnLastName" prefWidth="213.0" text="Nazwisko" />
-                                                      <TableColumn fx:id="employeeColumnType" minWidth="0.0" prefWidth="193.0" text="Typ" />
-                                          <TableColumn fx:id="employeeColumnEmail" prefWidth="227.0" text="E-mail" />
+                                                      <TableColumn fx:id="employeeColumnName" prefWidth="165.0" text="Imie" />
+                                                      <TableColumn fx:id="employeeColumnLastName" prefWidth="142.0" text="Nazwisko" />
+                                                      <TableColumn fx:id="employeeColumnEmail" prefWidth="190.0" text="E-mail" />
+                                                      <TableColumn fx:id="employeeColumnType" minWidth="0.0" prefWidth="117.0" text="Typ" />
+                                                      <TableColumn fx:id="employeeColumnSector" minWidth="0.0" prefWidth="137.0" text="Dzial" />
                                                   </columns>
                                               </TableView>
                                           </children>
@@ -100,7 +101,7 @@
                                               <Label layoutX="29.0" layoutY="36.0" text="Imię:" />
                                               <Label layoutX="28.0" layoutY="68.0" text="Nazwisko:" />
                                               <Label layoutX="349.0" layoutY="71.0" text="Typ:" />
-                                              <Button layoutX="578.0" layoutY="104.0" mnemonicParsing="false" onAction="#add_new_employee" text="Dodaj" />
+                                              <Button fx:id="save_employee_btn" layoutX="578.0" layoutY="104.0" mnemonicParsing="false" onAction="#add_new_employee" text="Dodaj" />
                                               <TextField fx:id="get_firstname" layoutX="101.0" layoutY="32.0" prefHeight="26.0" prefWidth="228.0" />
                                               <TextField fx:id="get_lastname" layoutX="100.0" layoutY="64.0" prefHeight="26.0" prefWidth="229.0" />
                                               <ComboBox fx:id="select_type" layoutX="382.0" layoutY="66.0" prefHeight="26.0" prefWidth="244.0" />
@@ -108,7 +109,7 @@
                                     <ComboBox fx:id="select_sector" layoutX="382.0" layoutY="33.0" prefHeight="26.0" prefWidth="242.0" />
                                     <Label fx:id="add_new_employee_message" layoutX="30.0" layoutY="124.0" textFill="#ff5500" />
                                     <Button layoutX="715.0" layoutY="67.0" mnemonicParsing="false" onAction="#remove_employee" prefHeight="26.0" prefWidth="59.0" text="Usuń" />
-                                    <Button layoutX="715.0" layoutY="34.0" mnemonicParsing="false" text="Edytuj" />
+                                    <Button layoutX="715.0" layoutY="34.0" mnemonicParsing="false" onAction="#edit_employee" text="Edytuj" />
                                     <TextField fx:id="get_email" layoutX="101.0" layoutY="95.0" prefHeight="25.0" prefWidth="228.0" />
                                     <Label layoutX="28.0" layoutY="99.0" text="E-mail:" />
                                           </children>
@@ -146,13 +147,13 @@
                                  <children>
                                     <Label layoutX="30.0" layoutY="24.0" text="Dodaj nowy dział:" />
                                     <Label layoutX="30.0" layoutY="56.0" text="Nazwa:" />
-                                    <Button layoutX="420.0" layoutY="52.0" mnemonicParsing="false" onAction="#add_new_section" text="Dodaj" fx:id="save_sector_btn"/>
+                                    <Button fx:id="save_sector_btn" layoutX="420.0" layoutY="52.0" mnemonicParsing="false" onAction="#add_new_section" text="Dodaj" />
                                     <TextField fx:id="new_section_name" layoutX="77.0" layoutY="52.0" prefHeight="26.0" prefWidth="335.0" />
                                     <Label fx:id="add_new_sector_message" layoutX="30.0" layoutY="124.0" textFill="#ff5500" />
                                     <!--<TextField fx:id="manager_name" layoutX="102.0" layoutY="86.0" prefHeight="25.0" prefWidth="310.0" />
                                     <Label layoutX="30.0" layoutY="90.0" text="Kierownik:" />-->
                                     <Button layoutX="686.0" layoutY="52.0" mnemonicParsing="false" onAction="#remove_section" prefHeight="26.0" prefWidth="91.0" text="Usuń dział" />
-                                    <Button layoutX="574.0" layoutY="51.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="102.0" text="Edytuj dział" />
+                                    <Button layoutX="574.0" layoutY="51.0" mnemonicParsing="false" onAction="#edit_section" prefHeight="26.0" prefWidth="102.0" text="Edytuj dział" />
                                  </children>
                               </Pane>
                            </children>
