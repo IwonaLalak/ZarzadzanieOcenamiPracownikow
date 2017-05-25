@@ -12,6 +12,8 @@ import java.util.ResourceBundle;
 
 import sample.Main;
 import sample.ScreensController;
+import sample.email.EmailDispatcher;
+import sample.configuration.UserTypes;
 import sample.database.UsersFactory;
 import sample.interfaces.ControlledScreen;
 import sample.configuration.Logged;
@@ -20,7 +22,7 @@ public class LoginController implements Initializable, ControlledScreen {
 
     private ScreensController myController;
 
-    public void setScreenParent(ScreensController screenParent){
+    public void setScreenParent(ScreensController screenParent) {
         myController = screenParent;
     }
 
@@ -34,34 +36,37 @@ public class LoginController implements Initializable, ControlledScreen {
 
     @FXML
     private void login() throws IOException, SQLException, ClassNotFoundException {
-
         String log = login.getText();
-        String pass = password.getText() ;
+        String pass = password.getText();
         error.setText(" ");
-        if(log!=null && pass!=null && !(log.isEmpty()) &&!(pass.isEmpty())){
-            System.out.println("Logowanie: "+log+" "+pass);
-            String msg = UsersFactory.login(log,pass);
+        if (log != null && pass != null && !(log.isEmpty()) && !(pass.isEmpty())) {
+            System.out.println("Logowanie: " + log + " " + pass);
+            String msg = UsersFactory.login(log, pass);
             System.out.println(msg);
-            if (msg.isEmpty()){
+            if (msg.isEmpty()) {
                 error.setText("Złe dane logowania");
                 // msg="kierownik";
-            }else{
+            } else {
                 Logged.setWho(msg);
                 Logged.setUsername(log);
 
-                myController.loadScreen( Main.main,Main.mainView);
+                EmailDispatcher dispatcher = new EmailDispatcher();
+                String who = Logged.whoIsLogged();
+                if (who.equals(UserTypes.PRACODAWCA)) {
+                    String[] emails = UsersFactory.getEmployeeUsersEmails();
+                  //  dispatcher.sendFromGMail(emails);
+                }
+                myController.loadScreen(Main.main, Main.mainView);
                 myController.setScreen(Main.main);
             }
 
 
-        }
-        else{
+        } else {
             error.setText("Uzupełnij login i/lub hasło");
         }
         //w zaleznosci kto sie zalogowal, ustawiamy pracodawca/kierownik/pracownik
 
-       // UsersFactory.login();
-
+        // UsersFactory.login();
 
 
     }

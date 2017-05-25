@@ -1,12 +1,19 @@
 
 package sample.database;
 
-import javafx.scene.control.Label;
-import javafx.scene.text.Font;
-
+import java.awt.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+
+import javafx.scene.control.Label;
+import javafx.scene.text.*;
+import javafx.scene.text.Font;
+import sample.controllers.MainPanelController;
+import sample.configuration.UserTypes;
 
 public class UsersFactory extends Model {
 
@@ -16,16 +23,6 @@ public class UsersFactory extends Model {
     public static String login(String log, String pass) throws SQLException, ClassNotFoundException {
 
         String type = "";
-
-        /*
-         * bez zabezpiecznia
-         *
-       ResultSet result = Database.execute("SELECT `type` FROM `users` WHERE `users`.`login`='" + log + "' AND `users`.`password`='" + pass + "'");
-
-        if (result.first()) {
-            //System.out.println(result.getString("type") +" aaaaa");
-            type = result.getString("type");
-        }*/
 
         String tab[] = new String[2];
         tab[0] = log;
@@ -42,11 +39,11 @@ public class UsersFactory extends Model {
     }
 
 
-    public static String addNewEmployee(String firstname, String lastname, String type, String sector) throws SQLException, ClassNotFoundException {
+    public static String addNewEmployee(String firstname, String lastname, String email, String type, String sector) throws SQLException, ClassNotFoundException {
 
         // getting id of sector name
 
-        String tab[] = new String[6];
+        String tab[] = new String[7];
 
         // create login
         char pom1 = firstname.toCharArray()[0];
@@ -54,21 +51,22 @@ public class UsersFactory extends Model {
         // create pass
         String pass = "xxx";
         tab[0] = login;
-        tab[1] = pass;
-        tab[2] = firstname;
-        tab[3] = lastname;
-        tab[4] = type;
-        tab[5] = null;
+        tab[1] = email;
+        tab[2] = pass;
+        tab[3] = firstname;
+        tab[4] = lastname;
+        tab[5] = type;
+        tab[6] = null;
 
         String tab_pom[] = new String[1];
         tab_pom[0] = sector;
         String sql = "SELECT id FROM sectors WHERE name = ?";
         ResultSet result = Database.secureExecute(sql, tab_pom);
         if (result.first()) {
-            tab[5] = result.getString("id");
+            tab[6] = result.getString("id");
         }
 
-        sql = "INSERT INTO `users` (`id`, `login`, `password`, `firstname`, `lastname`, `type`, `sector_id`, `email`) VALUES\n" +
+        sql = "INSERT INTO `users` (`id`, `login`, `email`, `password`, `firstname`, `lastname`, `type`, `sector_id`) VALUES\n" +
                 "(NULL, ?, ?, ?, ?, ?, ?, ?)";
 
         Database.secureUpdate(sql, tab);
@@ -109,5 +107,30 @@ public class UsersFactory extends Model {
         }
         return tab;
     }
+    public static String[] getEmployeeUsersEmails() throws SQLException, ClassNotFoundException {
+        LinkedList<String> getEmails = new LinkedList<>();
+        try {
+            ResultSet result = Database.secureExecute("SELECT email FROM users where type = ?", new String[]{UserTypes.PRACOWNIK});
+            while (result.next()) {
+                getEmails.push(result.getString("email"));
+            }
+        } catch (SQLException e) {
+            System.out.print("Problem with SQL Statement" + e.getStackTrace());
+        } catch (ClassNotFoundException e) {
+            System.out.print("Problem with ClassNotFound" + e.getStackTrace());
+        }
+        String[] emails = new String[getEmails.size()];
+        for (int i = 0; i < getEmails.size(); i++) {
+            emails[i]= getEmails.get(i);
+        }
+        return emails;
+    }
+
+    public static void remove_employee(String id) throws SQLException, ClassNotFoundException {
+        String sql = "DELETE FROM `users` WHERE `users`.`id` = ?";
+        String tab[] = {id};
+        Database.secureUpdate(sql,tab);
+    }
+
 
 }

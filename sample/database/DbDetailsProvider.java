@@ -3,10 +3,10 @@ package sample.database;
 public class DbDetailsProvider 
 {
     private final String user = "root";
-    private final String pass = "";
+    private final String pass = "FE;lDpd#/5-t";
     private final String host = "jdbc:mysql://localhost/";
-    private final String db_name = "sample";
-    
+    private final String db_name = "zarzadzanie_pracownikami";
+
     public String getUser()
     {
         return this.user;
