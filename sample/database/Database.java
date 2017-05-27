@@ -56,6 +56,7 @@ public class Database {
         this.update("CREATE TABLE `users` (\n" +
                 "  `id` int(11) NOT NULL,\n" +
                 "  `login` text COLLATE utf8_polish_ci NOT NULL,\n" +
+                "  `email` text COLLATE utf8_polish_ci NOT NULL,\n" +
                 "  `password` text COLLATE utf8_polish_ci NOT NULL,\n" +
                 "  `firstname` text COLLATE utf8_polish_ci NOT NULL,\n" +
                 "  `lastname` text COLLATE utf8_polish_ci NOT NULL,\n" +
@@ -85,6 +86,9 @@ public class Database {
                 "  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,\n" +
                 "  `log_content` text COLLATE utf8_polish_ci NOT NULL,\n" +
                 "  `log_short` text COLLATE utf8_polish_ci NOT NULL\n" +
+                "  `rated_person` text COLLATE utf8_polish_ci NOT NULL\n" +
+                "  `grade` text COLLATE utf8_polish_ci NOT NULL\n" +
+                "  `on_question` text COLLATE utf8_polish_ci NOT NULL\n" +
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;");
 
         this.update("ALTER TABLE `logs`\n" +
@@ -291,7 +295,6 @@ public class Database {
     }
 
     public static ResultSet execute(String sql) {
-        System.out.println(sql);
         ResultSet result = null;
 
         try {
@@ -306,7 +309,6 @@ public class Database {
     }
 
     public static void update(String sql) {
-        System.out.println(sql);
         try {
             Statement stmt = Database.prepareStatement();
 
