@@ -9,6 +9,8 @@ import sample.interfaces.ControlledScreen;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
@@ -54,17 +56,65 @@ public class SeeReportController implements Initializable, ControlledScreen {
                 return;
             }
 
-            StringBuilder content = new StringBuilder();
-            for (String line : reportContent) {
-                String[] segments = line.split(";");
-
-                content.append(segments[0]).append(" ocenił pytanie \" ").append(segments[2]).append("\" na ").append(segments[1]).append("\n");
+            Map<String, Integer> map = new HashMap<String, Integer>();
+            Map<String, Double> srednia = new HashMap<String, Double>();
+            Map<String, Integer> kto = new HashMap<String, Integer>();
+            
+            for ( String line : reportContent) {
+                String actualKto = line.split(";")[0];
+                String actualSrednia = line.split(";")[1];
+                String question = line.split(";")[2];
+                
+                if(kto.containsKey(actualKto)) {
+                    int count = kto.get(actualKto) + 1;
+                    kto.put(actualKto, count);
+                }
+                else
+                {
+                    kto.put(actualKto, 1);
+                }
+                
+                if(map.containsKey(question) )
+                {
+                    int count = map.get(question) + 1;
+                    map.put(question, count);
+                    
+                    Double wynik = srednia.get(question) + Double.parseDouble(actualSrednia); 
+                    srednia.put(question, wynik);
+                }
+                else{
+                    map.put(question, 1);
+                    srednia.put(question, Double.parseDouble(actualSrednia));
+                }
             }
+            
+            StringBuilder content = new StringBuilder();
+            for(Map.Entry<String, Integer> entry : map.entrySet()) {
+                String key = entry.getKey();
+                int value = entry.getValue();
+                
+                content.append("Pytanie \"" + key + "\" oceniono " + value +" razy, ze średnią: " + srednia.get(key) + "\n");
+            }
+            
+            String najczesciej = "";
+            int value = 0;
+            for (Map.Entry<String, Integer> entry : kto.entrySet()) {
+                String key = entry.getKey();
+                int ktoValue = entry.getValue();
+                if(ktoValue > value ){
+                    value = ktoValue;
+                    najczesciej = key;
+                }
+            }
+            
+            content.append("\n\n\n Najczesciej ocenial: " + najczesciej);
+           
 
            this.reportContent.setText(content.toString());
         }
         catch( Exception e)
         {
+            System.out.println(e.getMessage());
             this.reportContent.setText("Dane niepoprawne lub ich brak!");
         }
     }
