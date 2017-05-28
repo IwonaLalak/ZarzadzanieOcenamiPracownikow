@@ -15,6 +15,7 @@ import sample.interfaces.ControlledScreen;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -102,7 +103,8 @@ public class SeeReportController implements Initializable, ControlledScreen {
                 String key = entry.getKey();
                 int value = entry.getValue();
                 
-                content.append("Pytanie \"" + key + "\" oceniono " + value +" razy, ze średnią: " + srednia.get(key)/map.get(key) + "\n");
+                DecimalFormat df = new DecimalFormat("#.##");
+                content.append("Pytanie \"" + key + "\" oceniono " + value +" razy, ze średnią: " + df.format(srednia.get(key)/map.get(key)) + "\n");
             }
             
             String najczesciej = "";

@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 public class Model 
 {
+    public String table;
     /**
      * index: nazwa kolumny z Db
      * value: wartosc z danej kolumny
@@ -21,6 +22,36 @@ public class Model
     
     public Model() 
     {
+        String sql = "SELECT * FROM " + this.getTableName();
+        ResultSet rs = Database.execute( sql );
+        ResultSetMetaData rsmd;
+        
+        try {
+            rsmd = rs.getMetaData();
+            
+            int columnCount = rsmd.getColumnCount();
+
+            for (int i = 1; i <= columnCount; i++ ) {
+                String columnName = rsmd.getColumnName(i);
+                this.data.put( columnName, "" );
+            }
+            
+            Set set = data.entrySet();
+            Iterator i = set.iterator();
+            while(i.hasNext()) {
+               Map.Entry me = (Map.Entry)i.next();
+            }
+      
+        } catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    public Model(String tableName) 
+    {
+        this.table = tableName;
+        
         String sql = "SELECT * FROM " + this.getTableName();
         ResultSet rs = Database.execute( sql );
         ResultSetMetaData rsmd;
@@ -73,6 +104,7 @@ public class Model
     
     /**
      * Szuka rekordu o podanym id
+     * @param id
      * @return ResultSet
      */
     public Model find( int id )
@@ -175,6 +207,11 @@ public class Model
     
     public String getTableName()
     {
+        if(this.table != null)
+        {
+            return this.table;
+        }
+        
         return this.getClass().getSimpleName();
     }
     

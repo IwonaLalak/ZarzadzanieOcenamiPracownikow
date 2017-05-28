@@ -17,6 +17,10 @@ import java.util.Objects;
  */
 public class VotesFactory extends Model {
 
+    public VotesFactory(String tableName){
+        super(tableName);
+    }
+    
     public static void add_new_vote(String vote_name, LocalDate enddate, String sector_name, String who_can_vote, String qf_name) throws SQLException, ClassNotFoundException {
 
 
