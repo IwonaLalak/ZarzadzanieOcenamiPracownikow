@@ -1,5 +1,11 @@
 package sample.controllers;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,11 +21,14 @@ import java.util.ResourceBundle;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import sample.database.entity.Raports;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class SeeReportController implements Initializable, ControlledScreen {
 
     private ScreensController myController;
-
+    public  String finalContent;
+    
     @FXML
     public Label reportTitle;
     
@@ -93,7 +102,7 @@ public class SeeReportController implements Initializable, ControlledScreen {
                 String key = entry.getKey();
                 int value = entry.getValue();
                 
-                content.append("Pytanie \"" + key + "\" oceniono " + value +" razy, ze średnią: " + srednia.get(key) + "\n");
+                content.append("Pytanie \"" + key + "\" oceniono " + value +" razy, ze średnią: " + srednia.get(key)/map.get(key) + "\n");
             }
             
             String najczesciej = "";
@@ -111,6 +120,7 @@ public class SeeReportController implements Initializable, ControlledScreen {
            
 
            this.reportContent.setText(content.toString());
+           this.finalContent = content.toString();
         }
         catch( Exception e)
         {
@@ -123,4 +133,28 @@ public class SeeReportController implements Initializable, ControlledScreen {
     {
         return this;
     }
+    
+    @FXML
+    public void generatePdf()
+    {
+        try{
+            Date currentDate = new Date();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MM_yyyy_HH_mm_ss");
+            String dateString = dateFormat.format(currentDate);
+
+            Document document = new Document();
+        
+            PdfWriter.getInstance( document, new FileOutputStream("report_"+dateString+".pdf")); 
+            document.open(); 
+            document.add(new Paragraph(this.reportTitle.getText() +" \n\n\n"));
+            document.add( new Paragraph(this.finalContent)); 
+            document.close();
+        }
+        catch(FileNotFoundException e){
+            System.out.println(e.getMessage());
+        }
+        catch(DocumentException e){ 
+            System.out.println(e.getMessage());
+        }
+    }    
 }

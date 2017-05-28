@@ -36,7 +36,9 @@
       <Pane prefHeight="144.0" prefWidth="800.0">
          <children>
             <Button onAction="#goBackToReports" layoutX="700.0" layoutY="35.0" mnemonicParsing="false" text="Powrót" />
+            <Button onAction="#generatePdf" layoutX="600.0" layoutY="35.0" mnemonicParsing="false" text="Generuj PDF" />
          </children>
+         
       </Pane>
     </children>
 </VBox>
