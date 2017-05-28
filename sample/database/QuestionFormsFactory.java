@@ -76,4 +76,31 @@ public class QuestionFormsFactory extends Model {
         Database.secureUpdate(sql,tab);
     }
 
+    public static String[] getQuestionformData(String id) throws SQLException, ClassNotFoundException {
+        String data[] = new String [4];
+        String sql = "SELECT * FROM questionforms WHERE id=?";
+        String tab[] = {id};
+        ResultSet rs = Database.secureExecute(sql,tab);
+        if(rs.first()){
+            data[0] = id;
+            data[1] = rs.getString("name");
+            data[2] = rs.getString("creation_date");
+            data[3] = rs.getString("number_of_questions");
+        }
+
+        return data;
+    }
+
+    public static ArrayList<String> getQuestionform_questions(String id) throws SQLException, ClassNotFoundException {
+        ArrayList<String> questions = new ArrayList<>();
+        String sql = "SELECT * FROM questions WHERE questionform_id=?";
+        String tab[] = {id};
+        ResultSet rs = Database.secureExecute(sql,tab);
+        while(rs.next()){
+            questions.add(rs.getString("content"));
+        }
+
+        return questions;
+    }
+
 }

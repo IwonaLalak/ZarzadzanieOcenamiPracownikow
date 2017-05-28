@@ -143,7 +143,13 @@ public class MainPanelController implements ControlledScreen, Initializable {
 
     @FXML
     private void showQuestionForm() throws IOException {
-        myController.setScreen(Main.see_question_form);
+        remove_qf_message.setText("");
+        if(selected_questionformID!=null){
+            myController.setScreen(Main.see_question_form);
+        }
+        else{
+            remove_qf_message.setText("Nie wybrano ID ankiety");
+        }
     }
 
     @FXML
@@ -546,11 +552,10 @@ public class MainPanelController implements ControlledScreen, Initializable {
     *  glosowania - wypelnianie
     * */
 
-    // pobieranie idka do wybierania ankiety
+    // pobieranie idka do wybierania glosowania
     public void getVoteID(MouseEvent mouseEvent) {
         Votes selected_vote = glosujTable.getSelectionModel().getSelectedItem();
         selected_voteID = selected_vote.getId() + "";
     }
-
 
 }

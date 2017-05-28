@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import sample.Main;
 import sample.ScreensController;
+import sample.configuration.UserTypes;
 import sample.database.UsersFactory;
 import sample.interfaces.ControlledScreen;
 import sample.configuration.Logged;
