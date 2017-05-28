@@ -4,12 +4,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+
 import sample.Main;
 import sample.ScreensController;
 import sample.configuration.UserTypes;
@@ -18,6 +19,7 @@ import sample.interfaces.ControlledScreen;
 import sample.configuration.Logged;
 import sample.database.VotesFactory;
 import sample.database.Model;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.text.DateFormat;
@@ -39,8 +41,8 @@ public class LoginController implements Initializable, ControlledScreen {
     Label error;
 
     @FXML
-    private void login() throws IOException, SQLException, ClassNotFoundException {
-        
+    private boolean login() throws IOException, SQLException, ClassNotFoundException {
+
         String log = login.getText();
         String pass = password.getText();
         error.setText(" ");
@@ -58,11 +60,10 @@ public class LoginController implements Initializable, ControlledScreen {
                 myController.loadScreen(Main.main, Main.mainView);
                 myController.setScreen(Main.main);
             }
-            if(msg.equals(UserTypes.KIEROWNIK) || msg.equals(UserTypes.PRACODAWCA)){
+            if (msg.equals(UserTypes.KIEROWNIK) || msg.equals(UserTypes.PRACODAWCA)) {
                 this.closeVoteFormIfExpired();
             }
-
-            
+            return true;
         } else {
             error.setText("Uzupełnij login i/lub hasło");
         }
@@ -70,35 +71,38 @@ public class LoginController implements Initializable, ControlledScreen {
 
         // UsersFactory.login();
 
-
+        return false;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }
-    
-    public void closeVoteFormIfExpired()
-    {
+
+    public Model closeVoteFormIfExpired() {
         Model votes = new VotesFactory("votes");
         ResultSet allVotes = votes.all();
-        try{
-            while( allVotes.next() ){
+        try {
+            while (allVotes.next()) {
                 DateFormat formatter = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
                 Date dueDate = formatter.parse(allVotes.getString(4));
                 Date currentDate = new Date();
 
-                if(currentDate.before(dueDate)){
+                if (currentDate.before(dueDate)) {
                     int id = allVotes.getInt(1);
-                    Model vote = votes.find( id );
+                    Model vote = votes.find(id);
                     vote.set("is_current", "0");
                     vote.save();
+                    return vote;
                 }
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
+        return null;
+    }
+
+    public ScreensController getScreenController() {
+        return this.myController;
     }
 }

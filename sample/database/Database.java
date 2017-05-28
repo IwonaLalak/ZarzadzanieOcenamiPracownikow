@@ -3,22 +3,6 @@ package sample.database;
 import java.sql.*;
 
 public class Database {
-    
-/*    public static Connection prepareConn() throws SQLException, ClassNotFoundException {
-        Connection conn = null;
-
-        DbDetailsProvider dbDetailsProvider = new DbDetailsProvider();
-        String user = dbDetailsProvider.getUser();
-        String pass = dbDetailsProvider.getPass();
-        String host = dbDetailsProvider.getHost();
-
-        Class.forName("com.mysql.jdbc.Driver");
-
-        conn = DriverManager.getConnection(host, user, pass);
-
-        return conn;
-    }*/
-
     public static Connection prepareSecureConnection() throws ClassNotFoundException, SQLException {
         Connection conn = null;
 
@@ -41,8 +25,8 @@ public class Database {
         try {
 
             PreparedStatement stmt = conn.prepareStatement(sql);
-            for(int i=0;i<tab.length;i++){
-                stmt.setString(i+1,tab[i]);
+            for (int i = 0; i < tab.length; i++) {
+                stmt.setString(i + 1, tab[i]);
             }
 
 
@@ -54,23 +38,20 @@ public class Database {
         return result;
     }
 
-    public static void secureUpdate(String sql,String tab[]) throws SQLException, ClassNotFoundException {
+    public static void secureUpdate(String sql, String tab[]) throws SQLException, ClassNotFoundException {
 
         Connection conn = prepareSecureConnection();
-        try{
+        try {
             PreparedStatement stmt = conn.prepareStatement(sql);
-            for(int i=0;i<tab.length;i++){
-                stmt.setString(i+1,tab[i]);
+            for (int i = 0; i < tab.length; i++) {
+                stmt.setString(i + 1, tab[i]);
             }
             stmt.executeUpdate();
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
     }
-
-
-
 
 
     public static Statement prepareStatement() throws ClassNotFoundException, SQLException {
