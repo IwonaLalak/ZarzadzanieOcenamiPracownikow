@@ -4,18 +4,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
-
 import sample.Main;
 import sample.ScreensController;
-import sample.email.EmailDispatcher;
-import sample.configuration.UserTypes;
 import sample.database.UsersFactory;
 import sample.interfaces.ControlledScreen;
 import sample.configuration.Logged;

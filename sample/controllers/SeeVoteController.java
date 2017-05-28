@@ -31,4 +31,8 @@ public class SeeVoteController implements Initializable, ControlledScreen {
     public void setScreenParent(ScreensController screenPage) {
         this.myController = screenPage;
     }
+
+    public ScreensController getScreenController() {
+        return this.myController;
+    }
 }
