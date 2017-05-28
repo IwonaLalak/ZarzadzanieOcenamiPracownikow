@@ -22,6 +22,10 @@ public class Logs {
         this.log_short = log_short;
     }
 
+    public Logs(String log_content){
+        this.log_content=log_content;
+    }
+
     public Logs(){
     }
 

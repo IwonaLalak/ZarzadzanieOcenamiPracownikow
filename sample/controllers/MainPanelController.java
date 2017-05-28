@@ -44,9 +44,11 @@ public class MainPanelController implements ControlledScreen, Initializable {
     public Label remove_qf_message;
     public Button save_sector_btn;
     public Button save_employee_btn;
+    public Label see_vote_msg;
     private ScreensController myController;
 
     public static String selected_voteID;
+    public static String selected_voteID_toSee;
     public static String selected_sectorID;
     public static String selected_sectorName;
     public static String selected_employeeID;
@@ -144,17 +146,22 @@ public class MainPanelController implements ControlledScreen, Initializable {
     @FXML
     private void showQuestionForm() throws IOException {
         remove_qf_message.setText("");
-        if(selected_questionformID!=null){
+        if (selected_questionformID != null) {
             myController.setScreen(Main.see_question_form);
-        }
-        else{
+        } else {
             remove_qf_message.setText("Nie wybrano ID ankiety");
         }
     }
 
     @FXML
     private void showVote() throws IOException {
-        myController.setScreen(Main.see_vote);
+        see_vote_msg.setText("");
+        if(selected_voteID_toSee!=null){
+            myController.setScreen(Main.see_vote);
+        }
+        else{
+            see_vote_msg.setText("Nie wybrano id");
+        }
     }
 
     @FXML
@@ -197,15 +204,6 @@ public class MainPanelController implements ControlledScreen, Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    @FXML
-    public void closeVoting() throws SQLException {
-        Votes selectedVote = this.showallvotesTable.getSelectionModel().getSelectedItem();
-        Integer questionFormId = selectedVote.getQuestionform_id();
-        String sql = "UPDATE `votes` SET `is_current` = '0' WHERE `questionform_id` = " + questionFormId;
-        Database.update(sql);
-        this.show_all_votes();
     }
 
     @FXML
@@ -282,7 +280,7 @@ public class MainPanelController implements ControlledScreen, Initializable {
 
     @FXML
     private void show_all_votes() throws SQLException {
-        ResultSet result = Database.execute("SELECT *,questionforms.name as questionform_name, sectors.name as sector_name FROM votes,sectors,questionforms WHERE votes.section_id = sectors.id AND votes.questionform_id=questionforms.id");
+        ResultSet result = Database.execute("SELECT *,questionforms.name as questionform_name, sectors.name as sector_name FROM votes,sectors,questionforms WHERE votes.section_id = sectors.id AND votes.questionform_id=questionforms.id order by votes.date_to desc");
         ObservableList<Votes> showAllVotesData = FXCollections.observableArrayList();
         this.showallvotesColumnId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()));
         this.showallvotesColumnName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVote_name()));
@@ -552,10 +550,36 @@ public class MainPanelController implements ControlledScreen, Initializable {
     *  glosowania - wypelnianie
     * */
 
-    // pobieranie idka do wybierania glosowania
+    // pobieranie idka do wybierania glosowania z glosujTable
     public void getVoteID(MouseEvent mouseEvent) {
         Votes selected_vote = glosujTable.getSelectionModel().getSelectedItem();
         selected_voteID = selected_vote.getId() + "";
     }
+
+    /*
+    * glosowania - wyswietlanie
+    * */
+
+    // pobieranie idka do wybierania glosowania z votesTable
+    public void getVoteIDToSee(MouseEvent mouseEvent) {
+        Votes select_vote = showallvotesTable.getSelectionModel().getSelectedItem();
+        selected_voteID_toSee = select_vote.getId() + "";
+    }
+
+    // szybsze konczenie glosowania
+    @FXML
+    public void closeVoting() throws SQLException {
+        see_vote_msg.setText("");
+        if(selected_voteID_toSee!=null){
+            String sql = "UPDATE `votes` SET `is_current` = '0' WHERE `id` = " + selected_voteID_toSee;
+            Database.update(sql);
+            this.show_all_votes();
+        }
+        else{
+            see_vote_msg.setText("Nie wybrano id");
+        }
+
+    }
+
 
 }

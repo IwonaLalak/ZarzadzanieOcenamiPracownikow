@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<TabPane fx:id="tabs" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="579.0" prefWidth="960.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.MainPanelController">
+<TabPane fx:id="tabs" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="579.0" prefWidth="960.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.MainPanelController">
   <tabs>
     <Tab onSelectionChanged="#showUserData" text="Profil">
       <content>
@@ -213,7 +213,7 @@
                      <children>
                         <Pane prefHeight="101.0" prefWidth="800.0">
                            <children>
-                              <Label layoutX="33.0" layoutY="43.0" text="Trwajace głosowania">
+                              <Label layoutX="33.0" layoutY="43.0" text="Głosowania">
                                  <font>
                                     <Font size="25.0" />
                                  </font>
@@ -222,30 +222,27 @@
                         </Pane>
                         <Pane prefHeight="398.0" prefWidth="800.0">
                            <children>
-                              <TableView fx:id="showallvotesTable" layoutX="7.0" layoutY="10.0" prefHeight="376.0" prefWidth="944.0">
+                              <TableView fx:id="showallvotesTable" layoutX="7.0" layoutY="10.0" onMouseClicked="#getVoteIDToSee" prefHeight="376.0" prefWidth="944.0">
                                 <columns>
                                   <TableColumn fx:id="showallvotesColumnId" prefWidth="38.0" text="Nr." />
-                                  <TableColumn fx:id="showallvotesColumnName" prefWidth="135.99998474121094" text="Nazwa" />
-                                    <TableColumn fx:id="showallvotesColumnDateFrom" prefWidth="112.0" text="Data od" />
-                                    <TableColumn fx:id="showallvotesColumnDateTo" prefWidth="112.0" text="Data do" />
-                                    <TableColumn fx:id="showallvotesColumnSector" prefWidth="89.0" text="Dział" />
-                                    <TableColumn fx:id="showallvotesColumnWho" prefWidth="148.0" text="Kto głosuje" />
-                                    <TableColumn fx:id="showallvotesColumnCurrent" prefWidth="86.0" text="Status" />
-                                    <TableColumn fx:id="showallvotesColumnIsEnded" prefWidth="220.0" text="Zakończone" />
+                                  <TableColumn fx:id="showallvotesColumnName" prefWidth="172.0" text="Nazwa" />
+                                    <TableColumn fx:id="showallvotesColumnDateFrom" prefWidth="100.0" text="Data od" />
+                                    <TableColumn fx:id="showallvotesColumnDateTo" prefWidth="97.0" text="Data do" />
+                                    <TableColumn fx:id="showallvotesColumnSector" prefWidth="69.0" text="Dział" />
+                                    <TableColumn fx:id="showallvotesColumnWho" prefWidth="150.0" text="Kto głosuje" />
+                                    <TableColumn fx:id="showallvotesColumnCurrent" minWidth="0.0" prefWidth="0.0" text="Status" />
+                                    <TableColumn fx:id="showallvotesColumnIsEnded" prefWidth="106.0" text="Zakończone" />
                                 </columns>
                               </TableView>
                            </children>
                         </Pane>
                         <Pane prefHeight="83.0" prefWidth="800.0">
                            <children>
-                              <Button layoutX="95.0" layoutY="28.0" mnemonicParsing="false" onAction="#sendReminder" text="Wyślij przypomnienia email" />
-                              <Button layoutX="332.0" layoutY="28.0" mnemonicParsing="false" onAction="#newVote" text="Nowe głosowanie" />
-<!--
-nie ta zakladka - ma byc ten button w zakladce glosuj
-                              <Button layoutX="372.0" layoutY="25.0" mnemonicParsing="false" onAction="#fillVote" text="Wypełnij" />
--->
-                              <Button layoutX="556.0" layoutY="28.0" mnemonicParsing="false" onAction="#showVote" text="Zobacz przebieg" />
-                              <Button layoutX="672.0" layoutY="28.0" mnemonicParsing="false" onAction="#closeVoting" text="Zakończ szybciej" />
+                              <Button layoutX="18.0" layoutY="28.0" mnemonicParsing="false" onAction="#sendReminder" text="Wyślij przypomnienia email" />
+                              <Button layoutX="239.0" layoutY="28.0" mnemonicParsing="false" onAction="#newVote" text="Nowe głosowanie" />
+                              <Button layoutX="386.0" layoutY="28.0" mnemonicParsing="false" onAction="#showVote" text="Zobacz przebieg" />
+                              <Button layoutX="530.0" layoutY="28.0" mnemonicParsing="false" onAction="#closeVoting" text="Zakończ szybciej" />
+                              <Label fx:id="see_vote_msg" layoutX="14.0" layoutY="6.0" text=" " textFill="#ff5500" />
                            </children>
                         </Pane>
                      </children>

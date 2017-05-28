@@ -228,5 +228,17 @@ public class VotesFactory extends Model {
         Database.update(sql);
     }
 
+
+    public static String getSelectedVoteName(String id) throws SQLException, ClassNotFoundException {
+        String votename = "";
+        String sql = "SELECT * FROM votes WHERE id=?";
+        String tab[] = {id};
+        ResultSet rs = Database.secureExecute(sql,tab);
+        if(rs.first()){
+            votename = rs.getString("vote_name");
+        }
+        return votename;
+    }
+
 }
 

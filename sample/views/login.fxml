@@ -6,14 +6,13 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 
-
-<Pane fx:controller="sample.controllers.LoginController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="575.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.LoginController">
    <children>
-      <Button onAction="#login" layoutX="155.0" layoutY="137.0" mnemonicParsing="false" text="Zaloguj się" />
-      <Label layoutX="103.0" layoutY="170.0" text=" " textFill="RED" fx:id="error"/>
-      <Label layoutX="71.0" layoutY="92.0" text="Hasło:" />
-      <PasswordField fx:id="password" layoutX="140.0" layoutY="87.0" prefHeight="26.0" prefWidth="193.0" />
-      <Label layoutX="71.0" layoutY="52.0" text="Login:" />
-      <TextField fx:id="login" layoutX="140.0" layoutY="47.0" prefHeight="26.0" prefWidth="193.0" />
+      <Button layoutX="335.0" layoutY="242.0" mnemonicParsing="false" onAction="#login" prefHeight="16.0" prefWidth="111.0" text="Zaloguj się" />
+      <Label fx:id="error" layoutX="306.0" layoutY="276.0" text=" " textFill="RED" />
+      <Label layoutX="268.0" layoutY="200.0" text="Hasło:" />
+      <PasswordField fx:id="password" layoutX="335.0" layoutY="195.0" prefHeight="26.0" prefWidth="193.0" />
+      <Label layoutX="269.0" layoutY="161.0" text="Login:" />
+      <TextField fx:id="login" layoutX="335.0" layoutY="156.0" prefHeight="26.0" prefWidth="193.0" />
    </children>
 </Pane>
