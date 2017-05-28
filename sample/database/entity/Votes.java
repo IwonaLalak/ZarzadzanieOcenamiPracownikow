@@ -8,23 +8,26 @@ package sample.database.entity;
 public class Votes {
     private int id;
     private String vote_name;
-    private String datatime;
+    private String dateFrom;
+    private String dateTo;
     private int is_current;
     private String who;
     private int section_id;
     private int questionform_id;
     private int filled;
+    private String isEnded;
 
-    public Votes(int id, String vote_name, String datatime, int is_current, String who, int section_id, int questionform_id, int filled){
+    public Votes(int id, String vote_name, String dateFrom, String dateTo, int is_current, String who, int section_id, int questionform_id, int filled, String isEnded){
         this.id = id;
         this.vote_name = vote_name;
-        this.datatime = datatime;
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
         this.is_current = is_current;
         this.who = who;
         this.section_id = section_id;
         this.questionform_id = questionform_id;
         this.filled = filled;
-
+        this.isEnded = isEnded;
     }
 
     public Votes(){
@@ -33,6 +36,10 @@ public class Votes {
 
     public int getId() {
         return id;
+    }
+
+    public String getDateTo() {
+        return dateTo;
     }
 
     public void setId(int id) {
@@ -47,12 +54,12 @@ public class Votes {
         this.vote_name = vote_name;
     }
 
-    public String getDatatime() {
-        return datatime;
+    public String getDateFrom() {
+        return dateFrom;
     }
 
-    public void setDatatime(String datatime) {
-        this.datatime = datatime;
+    public void setDateFrom(String dateFrom) {
+        this.dateFrom = dateFrom;
     }
 
     public int getIs_current() {
@@ -89,6 +96,10 @@ public class Votes {
     
     public String getStatus(){
         return ( this.filled == 1) ? "Wypełniona" : "Niewypełniona";
+    }
+
+    public String isEnded() {
+        return ( this.is_current == 1) ? "Nie" : "Tak";
     }
 }
 

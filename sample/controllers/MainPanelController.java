@@ -71,10 +71,13 @@ public class MainPanelController implements ControlledScreen, Initializable {
     @FXML
     private TableColumn<Votes, String> glosujColumnNazwa;
     @FXML
-    private TableColumn<Votes, String> glosujColumnData;
+    private TableColumn<Votes, String> glosujColumnDataRozpoczecia;
+    @FXML
+    private TableColumn<Votes, String> glosujColumnDataZakonczenia;
     @FXML
     private TableColumn<Votes, String> glosujColumnStatus;
-
+    @FXML
+    private TableColumn<Votes, String> glosujColumnZakonczone;
 
     @FXML
     private TableView<Users> employeeTable;
@@ -120,13 +123,15 @@ public class MainPanelController implements ControlledScreen, Initializable {
     @FXML
     private TableColumn<Votes, String> showallvotesColumnDateFrom;
     @FXML
-    private TableColumn<Votes, Number> showallvotesColumnDateTo;
+    private TableColumn<Votes, String> showallvotesColumnDateTo;
     @FXML
     private TableColumn<Votes, Number> showallvotesColumnSector;
     @FXML
     private TableColumn<Votes, String> showallvotesColumnWho;
     @FXML
     private TableColumn<Votes, String> showallvotesColumnCurrent;
+    @FXML
+    private TableColumn<Votes, String> showallvotesColumnIsEnded;
 
     @FXML
     public TabPane tabs;
@@ -188,9 +193,14 @@ public class MainPanelController implements ControlledScreen, Initializable {
         }
     }
 
-    /*
-    * pokazywanie tabeli
-    * */
+    @FXML
+    public void closeVoting() throws SQLException {
+        Votes selectedVote = this.showallvotesTable.getSelectionModel().getSelectedItem();
+        Integer questionFormId = selectedVote.getQuestionform_id();
+        String sql = "UPDATE `votes` SET `is_current` = '0' WHERE `questionform_id` = " + questionFormId;
+        Database.update(sql);
+        this.show_all_votes();
+    }
 
     @FXML
     private void show_all_employes() throws SQLException {
@@ -270,14 +280,23 @@ public class MainPanelController implements ControlledScreen, Initializable {
         ObservableList<Votes> showAllVotesData = FXCollections.observableArrayList();
         this.showallvotesColumnId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()));
         this.showallvotesColumnName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVote_name()));
-        this.showallvotesColumnDateFrom.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDatatime()));
-        this.showallvotesColumnDateTo.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getIs_current()));
+        this.showallvotesColumnDateFrom.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDateFrom()));
+        this.showallvotesColumnDateTo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDateTo()));
+        this.showallvotesColumnCurrent.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
         this.showallvotesColumnWho.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getWho()));
         this.showallvotesColumnSector.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSection_id()));
-        this.showallvotesColumnCurrent.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
+        this.showallvotesColumnIsEnded.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().isEnded()));
 
         while (result.next()) {
-            showAllVotesData.add(new Votes(result.getInt("id"), result.getString("vote_name"), result.getString("creation_date"), result.getInt("date_to"), result.getString("who"), result.getInt("section_id"), result.getInt("questionform_id"), result.getInt("is_current")));
+            String isEnded = "";
+            if (result.getInt("is_current") == 1) {
+                isEnded = "Nie";
+            } else {
+                isEnded = "Tak";
+            }
+            showAllVotesData.add(new Votes(result.getInt("id"), result.getString("vote_name"), result.getString("creation_date"), result.getString("date_to"), result.getInt("is_current"), result.getString("who"), result.getInt("section_id"), result.getInt("questionform_id"), result.getInt("is_current"), isEnded));
+
+
         }
         this.showallvotesTable.setItems(showAllVotesData);
     }
@@ -302,29 +321,26 @@ public class MainPanelController implements ControlledScreen, Initializable {
         if (currentUserID != null) {
 //            //ResultSet result = Database.execute("select id, vote_name, date_to from votes, user_fill_vote, sectors, users where votes.is_current=1 and users.id="+currentUserID+" and users.sector_id=sectors.id and votes.section_id=sectors.id and user_fill_vote.vote_id=votes.id and user_fill_vote.user_id=users.id");
 //            //ResultSet result = Database.execute("select vote_name, id, date_to, is_current, section_id, questionform_id from votes");
-            ResultSet result = Database.execute("select votes.vote_name, votes.id, votes.is_current, votes.who, votes.section_id, votes.questionform_id, votes.date_to, user_fill_vote.filled from votes, user_fill_vote, sectors, users where votes.is_current=1 and users.id=" + currentUserID + " and users.sector_id=sectors.id and votes.section_id=sectors.id and user_fill_vote.vote_id=votes.id and user_fill_vote.user_id=users.id and votes.who=users.type");
+            ResultSet result = Database.execute("select votes.vote_name, votes.id, votes.is_current, votes.who, votes.section_id, votes.questionform_id, votes.date_to,votes.date_from, user_fill_vote.filled from votes, user_fill_vote, sectors, users where votes.is_current=1 and users.id=" + currentUserID + " and users.sector_id=sectors.id and votes.section_id=sectors.id and user_fill_vote.vote_id=votes.id and user_fill_vote.user_id=users.id and votes.who=users.type");
             ObservableList<Votes> votesData = FXCollections.observableArrayList();
 
             this.glosujColumnNumer.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()));
             this.glosujColumnNazwa.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVote_name()));
-
-            this.glosujColumnData.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDatatime()));
+            this.glosujColumnDataRozpoczecia.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDateTo()));
+            this.glosujColumnDataZakonczenia.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDateFrom()));
             this.glosujColumnStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
+            this.glosujColumnZakonczone.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().isEnded()));
+
 
             while (result.next()) {
-                System.out.println(result.getString("vote_name"));
-                votesData.add(
-                        new Votes(
-                                result.getInt("id"),
-                                result.getString("vote_name"),
-                                result.getString("date_to"),
-                                result.getInt("is_current"),
-                                result.getString("who"),
-                                result.getInt("section_id"),
-                                result.getInt("questionform_id"),
-                                result.getInt("filled")
-                        )
-                );
+                String isEnded = "";
+                if (result.getInt("is_current") == 1) {
+                    isEnded = "Nie";
+                } else {
+                    isEnded = "Tak";
+                }
+                votesData.add(new Votes(result.getInt("id"), result.getString("vote_name"), result.getString("date_from"), result.getString("date_to"), result.getInt("is_current"), result.getString("who"), result.getInt("section_id"), result.getInt("questionform_id"), result.getInt("is_current"), isEnded));
+
             }
 
             this.glosujTable.setItems(votesData);
