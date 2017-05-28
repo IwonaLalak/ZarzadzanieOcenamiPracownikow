@@ -50,12 +50,6 @@ public class LoginController implements Initializable, ControlledScreen {
                 Logged.setWho(msg);
                 Logged.setUsername(log);
 
-                EmailDispatcher dispatcher = new EmailDispatcher();
-                String who = Logged.whoIsLogged();
-                if (who.equals(UserTypes.PRACODAWCA)) {
-                    String[] emails = UsersFactory.getEmployeeUsersEmails();
-                  //  dispatcher.sendFromGMail(emails);
-                }
                 myController.loadScreen(Main.main, Main.mainView);
                 myController.setScreen(Main.main);
             }

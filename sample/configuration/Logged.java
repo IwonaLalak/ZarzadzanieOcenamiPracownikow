@@ -9,7 +9,7 @@ public class Logged
     {
         return Logged.WHO;
     }
-    
+
     public static void setWho( String name )
     {
         if( name.equals(UserTypes.KIEROWNIK) || name.equals(UserTypes.PRACOWNIK) || name.equals(UserTypes.PRACODAWCA)){

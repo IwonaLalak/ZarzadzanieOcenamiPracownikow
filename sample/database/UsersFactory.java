@@ -21,7 +21,6 @@ public class UsersFactory extends Model {
     public static String currentUserID;
 
     public static String login(String log, String pass) throws SQLException, ClassNotFoundException {
-
         String type = "";
 
         String tab[] = new String[2];

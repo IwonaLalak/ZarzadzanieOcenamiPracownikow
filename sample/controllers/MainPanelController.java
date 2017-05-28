@@ -17,14 +17,14 @@ import sample.database.QuestionFormsFactory;
 import sample.database.SectionsFactory;
 import sample.database.UsersFactory;
 import sample.database.entity.*;
+import sample.email.EmailDispatcher;
 import sample.interfaces.ControlledScreen;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static sample.database.UsersFactory.currentUserID;
 
@@ -46,7 +46,6 @@ public class MainPanelController implements ControlledScreen, Initializable {
     public Button save_employee_btn;
     private ScreensController myController;
 
-
     public static String selected_voteID;
     public static String selected_sectorID;
     public static String selected_sectorName;
@@ -64,7 +63,6 @@ public class MainPanelController implements ControlledScreen, Initializable {
     private TableColumn<Raports, String> raportColumnName;
     @FXML
     private TableColumn<Raports, String> raportColumnDate;
-
 
     @FXML
     private TableView<Votes> glosujTable;
@@ -128,7 +126,7 @@ public class MainPanelController implements ControlledScreen, Initializable {
     @FXML
     private TableColumn<Votes, String> showallvotesColumnWho;
     @FXML
-    private TableColumn<Votes, String>  showallvotesColumnCurrent;
+    private TableColumn<Votes, String> showallvotesColumnCurrent;
 
     @FXML
     public TabPane tabs;
@@ -162,11 +160,6 @@ public class MainPanelController implements ControlledScreen, Initializable {
     private void fillVote() throws IOException {
         myController.setScreen(Main.fill_vote);
     }
-
-    /*@FXML
-    private void createNewVote() throws IOException {
-        myController.setScreen(Main.create_new_vote);
-    }*/
 
     @FXML
     private void createNewQuestionForm() throws IOException {
@@ -240,6 +233,24 @@ public class MainPanelController implements ControlledScreen, Initializable {
     }
 
     @FXML
+    private void sendReminder() throws SQLException {
+        ResultSet result = Database.execute("SELECT users.email FROM users, sectors, votes, user_fill_vote, questionforms WHERE votes.section_id = sectors.id AND " +
+                "votes.questionform_id=questionforms.id and users.sector_id = sectors.id and user_fill_vote.user_id=users.id and votes.id = vote_id and " +
+                "user_fill_vote.filled = 0 and users.type != 'pracodawca' and users.id != '" + UsersFactory.currentUserID + "'");
+        LinkedList<String> getEmails = new LinkedList<>();
+        while (result.next()) {
+            getEmails.add(result.getString("email"));
+
+        }
+        EmailDispatcher dispatcher = new EmailDispatcher();
+        String[] emails = new String[getEmails.size()];
+        for (int i = 0; i < getEmails.size(); i++) {
+            emails[i] = getEmails.get(i);
+        }
+        dispatcher.sendFromGMail("testpracownikemail@gmail.com", "test1234567", emails);
+    }
+
+    @FXML
     private void show_all_questionforms() throws SQLException {
         ResultSet result = Database.execute("SELECT * FROM questionforms");
         ObservableList<QuestionForms> questionFormsData = FXCollections.observableArrayList();
@@ -264,6 +275,7 @@ public class MainPanelController implements ControlledScreen, Initializable {
         this.showallvotesColumnWho.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getWho()));
         this.showallvotesColumnSector.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSection_id()));
         this.showallvotesColumnCurrent.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
+
         while (result.next()) {
             showAllVotesData.add(new Votes(result.getInt("id"), result.getString("vote_name"), result.getString("creation_date"), result.getInt("date_to"), result.getString("who"), result.getInt("section_id"), result.getInt("questionform_id"), result.getInt("is_current")));
         }
@@ -288,8 +300,8 @@ public class MainPanelController implements ControlledScreen, Initializable {
     @FXML
     private void showGlosujTable() throws SQLException {
         if (currentUserID != null) {
-            //ResultSet result = Database.execute("select id, vote_name, date_to from votes, user_fill_vote, sectors, users where votes.is_current=1 and users.id="+currentUserID+" and users.sector_id=sectors.id and votes.section_id=sectors.id and user_fill_vote.vote_id=votes.id and user_fill_vote.user_id=users.id");
-            //ResultSet result = Database.execute("select vote_name, id, date_to, is_current, section_id, questionform_id from votes");
+//            //ResultSet result = Database.execute("select id, vote_name, date_to from votes, user_fill_vote, sectors, users where votes.is_current=1 and users.id="+currentUserID+" and users.sector_id=sectors.id and votes.section_id=sectors.id and user_fill_vote.vote_id=votes.id and user_fill_vote.user_id=users.id");
+//            //ResultSet result = Database.execute("select vote_name, id, date_to, is_current, section_id, questionform_id from votes");
             ResultSet result = Database.execute("select votes.vote_name, votes.id, votes.is_current, votes.who, votes.section_id, votes.questionform_id, votes.date_to, user_fill_vote.filled from votes, user_fill_vote, sectors, users where votes.is_current=1 and users.id=" + currentUserID + " and users.sector_id=sectors.id and votes.section_id=sectors.id and user_fill_vote.vote_id=votes.id and user_fill_vote.user_id=users.id and votes.who=users.type");
             ObservableList<Votes> votesData = FXCollections.observableArrayList();
 
@@ -300,6 +312,7 @@ public class MainPanelController implements ControlledScreen, Initializable {
             this.glosujColumnStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
 
             while (result.next()) {
+                System.out.println(result.getString("vote_name"));
                 votesData.add(
                         new Votes(
                                 result.getInt("id"),
@@ -324,6 +337,7 @@ public class MainPanelController implements ControlledScreen, Initializable {
     * */
 
     // pobieranie informacji z bazy i wyswietlanie je w profilu
+
     public void showUserData(Event event) throws SQLException {
         if (currentUserID != null) {
             String tab[] = UsersFactory.getCurrentUserData();
@@ -373,14 +387,12 @@ public class MainPanelController implements ControlledScreen, Initializable {
                         email != null && email.length() > 1 &&
                         type != null && type.length() > 1 &&
                         sector != null && sector.length() > 1
-            )
-        {
-            if(Objects.equals(save_employee_btn.getText(), "Dodaj")){ // just adding
+                ) {
+            if (Objects.equals(save_employee_btn.getText(), "Dodaj")) { // just adding
                 String login = UsersFactory.addNewEmployee(firstname, lastname, email, type, sector);
                 add_new_employee_message.setText("Pomyślnie dodano usera. Login: " + login);
-            }
-            else{ // editing
-                UsersFactory.edit_employee(selected_employeeID,get_email.getText(),(String) select_type.getValue(),(String) select_sector.getValue());
+            } else { // editing
+                UsersFactory.edit_employee(selected_employeeID, get_email.getText(), (String) select_type.getValue(), (String) select_sector.getValue());
                 get_firstname.setDisable(false);
                 get_lastname.setDisable(false);
                 add_new_employee_message.setText("Pomyślnie edytowano usera.");
