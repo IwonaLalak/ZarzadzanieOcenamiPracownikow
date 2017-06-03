@@ -131,5 +131,9 @@ public class AddQuestionFormController implements Initializable, ControlledScree
     public void setScreenParent(ScreensController screenPage) {
         this.myController = screenPage;
     }
+
+    public ScreensController getScreenController() {
+        return this.myController;
+    }
 }
 

@@ -83,6 +83,10 @@ public class FillVoteController implements ControlledScreen, Initializable {
         this.myController = screenPage;
     }
 
+    public ScreensController getScreenController() {
+        return this.myController;
+    }
+
     public void getArraysData() throws SQLException, ClassNotFoundException {
         String voteID = MainPanelController.selected_voteID;
         // System.out.println("voteid: " + selected_voteID);

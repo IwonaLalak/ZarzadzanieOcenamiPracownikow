@@ -9,7 +9,6 @@ import javafx.scene.text.Font;
 import sample.Main;
 import sample.ScreensController;
 import sample.database.QuestionFormsFactory;
-import sample.database.entity.QuestionForms;
 import sample.interfaces.ControlledScreen;
 
 import java.io.IOException;
@@ -56,6 +55,10 @@ public class SeeQuestionFormController implements Initializable, ControlledScree
     @Override
     public void setScreenParent(ScreensController screenPage) {
         this.myController = screenPage;
+    }
+
+    public ScreensController getScreenController() {
+        return this.myController;
     }
 
     public void loadQuestionformData(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {

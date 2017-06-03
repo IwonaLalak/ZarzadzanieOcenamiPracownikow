@@ -3,19 +3,19 @@ package sample.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import sample.Main;
 import sample.ScreensController;
+import sample.configuration.Logged;
+import sample.database.Model;
+import sample.database.Users;
 import sample.interfaces.ControlledScreen;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import sample.configuration.Logged;
-import sample.database.Model;
-import sample.database.Users;
 
 public class PasswordChangeController implements Initializable, ControlledScreen {
 
@@ -66,5 +66,9 @@ public class PasswordChangeController implements Initializable, ControlledScreen
     @Override
     public void setScreenParent(ScreensController screenPage) {
         this.myController = screenPage;
+    }
+
+    public ScreensController getScreenController() {
+        return this.myController;
     }
 }
