@@ -16,8 +16,9 @@ public class Votes {
     private int questionform_id;
     private int filled;
     private String isEnded;
+    private String isFilled;
 
-    public Votes(int id, String vote_name, String dateFrom, String dateTo, int is_current, String who, int section_id, int questionform_id, int filled, String isEnded){
+    public Votes(int id, String vote_name, String dateFrom, String dateTo, int is_current, String who, int section_id, int questionform_id, String isFilled, String isEnded) {
         this.id = id;
         this.vote_name = vote_name;
         this.dateFrom = dateFrom;
@@ -26,11 +27,11 @@ public class Votes {
         this.who = who;
         this.section_id = section_id;
         this.questionform_id = questionform_id;
-        this.filled = filled;
+        this.isFilled=isFilled;
         this.isEnded = isEnded;
     }
 
-    public Votes(){
+    public Votes() {
 
     }
 
@@ -93,13 +94,17 @@ public class Votes {
     public void setQuestionform_id(int questionform_id) {
         this.questionform_id = questionform_id;
     }
-    
-    public String getStatus(){
-        return ( this.filled == 1) ? "Wypełniona" : "Niewypełniona";
+
+   /* public String getStatus() {
+        return (this.filled == 1) ? "Wypełniona" : "Niewypełniona";
+    }
+*/
+    public String isFilled() {
+        return (this.filled == 0) ? "Niewypełniona" : "Wypełniona";
     }
 
     public String isEnded() {
-        return ( this.is_current == 1) ? "Nie" : "Tak";
+        return (this.is_current == 1) ? "Nie" : "Tak";
     }
 }
 

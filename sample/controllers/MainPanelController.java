@@ -12,11 +12,9 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import sample.Main;
 import sample.ScreensController;
-import sample.database.Database;
-import sample.database.QuestionFormsFactory;
-import sample.database.SectionsFactory;
-import sample.database.UsersFactory;
+import sample.database.*;
 import sample.database.entity.*;
+import sample.database.entity.Users;
 import sample.email.EmailDispatcher;
 import sample.interfaces.ControlledScreen;
 
@@ -156,10 +154,9 @@ public class MainPanelController implements ControlledScreen, Initializable {
     @FXML
     private void showVote() throws IOException {
         see_vote_msg.setText("");
-        if(selected_voteID_toSee!=null){
+        if (selected_voteID_toSee != null) {
             myController.setScreen(Main.see_vote);
-        }
-        else{
+        } else {
             see_vote_msg.setText("Nie wybrano id");
         }
     }
@@ -280,13 +277,13 @@ public class MainPanelController implements ControlledScreen, Initializable {
 
     @FXML
     private void show_all_votes() throws SQLException {
-        ResultSet result = Database.execute("SELECT *,questionforms.name as questionform_name, sectors.name as sector_name FROM votes,sectors,questionforms WHERE votes.section_id = sectors.id AND votes.questionform_id=questionforms.id order by votes.date_to desc");
+        ResultSet result = Database.execute("SELECT *,questionforms.name as questionform_name, sectors.name as sector_name FROM votes,sectors,questionforms WHERE votes.section_id = sectors.id AND votes.questionform_id=questionforms.id AND votes.is_current=1 order by votes.date_to desc");
         ObservableList<Votes> showAllVotesData = FXCollections.observableArrayList();
         this.showallvotesColumnId.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()));
         this.showallvotesColumnName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVote_name()));
         this.showallvotesColumnDateFrom.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDateFrom()));
         this.showallvotesColumnDateTo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDateTo()));
-        this.showallvotesColumnCurrent.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
+        this.showallvotesColumnCurrent.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().isFilled()));
         this.showallvotesColumnWho.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getWho()));
         this.showallvotesColumnSector.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSection_id()));
         this.showallvotesColumnIsEnded.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().isEnded()));
@@ -298,7 +295,13 @@ public class MainPanelController implements ControlledScreen, Initializable {
             } else {
                 isEnded = "Tak";
             }
-            showAllVotesData.add(new Votes(result.getInt("id"), result.getString("vote_name"), result.getString("creation_date"), result.getString("date_to"), result.getInt("is_current"), result.getString("who"), result.getInt("section_id"), result.getInt("questionform_id"), result.getInt("is_current"), isEnded));
+            String isFilled = "";
+            if (result.getInt("is_current") == 0) {
+                isFilled = "Niewypełniona";
+            } else {
+                isFilled = "Wypełniona";
+            }
+            showAllVotesData.add(new Votes(result.getInt("id"), result.getString("vote_name"), result.getString("creation_date"), result.getString("date_to"), result.getInt("is_current"), result.getString("who"), result.getInt("section_id"), result.getInt("questionform_id"), isFilled, isEnded));
 
 
         }
@@ -325,25 +328,32 @@ public class MainPanelController implements ControlledScreen, Initializable {
         if (currentUserID != null) {
 //            //ResultSet result = Database.execute("select id, vote_name, date_to from votes, user_fill_vote, sectors, users where votes.is_current=1 and users.id="+currentUserID+" and users.sector_id=sectors.id and votes.section_id=sectors.id and user_fill_vote.vote_id=votes.id and user_fill_vote.user_id=users.id");
 //            //ResultSet result = Database.execute("select vote_name, id, date_to, is_current, section_id, questionform_id from votes");
-            ResultSet result = Database.execute("select votes.vote_name, votes.id, votes.is_current, votes.who, votes.section_id, votes.questionform_id, votes.date_to,votes.date_from, user_fill_vote.filled from votes, user_fill_vote, sectors, users where votes.is_current=1 and users.id=" + currentUserID + " and users.sector_id=sectors.id and votes.section_id=sectors.id and user_fill_vote.vote_id=votes.id and user_fill_vote.user_id=users.id and votes.who=users.type");
+            ResultSet result = Database.execute("select votes.vote_name, votes.id, votes.is_current, votes.who, votes.section_id, votes.questionform_id, votes.date_to,votes.date_from, user_fill_vote.filled from votes, user_fill_vote, sectors, users where votes.is_current=1 and user_fill_vote.filled=0 and users.id=" + currentUserID + " and users.sector_id=sectors.id and votes.section_id=sectors.id and user_fill_vote.vote_id=votes.id and user_fill_vote.user_id=users.id and votes.who=users.type");
             ObservableList<Votes> votesData = FXCollections.observableArrayList();
 
             this.glosujColumnNumer.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()));
             this.glosujColumnNazwa.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVote_name()));
             this.glosujColumnDataRozpoczecia.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDateTo()));
             this.glosujColumnDataZakonczenia.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDateFrom()));
-            this.glosujColumnStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus()));
+            this.glosujColumnStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().isFilled()));
             this.glosujColumnZakonczone.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().isEnded()));
 
 
             while (result.next()) {
                 String isEnded = "";
-                if (result.getInt("is_current") == 1) {
+                if (result.getInt("is_current") == 0) {
                     isEnded = "Nie";
                 } else {
                     isEnded = "Tak";
                 }
-                votesData.add(new Votes(result.getInt("id"), result.getString("vote_name"), result.getString("date_from"), result.getString("date_to"), result.getInt("is_current"), result.getString("who"), result.getInt("section_id"), result.getInt("questionform_id"), result.getInt("is_current"), isEnded));
+                String isFilled = "";
+                if (result.getInt("filled") == 0) {
+                    isFilled = "Niewypełniona";
+                } else {
+                    isFilled = "Wypełniona";
+                }
+
+                votesData.add(new Votes(result.getInt("id"), result.getString("vote_name"), result.getString("date_from"), result.getString("date_to"), result.getInt("is_current"), result.getString("who"), result.getInt("section_id"), result.getInt("questionform_id"), isFilled, isEnded));
 
             }
 
@@ -430,11 +440,15 @@ public class MainPanelController implements ControlledScreen, Initializable {
 
     // pobieranie idka do usuwania / edycji
     public void getEmployeeID(MouseEvent mouseEvent) {
-        Users selected_employee = employeeTable.getSelectionModel().getSelectedItem();
-        selected_employeeID = selected_employee.getId() + "";
-        selected_employeeFirstname = selected_employee.getFirstname() + "";
-        selected_employeeLastname = selected_employee.getLastname() + "";
-        selected_employeeEmail = selected_employee.getEmail() + "";
+        try {
+            Users selected_employee = employeeTable.getSelectionModel().getSelectedItem();
+            selected_employeeID = selected_employee.getId() + "";
+            selected_employeeFirstname = selected_employee.getFirstname() + "";
+            selected_employeeLastname = selected_employee.getLastname() + "";
+            selected_employeeEmail = selected_employee.getEmail() + "";
+        } catch (Exception e) {
+            System.out.println("Nie wybrano, error: " + e);
+        }
     }
 
     public void edit_employee(ActionEvent actionEvent) {
@@ -491,9 +505,13 @@ public class MainPanelController implements ControlledScreen, Initializable {
 
     // pobieranie idka do usuwania / edytowania
     public void getSectorID(MouseEvent mouseEvent) {
-        Sectors selected_sector = sectorsTable.getSelectionModel().getSelectedItem();
-        selected_sectorID = selected_sector.getId() + "";
-        selected_sectorName = selected_sector.getName() + "";
+        try {
+            Sectors selected_sector = sectorsTable.getSelectionModel().getSelectedItem();
+            selected_sectorID = selected_sector.getId() + "";
+            selected_sectorName = selected_sector.getName() + "";
+        } catch (Exception e) {
+            System.out.println("Nie wybrano, error: " + e);
+        }
     }
 
     // edytowanie
@@ -532,8 +550,12 @@ public class MainPanelController implements ControlledScreen, Initializable {
 
     // pobieranie idka do usuwania / zobaczenia ankiety
     public void getQuestionformID(MouseEvent mouseEvent) {
-        QuestionForms selected_qf = questionformsTable.getSelectionModel().getSelectedItem();
-        selected_questionformID = selected_qf.getId() + "";
+        try {
+            QuestionForms selected_qf = questionformsTable.getSelectionModel().getSelectedItem();
+            selected_questionformID = selected_qf.getId() + "";
+        } catch (Exception e) {
+            System.out.println("Nie wybrano, error: " + e);
+        }
     }
 
     // usuwanie
@@ -552,8 +574,13 @@ public class MainPanelController implements ControlledScreen, Initializable {
 
     // pobieranie idka do wybierania glosowania z glosujTable
     public void getVoteID(MouseEvent mouseEvent) {
-        Votes selected_vote = glosujTable.getSelectionModel().getSelectedItem();
-        selected_voteID = selected_vote.getId() + "";
+        try {
+            Votes selected_vote = glosujTable.getSelectionModel().getSelectedItem();
+            selected_voteID = selected_vote.getId() + "";
+        } catch (Exception e) {
+            System.out.println("Nie wybrano, error: " + e);
+        }
+
     }
 
     /*
@@ -562,20 +589,26 @@ public class MainPanelController implements ControlledScreen, Initializable {
 
     // pobieranie idka do wybierania glosowania z votesTable
     public void getVoteIDToSee(MouseEvent mouseEvent) {
-        Votes select_vote = showallvotesTable.getSelectionModel().getSelectedItem();
-        selected_voteID_toSee = select_vote.getId() + "";
+        try {
+            Votes select_vote = showallvotesTable.getSelectionModel().getSelectedItem();
+            selected_voteID_toSee = select_vote.getId() + "";
+        } catch (Exception e) {
+            System.out.println("Nie wybrano, error: " + e);
+        }
+
     }
 
     // szybsze konczenie glosowania
     @FXML
-    public void closeVoting() throws SQLException {
+    public void closeVoting() throws SQLException, ClassNotFoundException {
         see_vote_msg.setText("");
-        if(selected_voteID_toSee!=null){
+        if (selected_voteID_toSee != null) {
             String sql = "UPDATE `votes` SET `is_current` = '0' WHERE `id` = " + selected_voteID_toSee;
             Database.update(sql);
             this.show_all_votes();
-        }
-        else{
+
+            RaportsFactory.insertReport(selected_voteID_toSee);
+        } else {
             see_vote_msg.setText("Nie wybrano id");
         }
 

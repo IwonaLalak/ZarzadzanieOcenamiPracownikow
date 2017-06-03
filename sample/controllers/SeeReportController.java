@@ -16,10 +16,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import sample.Main;
 import sample.ScreensController;
+import sample.database.Database;
 import sample.interfaces.ControlledScreen;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -69,6 +71,8 @@ public class SeeReportController implements Initializable, ControlledScreen {
     public String preLoad(Raports selectedRaport) {
         this.reportTitle.setText(selectedRaport.getRaport_name());
 
+        int raport_id = selectedRaport.getId();
+
         try {
             String[] reportContent = selectedRaport.getRaport_content().split("<br/>");
             if (reportContent.length < 1) {
@@ -113,18 +117,46 @@ public class SeeReportController implements Initializable, ControlledScreen {
                 content.append("Pytanie \"" + key + "\" oceniono " + value + " razy, ze średnią: " + df.format(srednia.get(key) / map.get(key)) + "\n");
             }
 
-            String najczesciej = "";
+            String najlepiej = "";
             int value = 0;
             for (Map.Entry<String, Integer> entry : kto.entrySet()) {
                 String key = entry.getKey();
                 int ktoValue = entry.getValue();
                 if (ktoValue > value) {
                     value = ktoValue;
-                    najczesciej = key;
+                    najlepiej = key;
                 }
             }
 
-            content.append("\n\n\n Najczesciej ocenial: " + najczesciej);
+            content.append("\n\n\n Najlepiej oceniony: " + najlepiej+ " \n\n");
+
+            // kto nie glosowal:
+
+            String sql = "select users.firstname, users.lastname from users, user_fill_vote, raports where user_fill_vote.user_id=users.id and user_fill_vote.vote_id=raports.vote_id and raports.id="+raport_id+" and user_fill_vote.filled=0 ";
+            ResultSet rs = Database.execute(sql);
+
+            String didnt_vote="";
+
+            content.append("Nie zagłosowali: \n");
+
+            while(rs.next()){
+                didnt_vote+=(rs.getString("firstname")+" "+rs.getString("lastname")+"\n");
+            }
+
+            if(didnt_vote.length()<3){
+                content.append("brak \n");
+            }
+            else{
+                content.append(didnt_vote);
+            }
+
+            content.append(" \n Szczegółowe logi: \n");
+
+            sql = "select log_content from logs, raports where logs.vote_id=raports.vote_id and raports.id="+raport_id;
+            rs = Database.execute(sql);
+            while(rs.next()){
+                content.append(rs.getString("log_content")+"\n");
+            }
 
 
             this.reportContent.setText(content.toString());

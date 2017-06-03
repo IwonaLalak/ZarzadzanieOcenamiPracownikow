@@ -9,11 +9,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import sample.Main;
 import sample.ScreensController;
 import sample.configuration.UserTypes;
+import sample.database.RaportsFactory;
 import sample.database.UsersFactory;
 import sample.interfaces.ControlledScreen;
 import sample.configuration.Logged;
@@ -87,14 +89,18 @@ public class LoginController implements Initializable, ControlledScreen {
                 DateFormat formatter = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
                 Date dueDate = formatter.parse(allVotes.getString(4));
                 Date currentDate = new Date();
-
-                if (currentDate.before(dueDate)) {
-                    int id = allVotes.getInt(1);
-                    Model vote = votes.find(id);
-                    vote.set("is_current", "0");
-                    vote.save();
-                    return vote;
+                if(Objects.equals(allVotes.getString(5), "1")){
+                    if (currentDate.after(dueDate)) {
+                        int id = allVotes.getInt(1);
+                        Model vote = votes.find(id);
+                        vote.set("is_current", "0");
+                       // System.out.println("przestarzale vote id "+id);
+                        RaportsFactory.insertReport(id+"");
+                        vote.save();
+                        return vote;
+                    }
                 }
+
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
