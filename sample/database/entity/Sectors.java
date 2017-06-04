@@ -1,6 +1,9 @@
 package sample.database.entity;
 
 
+/**
+ * klasa dzialow
+ */
 public class Sectors {
 
     private int id;
@@ -16,18 +19,32 @@ public class Sectors {
     public Sectors(){
     }
 
+    /**
+     * pobierranie identyfikatora dzialu
+     * @return id
+     */
     public int getId() {
         return id;
     }
-
+    /**
+     * przypisywanie identyfikatora do  dzialu
+     * @param id identyfikator dzialu
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * pobieranie nazwy dzialu
+     * @return name
+     */
     public String getName() {
         return name;
     }
-
+    /**
+     * przypisywanie nazwa dzialu
+     * @param name nazwa dzialu
+     */
     public void setName(String name) {
         this.name = name;
     }

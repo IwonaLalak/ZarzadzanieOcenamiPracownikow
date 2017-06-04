@@ -16,7 +16,9 @@ import javafx.scene.control.TextField;
 import sample.configuration.Logged;
 import sample.database.Model;
 import sample.database.Users;
-
+/**
+ * Klasa zmiany hasla dla uzytokownika
+ */
 public class PasswordChangeController implements Initializable, ControlledScreen {
 
     ScreensController myController;
@@ -32,11 +34,17 @@ public class PasswordChangeController implements Initializable, ControlledScreen
     
     @FXML
     Label success;
-    
+    /**
+     * przycisko powrotu do glownego okna
+     */
     @FXML
     private void goBackToMainPage(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
         myController.setScreen(Main.main);
     }
+
+    /**
+     * metoda zmiany hasla przez pracownikow
+     */
 
     @FXML
     private void changePassword(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
@@ -57,12 +65,19 @@ public class PasswordChangeController implements Initializable, ControlledScreen
         
         success.setText("Hasło zostało zmienione!");
     }
-    
+    /**
+     * Metoda, która rozpoczyna się automatycznie w tej klasie.
+     * @param location polozenie
+     * @param resources zasoby
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }
-
+    /**
+     * Zmienia okno nadrzędne określonego okna podrzędnego.
+     * @param screenPage okno przesylane na ekran
+     */
     @Override
     public void setScreenParent(ScreensController screenPage) {
         this.myController = screenPage;

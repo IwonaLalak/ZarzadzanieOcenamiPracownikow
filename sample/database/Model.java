@@ -104,7 +104,7 @@ public class Model
     
     /**
      * Szuka rekordu o podanym id
-     * @param id
+     * @param id id rekordu
      * @return ResultSet
      */
     public Model find( int id )
@@ -132,12 +132,22 @@ public class Model
        
         return this;
     }
-    
+
+    /**
+     * deklaracja metody, po której następuje ciało metody
+     * @param key klucz
+     * @param value wartosc
+     */
     public void set( String key, String value )
     {   
         this.data.put( key, value);
     }
-    
+
+    /**
+     * deklaracja metody
+     * @param key klucz
+     * @return x
+     */
     public String get( String key )
     {
         return this.data.get( key ).toString();
@@ -174,7 +184,11 @@ public class Model
         
         return true;
     }
-    
+
+    /**
+     * wstawianie do bazy
+      * @return true
+     */
     public boolean insert()
     {
         Set set = this.data.entrySet();
@@ -204,7 +218,11 @@ public class Model
         
         return true;
     }
-    
+
+    /**
+     * pobieranie nazwy tabeli
+     * @return nazwa tabeli
+     */
     public String getTableName()
     {
         if(this.table != null)
@@ -214,7 +232,10 @@ public class Model
         
         return this.getClass().getSimpleName();
     }
-    
+
+    /**
+     * metoda modelu danych
+     */
     public void printModelData() {
         Set set = this.data.entrySet();
         Iterator i = set.iterator();
@@ -227,6 +248,13 @@ public class Model
         }
     }
 
+    /**
+     * pobieranie id przez uzytkowniak
+     * @param username nazwa uzytkownika
+     * @return 0
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     * @throws ClassNotFoundException Rzuca, gdy aplikacja nie może znaleźć klasy
+     */
     public int getIdByUsername( String username ) throws SQLException, ClassNotFoundException
     {
         return 0;

@@ -18,18 +18,57 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+/**
+ * klasa pokazujaca konkretna ankiete
+ */
 public class SeeQuestionFormController implements Initializable, ControlledScreen {
+    /**
+     * panel ankiety
+     */
     public Pane questionform_container;
+
+    /**
+     * label ladujacy ilos pytan
+     */
+
     public Label qf_number_value;
+    /**
+     * label tekstowy ilos pytan
+     */
     public Label qf_number_label;
+
+    /**
+     * label ladujacy date utworzenia
+     */
     public Label qf_date_value;
+    /**
+     * label tekstowy z data utworzenia
+     */
     public Label qf_date_label;
+
+    /**
+     * label ladujacy nazwe ankiety
+     */
     public Label qf_name_value;
+    /**
+     * label tekstowy z nazwa ankiety
+     */
     public Label qf_name_label;
+
+    /**
+     * label ladujacy id ankiety
+     */
     public Label qf_id_value;
+    /**
+     * label tekstowy id ankiety
+     */
     public Label qf_id_label;
     private ScreensController myController;
-
+    /**
+     * Metoda, która rozpoczyna się automatycznie w tej klasie.
+     * @param location polozenie
+     * @param resources zasoby
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         qf_id_label.setVisible(false);
@@ -37,7 +76,10 @@ public class SeeQuestionFormController implements Initializable, ControlledScree
         qf_date_label.setVisible(false);
         qf_number_label.setVisible(false);
     }
-
+    /**
+     *  przycisk powrotu do wszystkich ankiet
+     * @param event obsluguje powrot do ankiet
+     */
     @FXML
     private void goBackToQuestionForms(ActionEvent event) throws IOException {
         qf_id_label.setVisible(false);
@@ -52,7 +94,10 @@ public class SeeQuestionFormController implements Initializable, ControlledScree
         questionform_container.getChildren().clear();
         myController.setScreen(Main.main);
     }
-
+    /**
+     * Zmienia okno nadrzędne określonego okna podrzędnego.
+     * @param screenPage okno przesylane na ekran
+     */
     @Override
     public void setScreenParent(ScreensController screenPage) {
         this.myController = screenPage;

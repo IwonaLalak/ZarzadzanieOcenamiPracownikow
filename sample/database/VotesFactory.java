@@ -13,14 +13,24 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * Created by Iwona on 09.04.17.
+ *
  */
 public class VotesFactory extends Model {
 
     public VotesFactory(String tableName){
         super(tableName);
     }
-    
+
+    /**
+     * dodawanie nowego glosowania
+     * @param vote_name nazwa glosowania
+     * @param enddate data zakonczenia
+     * @param sector_name ktory dzial
+     * @param who_can_vote kto moze glosowac
+     * @param qf_name nazwa
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     * @throws ClassNotFoundException Rzuca, gdy aplikacja nie może znaleźć klasy
+     */
     public static void add_new_vote(String vote_name, LocalDate enddate, String sector_name, String who_can_vote, String qf_name) throws SQLException, ClassNotFoundException {
 
 
@@ -172,6 +182,16 @@ public class VotesFactory extends Model {
 
     }
 
+    /**
+     * wysylanie glosowania
+     * @param indx index
+     * @param grade jakie stanowisko glosowalo
+     * @param people kto glosowal
+     * @param questions pytanie
+     * @param voteID id glosowania
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     * @throws ClassNotFoundException Rzuca, gdy aplikacja nie może znaleźć klasy
+     */
     public static void send_your_vote(String indx, String grade, ArrayList<Label> people, ArrayList<Label> questions, String voteID) throws SQLException, ClassNotFoundException {
 
         //przerobienie wprowadzonych danych do postaci: oceniany;ocena;pytanie
@@ -221,6 +241,12 @@ public class VotesFactory extends Model {
 
     }
 
+    /**
+     * sprawdzenie kto glosowal
+     * @param voteID id glosowania
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     * @throws ClassNotFoundException Rzuca, gdy aplikacja nie może znaleźć klasy
+     */
     public static void select_that_user_voted(String voteID) throws SQLException, ClassNotFoundException {
 
         // dane sa wyciagane z bazy, a nie insertowane wiec mozna przez zwykly update (na secureUpdate nie dziala)
@@ -228,7 +254,13 @@ public class VotesFactory extends Model {
         Database.update(sql);
     }
 
-
+    /**
+     * pobieranie zaznaczonego glosowania
+     * @param id id glosowania
+     * @return votename
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     * @throws ClassNotFoundException Rzuca, gdy aplikacja nie może znaleźć klasy
+     */
     public static String getSelectedVoteName(String id) throws SQLException, ClassNotFoundException {
         String votename = "";
         String sql = "SELECT * FROM votes WHERE id=?";

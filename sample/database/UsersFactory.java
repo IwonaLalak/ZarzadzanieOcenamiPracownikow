@@ -20,6 +20,14 @@ public class UsersFactory extends Model {
     static String currentUserFullName;
     public static String currentUserID;
 
+    /**
+     * logowanie do systemu
+     * @param log login
+     * @param pass haslo
+     * @return type
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     * @throws ClassNotFoundException Rzuca, gdy aplikacja nie może znaleźć klasy
+     */
     public static String login(String log, String pass) throws SQLException, ClassNotFoundException {
         String type = "";
 
@@ -37,7 +45,17 @@ public class UsersFactory extends Model {
         return type;
     }
 
-
+    /**
+     * dodawanie nowego pracownika
+     * @param firstname imie
+     * @param lastname nazwisko
+     * @param email email
+     * @param type stanowisko
+     * @param sector dzial
+     * @return login
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     * @throws ClassNotFoundException Rzuca, gdy aplikacja nie może znaleźć klasy
+     */
     public static String addNewEmployee(String firstname, String lastname, String email, String type, String sector) throws SQLException, ClassNotFoundException {
 
         // getting id of sector name
@@ -72,6 +90,15 @@ public class UsersFactory extends Model {
         return login;
     }
 
+    /**
+     * edycja pracownika
+     * @param id id
+     * @param email email
+     * @param type stanowisko
+     * @param sector dzial
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     * @throws ClassNotFoundException Rzuca, gdy aplikacja nie może znaleźć klasy
+     */
     public static void edit_employee(String id, String email, String type, String sector) throws SQLException, ClassNotFoundException {
 
         String tab[] = {email, type, sector, id};
@@ -87,6 +114,13 @@ public class UsersFactory extends Model {
         Database.secureUpdate(sql, tab);
     }
 
+    /**
+     * pobieranie uzytkownikow do glosowania
+     * @param voteid id glosowania
+     * @return array
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     * @throws ClassNotFoundException Rzuca, gdy aplikacja nie może znaleźć klasy
+     */
     public static ArrayList<Label> getPeopleToFillVote(String voteid) throws SQLException, ClassNotFoundException {
         ArrayList<Label> array = new ArrayList<>();
         String sql = "select users.firstname, users.lastname from votes, users where votes.id=? and votes.section_id=users.sector_id ";
@@ -104,6 +138,11 @@ public class UsersFactory extends Model {
         return array;
     }
 
+    /**
+     * pobieranie danych uzytkownika
+     * @return tab
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     */
     public static String[] getCurrentUserData() throws SQLException {
         String tab[] = new String[3];
         if (currentUserID != null) {
@@ -120,6 +159,12 @@ public class UsersFactory extends Model {
         return tab;
     }
 
+    /**
+     * otrzymywanie emaili
+     * @return emails
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     * @throws ClassNotFoundException Rzuca, gdy aplikacja nie może znaleźć klasy
+     */
     public static String[] getEmployeeUsersEmails() throws SQLException, ClassNotFoundException {
         LinkedList<String> getEmails = new LinkedList<>();
         try {
@@ -139,6 +184,12 @@ public class UsersFactory extends Model {
         return emails;
     }
 
+    /**
+     * usuwanie pracownika
+     * @param id id pracownika
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     * @throws ClassNotFoundException Rzuca, gdy aplikacja nie może znaleźć klasy
+     */
     public static void remove_employee(String id) throws SQLException, ClassNotFoundException {
         String sql = "DELETE FROM `users` WHERE `users`.`id` = ?";
         String tab[] = {id};

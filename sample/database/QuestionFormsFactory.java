@@ -10,10 +10,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Created by Iwona on 09.04.17.
+ *
  */
 public class QuestionFormsFactory extends Model {
 
+    /**
+     * dodawanie nowej ankiety
+     * @param name nazwa
+     * @param questions pytania
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     * @throws ClassNotFoundException Rzuca, gdy aplikacja nie może znaleźć klasy
+     */
     public static void add_new_questionform(String name, ArrayList<TextField> questions) throws SQLException, ClassNotFoundException {
 
 
@@ -56,6 +63,13 @@ public class QuestionFormsFactory extends Model {
 
     }
 
+    /**
+     * dodawanie pytan do glosowania
+     * @param voteid id glosowania
+     * @return array
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     * @throws ClassNotFoundException  Rzuca, gdy aplikacja nie może znaleźć klasy
+     */
     public static ArrayList<Label> getQuestionsToFillVote(String voteid) throws SQLException, ClassNotFoundException {
         ArrayList<Label> array = new ArrayList<>();
         String sql = "select questions.content from questions, votes where votes.id=? and questions.questionform_id=votes.questionform_id";
@@ -70,12 +84,25 @@ public class QuestionFormsFactory extends Model {
         return array;
     }
 
+    /**
+     * usuwanie pytan z glosowania
+     * @param id id pyttania
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     * @throws ClassNotFoundException Rzuca, gdy aplikacja nie może znaleźć klasy
+     */
     public static void remove_questionform(String id) throws SQLException, ClassNotFoundException {
         String sql = "DELETE FROM `questionforms` WHERE `questionforms`.`id` = ?";
         String tab[] = {id};
         Database.secureUpdate(sql,tab);
     }
 
+    /**
+     * pobieranie pytania
+     * @param id id pytania
+     * @return data
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     * @throws ClassNotFoundException Rzuca, gdy aplikacja nie może znaleźć klasy
+     */
     public static String[] getQuestionformData(String id) throws SQLException, ClassNotFoundException {
         String data[] = new String [4];
         String sql = "SELECT * FROM questionforms WHERE id=?";
@@ -91,6 +118,13 @@ public class QuestionFormsFactory extends Model {
         return data;
     }
 
+    /**
+     * pobierania zapytan
+     * @param id id
+     * @return question
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     * @throws ClassNotFoundException Rzuca, gdy aplikacja nie może znaleźć klasy
+     */
     public static ArrayList<String> getQuestionform_questions(String id) throws SQLException, ClassNotFoundException {
         ArrayList<String> questions = new ArrayList<>();
         String sql = "SELECT * FROM questions WHERE questionform_id=?";

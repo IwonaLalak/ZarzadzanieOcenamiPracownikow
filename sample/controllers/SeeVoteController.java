@@ -22,11 +22,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-
+/**
+ * klasa odpowiadajaca za podglad przebiegu glosowania
+ */
 public class SeeVoteController implements Initializable, ControlledScreen {
-
+    /**
+     * label z nazwa glosowania
+     */
     public Label vote_name;
+    /**
+     * podglad logow glosowania
+     */
     public ListView log_list;
+    /**
+     * podglad osob ktore nie oddaly glosu
+     */
     public ListView people_list;
     private ScreensController myController;
 
@@ -39,12 +49,19 @@ public class SeeVoteController implements Initializable, ControlledScreen {
 
         myController.setScreen(Main.main);
     }
-
+    /**
+     * Metoda, która rozpoczyna się automatycznie w tej klasie.
+     * @param location polozenie
+     * @param resources zasoby
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }
-
+    /**
+     * Zmienia okno nadrzędne określonego okna podrzędnego.
+     * @param screenPage okno przesylane na ekran
+     */
     @Override
     public void setScreenParent(ScreensController screenPage) {
         this.myController = screenPage;
@@ -54,6 +71,13 @@ public class SeeVoteController implements Initializable, ControlledScreen {
         return this.myController;
     }
 
+
+    /**
+     * ladowanie danych dotyczacych glosowania
+     * @param actionEvent action
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     * @throws ClassNotFoundException Rzuca, gdy aplikacja nie może znaleźć klasy
+     */
     public void showVoteData(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         if (MainPanelController.selected_voteID_toSee != null) {
             vote_name.setText(VotesFactory.getSelectedVoteName(MainPanelController.selected_voteID_toSee));

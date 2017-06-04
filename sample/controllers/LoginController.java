@@ -25,11 +25,17 @@ import sample.database.Model;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.text.DateFormat;
-
+/**
+ * klasa obslugujaca logowanie
+ */
 public class LoginController implements Initializable, ControlledScreen {
 
     private ScreensController myController;
-
+    /**
+     * Zmienia okno nadrzędne określonego okna podrzędnego.
+     * @param screenParent okno przesylane na ekran
+     *
+     */
     public void setScreenParent(ScreensController screenParent) {
         myController = screenParent;
     }
@@ -75,12 +81,20 @@ public class LoginController implements Initializable, ControlledScreen {
 
         return false;
     }
-
+    /**
+     * Metoda, która rozpoczyna się automatycznie w tej klasie.
+     * @param location polozenie
+     * @param resources zasoby
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }
 
+    /**
+     * konczenie glosowania jesli czas uplynal
+     * @return vote
+     */
     public Model closeVoteFormIfExpired() {
         Model votes = new VotesFactory("votes");
         ResultSet allVotes = votes.all();

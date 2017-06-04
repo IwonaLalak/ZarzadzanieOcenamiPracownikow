@@ -1,10 +1,28 @@
 
 package sample.configuration;
 
+/**
+ * klasa zakladek
+ */
 public class Tabs {
+    /**
+     * zkladka pracownicy
+     */
     public static final String PRACOWNICY = "Pracownicy";
-    public static final String DZIAŁY = "Działy";
+    /**
+     * zakladka dzialy
+     */
+    public static final String DZIALY = "Działy";
+    /**
+     * zakladka ankiety
+     */
     public static final String ANKIETY = "Ankiety";
-    public static final String GŁOSOWANIE = "Głosowanie";
-    public static final String GŁOSUJ = "Głosuj";
+    /**
+     * zakladka glosowanie
+     */
+    public static final String GLOSOWANIE = "Głosowanie";
+    /**
+     * zakladka glosuj
+     */
+    public static final String GLOSUJ = "Głosuj";
 }

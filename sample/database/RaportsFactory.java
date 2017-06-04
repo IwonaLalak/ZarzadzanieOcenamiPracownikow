@@ -9,15 +9,19 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Objects;
 
-/**
- * Created by Iwona on 03.06.17.
- */
+
 public class RaportsFactory extends Model {
 
     public RaportsFactory(String tableName){
         super(tableName);
     }
 
+    /**
+     * wstawianie reportow
+     * @param vote_id id glosowania
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     * @throws ClassNotFoundException  Rzuca, gdy aplikacja nie może znaleźć klasy
+     */
     public static void insertReport(String vote_id) throws SQLException, ClassNotFoundException {
 
         // getting logs

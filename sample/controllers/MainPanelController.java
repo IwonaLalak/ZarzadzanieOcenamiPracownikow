@@ -22,37 +22,111 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Objects;
+import java.util.ResourceBundle;
 
 import static sample.database.UsersFactory.currentUserID;
-
+/**
+ * klasa obslugujaca glowny panel
+ */
 public class MainPanelController implements ControlledScreen, Initializable {
-
+    /**
+     * wpisanie dzialu do dodania
+     */
     public TextField new_section_name;
+    /**
+     * Dodanie typu do pracownika
+     */
     public ComboBox select_type;
+    /**
+     * dodanie dzialu do pracownika
+     */
     public ComboBox select_sector;
+    /**
+     * imie pracownika
+     */
     public TextField get_firstname;
+    /**
+     * nazwisko pracownika
+     */
     public TextField get_lastname;
+    /**
+     *przycisk dodawania nowego pracownika
+     */
     public Label add_new_employee_message;
+    /**
+     * przycisk dodawania nowego dzialu
+     */
     public Label add_new_sector_message;
+    /**
+     * sekcje pracownika
+     */
     public Label user_section;
+    /**
+     * typ uzytkownika
+     */
     public Label user_type;
+    /**
+     * imie uzytkownika
+     */
     public Label user_name;
+    /**
+     * pobierranie emaila
+     */
     public TextField get_email;
+    /**
+     * usuwanie wiadomosci
+     */
     public Label remove_qf_message;
+    /**
+     * przycisk zapisanie dzialu
+     */
     public Button save_sector_btn;
+    /**
+     * przycisk zapisania pracownika
+     */
     public Button save_employee_btn;
+    /**
+     * zobaczenie wiadomosci dotyczacej glosowania
+     */
     public Label see_vote_msg;
     private ScreensController myController;
-
+    /**
+     * wybieranie id glosowania
+     */
     public static String selected_voteID;
+    /**
+     * wybieranie id glosowania do zobaczenia
+     */
     public static String selected_voteID_toSee;
+    /**
+     * wybieranie id dzialu
+     */
     public static String selected_sectorID;
+    /**
+     * wybieranie nazwy dzialy
+     */
     public static String selected_sectorName;
+    /**
+     * wybieranie id pracownika
+     */
     public static String selected_employeeID;
+    /**
+     * wybieranie imienia pracownika
+     */
     public static String selected_employeeFirstname;
+    /**
+     * wybieranie nazwiska pracownika
+     */
     public static String selected_employeeLastname;
+    /**
+     * wybieranie emaila pracownika
+     */
     public static String selected_employeeEmail;
+    /**
+     * wybieranie id glosowania
+     */
     public static String selected_questionformID;
 
     @FXML
@@ -132,7 +206,9 @@ public class MainPanelController implements ControlledScreen, Initializable {
     private TableColumn<Votes, String> showallvotesColumnCurrent;
     @FXML
     private TableColumn<Votes, String> showallvotesColumnIsEnded;
-
+    /**
+     * przypisuje odpowiednie zakladki
+     */
     @FXML
     public TabPane tabs;
 
@@ -186,12 +262,19 @@ public class MainPanelController implements ControlledScreen, Initializable {
     private void newVote() throws IOException {
         myController.setScreen(Main.create_new_vote);
     }
-
+    /**
+     * Zmienia okno nadrzędne określonego okna podrzędnego.
+     * @param screenPage okno przesylane na ekran
+     */
     @Override
     public void setScreenParent(ScreensController screenPage) {
         myController = screenPage;
     }
-
+    /**
+     * Metoda, która rozpoczyna się automatycznie w tej klasie.
+     * @param location polozenie
+     * @param resources zasoby
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -202,7 +285,9 @@ public class MainPanelController implements ControlledScreen, Initializable {
             e.printStackTrace();
         }
     }
-
+    /**
+     * pokazuje wszystkich pracownikow
+     */
     @FXML
     private void show_all_employes() throws SQLException {
         ResultSet result = Database.execute("SELECT users.id, users.login, users.email, users.password, users.firstname,users.lastname,users.type,sectors.name, users.sector_id " +
@@ -230,7 +315,9 @@ public class MainPanelController implements ControlledScreen, Initializable {
 
     }
 
-
+    /**
+     * pokazuje wszystkie dzialy
+     */
     @FXML
     private void show_all_sectors() throws SQLException {
         ResultSet result = Database.execute("SELECT * FROM sectors");
@@ -262,7 +349,9 @@ public class MainPanelController implements ControlledScreen, Initializable {
                 "Przypomnienie o niewypełnionych ankietach.", "Dzień dobry, proszę o wypełnienie zaległych ankiet."
                         + "\n\n Pozdrawiam, szef.");
     }
-
+    /**
+     * pokazuje wszystkie ankiety
+     */
     @FXML
     private void show_all_questionforms() throws SQLException {
         ResultSet result = Database.execute("SELECT * FROM questionforms");
@@ -276,7 +365,9 @@ public class MainPanelController implements ControlledScreen, Initializable {
         }
         this.questionformsTable.setItems(questionFormsData);
     }
-
+    /**
+     * pokazuje wszystkie glosowania
+     */
     @FXML
     private void show_all_votes() throws SQLException {
         ResultSet result = Database.execute("SELECT *,questionforms.name as questionform_name, sectors.name as sector_name FROM votes,sectors,questionforms WHERE votes.section_id = sectors.id AND votes.questionform_id=questionforms.id AND votes.is_current=1 order by votes.date_to desc");
@@ -310,7 +401,9 @@ public class MainPanelController implements ControlledScreen, Initializable {
         this.showallvotesTable.setItems(showAllVotesData);
     }
 
-
+    /**
+     * pokazuje wszystkie reporty
+     */
     @FXML
     private void show_all_raports() throws SQLException {
         ResultSet result = Database.execute("SELECT * FROM raports,votes where raports.vote_id=votes.id");
@@ -324,7 +417,9 @@ public class MainPanelController implements ControlledScreen, Initializable {
         }
         this.raportTable.setItems(raportsData);
     }
-
+    /**
+     * pokazuje tabele glosowania
+     */
     @FXML
     private void showGlosujTable() throws SQLException {
         if (currentUserID != null) {
@@ -384,7 +479,10 @@ public class MainPanelController implements ControlledScreen, Initializable {
     * pracownicy
     * */
 
-    // dodawanie - pobieranie typow do comboboxa
+    /**
+     *     dodawanie - pobieranie typow do comboboxa
+      */
+
     private void get_type_of_employees() {
         select_type.getItems().addAll(
                 "kierownik",
@@ -392,7 +490,10 @@ public class MainPanelController implements ControlledScreen, Initializable {
         );
     }
 
-    // dodawanie - pobieranie dzialow do comboboxa
+    /**
+     *  dodawanie - pobieranie dzialow do comboboxa
+     */
+
     private void get_all_sectors_names() throws SQLException {
         ObservableList<String> names = FXCollections.observableArrayList();
         ResultSet result = Database.execute("SELECT * FROM sectors");
@@ -403,7 +504,12 @@ public class MainPanelController implements ControlledScreen, Initializable {
         select_sector.setItems(names);
     }
 
-    // dodawanie - walidacja i insertowanie
+
+    /**
+     * dodawanie - walidacja i insertowanie
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     * @throws ClassNotFoundException Rzuca, gdy aplikacja nie może znaleźć klasy
+     */
     @FXML
     public void add_new_employee() throws SQLException, ClassNotFoundException {
         String firstname = get_firstname.getText();
@@ -440,7 +546,11 @@ public class MainPanelController implements ControlledScreen, Initializable {
 
     }
 
-    // pobieranie idka do usuwania / edycji
+
+    /**
+     * pobieranie idka do usuwania / edycji
+     * @param mouseEvent mouseclick
+     */
     public void getEmployeeID(MouseEvent mouseEvent) {
         try {
             Users selected_employee = employeeTable.getSelectionModel().getSelectedItem();
@@ -453,6 +563,10 @@ public class MainPanelController implements ControlledScreen, Initializable {
         }
     }
 
+    /**
+     * edycja pracownika
+     * @param actionEvent action
+     */
     public void edit_employee(ActionEvent actionEvent) {
         if (selected_employeeID != null) {
             save_employee_btn.setText("Zapisz");
@@ -466,7 +580,13 @@ public class MainPanelController implements ControlledScreen, Initializable {
         }
     }
 
-    // usuwanie
+
+    /**
+     * usuwanie pracownika
+     * @param actionEvent action
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     * @throws ClassNotFoundException Rzuca, gdy aplikacja nie może znaleźć klasy
+     */
     public void remove_employee(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         add_new_employee_message.setText("");
         if (selected_employeeID != null) {
@@ -478,11 +598,12 @@ public class MainPanelController implements ControlledScreen, Initializable {
         }
     }
 
-    /*
-    * dzialy
-    * */
 
-    // dodawanie
+    /**
+     * dodawanie nowego dzialu
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     * @throws ClassNotFoundException Rzuca, gdy aplikacja nie może znaleźć klasy
+     */
     @FXML
     private void add_new_section() throws SQLException, ClassNotFoundException {
         String get_name = new_section_name.getText();
@@ -505,7 +626,11 @@ public class MainPanelController implements ControlledScreen, Initializable {
         }
     }
 
-    // pobieranie idka do usuwania / edytowania
+
+    /**
+     * pobieranie idka do usuwania / edytowani
+     * @param mouseEvent mouseclick
+     */
     public void getSectorID(MouseEvent mouseEvent) {
         try {
             Sectors selected_sector = sectorsTable.getSelectionModel().getSelectedItem();
@@ -516,7 +641,11 @@ public class MainPanelController implements ControlledScreen, Initializable {
         }
     }
 
-    // edytowanie
+
+    /**
+     * edytowanie działu
+     * @param actionEvent action
+     */
     public void edit_section(ActionEvent actionEvent) {
         if (selected_sectorID != null && selected_sectorName != null) {
             save_sector_btn.setText("Zapisz");
@@ -527,7 +656,13 @@ public class MainPanelController implements ControlledScreen, Initializable {
         }
     }
 
-    // usuwanie
+
+    /**
+     *
+     * @param actionEvent action
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     * @throws ClassNotFoundException Rzuca, gdy aplikacja nie może znaleźć klasy
+     */
     public void remove_section(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         add_new_sector_message.setText("");
         if (selected_sectorID != null) {
@@ -550,7 +685,11 @@ public class MainPanelController implements ControlledScreen, Initializable {
     * ankiety
     * */
 
-    // pobieranie idka do usuwania / zobaczenia ankiety
+
+    /**
+     * pobieranie idka do usuwania / zobaczenia ankiety
+     * @param mouseEvent mouseclick
+     */
     public void getQuestionformID(MouseEvent mouseEvent) {
         try {
             QuestionForms selected_qf = questionformsTable.getSelectionModel().getSelectedItem();
@@ -560,7 +699,13 @@ public class MainPanelController implements ControlledScreen, Initializable {
         }
     }
 
-    // usuwanie
+
+    /**
+     * usuwanie ankiety
+     * @param actionEvent action
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     * @throws ClassNotFoundException Rzuca, gdy aplikacja nie może znaleźć klasy
+     */
     public void remove_questionform(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         remove_qf_message.setText("");
         if (selected_questionformID != null) {
@@ -574,7 +719,11 @@ public class MainPanelController implements ControlledScreen, Initializable {
     *  glosowania - wypelnianie
     * */
 
-    // pobieranie idka do wybierania glosowania z glosujTable
+
+    /**
+     * pobieranie idka do wybierania glosowania z glosujTable
+     * @param mouseEvent mouseclick
+     */
     public void getVoteID(MouseEvent mouseEvent) {
         try {
             Votes selected_vote = glosujTable.getSelectionModel().getSelectedItem();
@@ -589,7 +738,11 @@ public class MainPanelController implements ControlledScreen, Initializable {
     * glosowania - wyswietlanie
     * */
 
-    // pobieranie idka do wybierania glosowania z votesTable
+
+    /**
+     * pobieranie idka do wybierania glosowania z votesTable
+     * @param mouseEvent mouseclick
+     */
     public void getVoteIDToSee(MouseEvent mouseEvent) {
         try {
             Votes select_vote = showallvotesTable.getSelectionModel().getSelectedItem();
@@ -600,7 +753,13 @@ public class MainPanelController implements ControlledScreen, Initializable {
 
     }
 
-    // szybsze konczenie glosowania
+
+    /**
+     * szybsze konczenie glosowania
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     * @throws ClassNotFoundException Rzuca, gdy aplikacja nie może znaleźć klasy
+     */
+
     @FXML
     public void closeVoting() throws SQLException, ClassNotFoundException {
         see_vote_msg.setText("");

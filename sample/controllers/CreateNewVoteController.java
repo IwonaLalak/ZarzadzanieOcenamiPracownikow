@@ -20,17 +20,40 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
-
+/**
+ * Klasa tworzenia nowego glosowania
+ */
 public class CreateNewVoteController implements Initializable, ControlledScreen {
+    /**
+     * show_all_qf pokazuje wszyskie dostepne ankiety
+     */
     public ComboBox show_all_qf;
+    /**
+     * show_all_sectors wskazanie dzialu do glosowania
+     */
     public ComboBox show_all_sectors;
+    /**
+     *show_all_types wskazanie kto moze glosowac
+     */
     public ComboBox show_all_types;
+    /**
+     * dodanie wiadomosci
+     */
     public Label add_new_vote_msg;
+    /**
+     *new_vote_name wprowadzenie nazwy ankiety
+     */
     public TextField new_vote_name;
+    /**
+     * new_vote_enddate wprowadzenie daty zakonczenia
+     */
     public DatePicker new_vote_enddate;
     private ScreensController myController;
 
-
+    /**
+     * dla kogo ma byc glosowanie
+     * @throws SQLException Rzuca kiedy występuje problem z zapytaniem SQL
+     */
     public void fill_comboboxes() throws SQLException {
         // fill types of users
         show_all_types.getItems().addAll(
@@ -61,7 +84,11 @@ public class CreateNewVoteController implements Initializable, ControlledScreen 
     }
 
 
-
+    /**
+     * Metoda, która rozpoczyna się automatycznie w tej klasie.
+     * @param location polozenie
+     * @param resources zasoby
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -75,7 +102,9 @@ public class CreateNewVoteController implements Initializable, ControlledScreen 
     private void cancel() throws IOException {
         myController.setScreen(Main.main);
     }
-
+    /**
+     * startNewVote metoda do tworzenia nowego glosowania
+     */
     @FXML
     private void startNewVote() throws IOException, SQLException, ClassNotFoundException {
 
@@ -113,9 +142,17 @@ public class CreateNewVoteController implements Initializable, ControlledScreen 
 
         //myController.setScreen(Main.main);
     }
-
+    /**
+     * Zmienia okno nadrzędne określonego okna podrzędnego.
+     * @param screenPage okno przesylane na ekran
+     */
     @Override
     public void setScreenParent(ScreensController screenPage) {
         this.myController = screenPage;
+    }
+
+
+    public ScreensController getScreenController() {
+        return this.myController;
     }
 }

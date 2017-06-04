@@ -16,21 +16,37 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
+/**
+ * Klasa dodawania ankiet do wypelnienia
+ */
 public class AddQuestionFormController implements Initializable, ControlledScreen {
+    /**
+     * new_questionform_name nazwa ankiety
+     */
     public TextField new_questionform_name;
+    /**
+     * add_new_qf_message cos
+     */
     public Label add_new_qf_message;
+    /**
+     * deleteQuestionBtn usuwa pytania
+     */
     public Button deleteQuestionBtn;
     private ScreensController myController;
     @FXML
     private Pane container_for_questons;
-
+    /**
+     * newQuestions dodawanie pytania do arraylisty
+     */
     public ArrayList<TextField> newQuestions = new ArrayList<>();
 
     @FXML
     private void cancel() throws IOException {
         myController.setScreen(Main.main);
     }
+    /**
+     * dodawanie ankiety
+     */
 
     @FXML
     private void addVote() throws IOException, SQLException, ClassNotFoundException {
@@ -57,13 +73,16 @@ public class AddQuestionFormController implements Initializable, ControlledScree
 
         //myController.setScreen(Main.main);
     }
-
-    // do ustawiania textfieldow
+    /**
+     * ustawianie textfieldó
+     */
     private double layoutX_for_textfield = 23.0;
     private double layoutY = 30.0;
     private int ids = 1;
 
-
+    /**
+     * usuwanie pytań dostępne podczas tworzenia ankiety
+     */
     private void showFields() {
         // by nie kusilo klikać deleta gdy pytań za mało
         if (newQuestions.size() < 2) {
@@ -72,17 +91,23 @@ public class AddQuestionFormController implements Initializable, ControlledScree
             deleteQuestionBtn.setDisable(false);
         }
 
-        // check na konsole
+        /**
+         * sprawdzanie na konsoli czy pytanie zostało dodane
+         */
         for (int i = 0; i < newQuestions.size(); i++) {
             System.out.println(newQuestions.get(i));
         }
         System.out.println("----------");
 
 
-        // czyszczenie by nie dublowało
+        /**
+         * czyszczenie by nie dublowało
+         */
         container_for_questons.getChildren().removeAll(newQuestions);
 
-        // ustawiamy pola
+        /**
+         * ustawianie pola
+         */
         layoutY = 20.0;
         for (int i = 0; i < newQuestions.size(); i++) {
 
@@ -96,11 +121,15 @@ public class AddQuestionFormController implements Initializable, ControlledScree
             }
         }
 
-        // dodajemy
+        /**
+         * dodawanie containera
+         */
         container_for_questons.getChildren().addAll(newQuestions);
 
     }
-
+    /**
+     * odpowiedzalny za znikanie textfielda
+     */
     @FXML
     public void delField() {
         // musi byc bo inaczej textfield nie znika o_O
@@ -108,7 +137,9 @@ public class AddQuestionFormController implements Initializable, ControlledScree
         newQuestions.remove(newQuestions.size() - 1);
         showFields();
     }
-
+    /**
+     * dodawanie pol
+     */
     @FXML
     private void addField() {
         //inicjacja, ustawienie id, dlugosci i dodanie do arraylista
@@ -122,11 +153,19 @@ public class AddQuestionFormController implements Initializable, ControlledScree
 
     }
 
+    /**
+     * Metoda, która rozpoczyna się automatycznie w tej klasie.
+     * @param location polozenie
+     * @param resources zasoby
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }
-
+    /**
+     * Zmienia okno nadrzędne określonego okna podrzędnego.
+     * @param screenPage okno przesylane na ekran
+     */
     @Override
     public void setScreenParent(ScreensController screenPage) {
         this.myController = screenPage;

@@ -22,7 +22,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
-
+/**
+ * Klasa glosowania
+ */
 public class FillVoteController implements ControlledScreen, Initializable {
 
     public Pane place_for_questions;
@@ -34,7 +36,9 @@ public class FillVoteController implements ControlledScreen, Initializable {
     public ArrayList<Label> questionArray = new ArrayList<>();
     public ArrayList<ComboBox> gradeArray = new ArrayList<>();
 
-
+    /**
+     * @return sendVote wysylanie glosowania
+     */
     @FXML
     private void sendVote(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
         //   TODO: wyczyścić pane tak jak w cancelu
@@ -59,7 +63,9 @@ public class FillVoteController implements ControlledScreen, Initializable {
             myController.setScreen(Main.main);
         }
     }
-
+    /**
+     * @return cancelVote cofanie glosowania by moc je wwypelnic jeszcze raz
+     */
     @FXML
     private void cancelVote(ActionEvent event) throws IOException {
         send_your_vote_msg.setText("");
@@ -73,11 +79,18 @@ public class FillVoteController implements ControlledScreen, Initializable {
         place_for_questions.setPrefHeight(450.0);
         myController.setScreen(Main.main);
     }
-
+    /**
+     * Metoda, która rozpoczyna się automatycznie w tej klasie.
+     * @param location polozenie
+     * @param resources zasoby
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }
-
+    /**
+     * Zmienia okno nadrzędne określonego okna podrzędnego.
+     * @param screenPage okno przesylane na ekran
+     */
     @Override
     public void setScreenParent(ScreensController screenPage) {
         this.myController = screenPage;

@@ -34,9 +34,15 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * klasa odpowiadajaca za zobaczenie konkretnego raportu
+ */
 public class SeeReportController implements Initializable, ControlledScreen {
 
     private ScreensController myController;
+    /**
+     * zczytywanie raportu aby wyslac go do pdf
+     */
     public String finalContent;
 
     public SeeReportController(){
@@ -44,23 +50,38 @@ public class SeeReportController implements Initializable, ControlledScreen {
         this.reportContent = new Label();
     }
 
+    /**
+     * label pokazujacy nazwe raportu
+     */
     @FXML
     public Label reportTitle;
-
+    /**
+     * label pokazujacy o czym jest raport
+     */
     @FXML
     public Label reportContent;
 
-
+    /**
+     * powrot do wsztystkich raportow
+     * @param event cofniecie widoku do podgladu wszytstkich raportow
+     */
     @FXML
     private void goBackToReports(ActionEvent event) throws IOException {
         this.reportContent.setText("");
         myController.setScreen(Main.main);
     }
-
+    /**
+     * Metoda, która rozpoczyna się automatycznie w tej klasie.
+     * @param location polozenie
+     * @param resources zasoby
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }
-
+    /**
+     * Zmienia okno nadrzędne określonego okna podrzędnego.
+     * @param screenPage okno przesylane na ekran
+     */
     @Override
     public void setScreenParent(ScreensController screenPage) {
 
@@ -169,9 +190,19 @@ public class SeeReportController implements Initializable, ControlledScreen {
         return this.finalContent;
     }
 
+
+    /**
+     * ??
+     * @return this
+     */
     public Initializable getSeeReportController() {
         return this;
     }
+
+    /**
+     * metoda generujaca pdf
+     * @return pdf
+     */
 
     @FXML
     public Document generatePdf() {
