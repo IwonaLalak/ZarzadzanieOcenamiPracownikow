@@ -1,5 +1,6 @@
 package sample.controllers;
 
+import email.EmailDispatcher;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -15,7 +16,6 @@ import sample.ScreensController;
 import sample.database.*;
 import sample.database.entity.*;
 import sample.database.entity.Users;
-import sample.email.EmailDispatcher;
 import sample.interfaces.ControlledScreen;
 
 import java.io.IOException;
@@ -258,7 +258,9 @@ public class MainPanelController implements ControlledScreen, Initializable {
         for (int i = 0; i < getEmails.size(); i++) {
             emails[i] = getEmails.get(i);
         }
-        dispatcher.sendFromGMail("testpracownikemail@gmail.com", "test1234567", emails);
+        dispatcher.sendFromGMail("testpracownikemail@gmail.com", "test1234567", emails,
+                "Przypomnienie o niewypełnionych ankietach.", "Dzień dobry, proszę o wypełnienie zaległych ankiet."
+                        + "\n\n Pozdrawiam, szef.");
     }
 
     @FXML
